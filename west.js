@@ -35,6 +35,9 @@ var IMAGES = {};
 INTERVALS = [];
 
 window.onload = function() {
+  // Prevent highlighting things on the page.
+  document.onselectstart = function() { return false; };
+
   canvas = document.getElementById("westworld");
   ctx = canvas.getContext("2d");
 

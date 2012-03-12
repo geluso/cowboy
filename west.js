@@ -5,14 +5,13 @@ var HEIGHT = 600;
 var canvas, ctx;
 var SCALE = 1;
 
-var UP = 119;
-var DOWN = 115;
-var LEFT = 97;
-var RIGHT = 100;
+var UP = 87;
+var DOWN = 83;
+var LEFT = 65;
+var RIGHT = 68;
 var ENTER = 13;
-var HORSE = 104;
 
-var OUTHOUSE, COWBOY;
+var OUTHOUSE, COWBOY, HORSE;
 var DRAWABLES = [];
 var SRC = [
   "cowboy",
@@ -32,11 +31,11 @@ var SRC = [
 ];
 var IMAGES = {};
 
-INTERVALS = [];
+var INTERVALS = [];
 
-window.onload = function() {
+window.onload = function () {
   // Prevent highlighting things on the page.
-  document.onselectstart = function() { return false; };
+  document.onselectstart = function () { return false; };
 
   canvas = document.getElementById("westworld");
   ctx = canvas.getContext("2d");
@@ -50,20 +49,58 @@ window.onload = function() {
     IMAGES[SRC[i]] = img;
   }
 
+  populate_world();
+  $(document).keydown(function (e) {
+    press(e, COWBOY);
+  });
+  $("#westworld").click(click);
+  draw();
+}
+
+function populate_world() {
+  build_outhouse();
+  light_fire();
+  grow_cactus();
+  place_rocks();
+  birth_horse();
+  birth_cowboy();
+}
+
+function build_outhouse() {
   OUTHOUSE = {
-    image: function() {
+    image: function () {
       return this.open ? IMAGES["outhouse_open"] : IMAGES["outhouse_closed"]; 
     },
     x: 400,
     y: 300,
     open: false,
-    draw: function(ctx) {
+    draw: function (ctx) {
       ctx.drawImage(this.image(), this.x, this.y);
     }
   };
+  DRAWABLES.push(OUTHOUSE);
+}
 
+function birth_horse() {
+  HORSE = {
+    image: function () {
+      return IMAGES["horse"];
+    },
+    x: 70,
+    y: 40,
+    draw: function (ctx) {
+      if (this.unbridled) {
+        ctx.drawImage(this.image(), this.x - this.image().width / 2, this.y - this.image().height);
+      }
+    },
+    unbridled: true
+  }
+  DRAWABLES.push(HORSE);
+}
+
+function birth_cowboy() {
   COWBOY = {
-    image: function() {
+    image: function () {
       if (this.horse) {
         if (this.west) {
           return IMAGES["cowboy_horse_west"]
@@ -79,69 +116,70 @@ window.onload = function() {
     way_x: undefined,
     way_y: undefined,
     actions: [],
-    step: function() {
+    step: function () {
       if (this.horse) {
         return 2
       } else {
         return 1;
       }
     },
+    stop: function () {
+      clear_intervals(this.actions);
+      this.actions = [];
+    },
     horse: false,
-    draw: function(ctx) {
+    draw: function (ctx) {
       ctx.drawImage(this.image(), this.x - this.image().width / 2, this.y - this.image().height);
     }
   }
+  DRAWABLES.push(COWBOY);
+}
 
-  FIRE = {
-    image: function() {
+function light_fire() {
+  var FIRE = {
+    image: function () {
       return IMAGES["fire"];
     },
     x: 30,
     y: 20,
-    draw: function(ctx) {
+    draw: function (ctx) {
       ctx.drawImage(this.image(), this.x, this.y);
     }
   }
-
-  populate_world();
-
-  DRAWABLES.push(OUTHOUSE, COWBOY, FIRE);
-  $(document).keypress(function(e) {
-    press(e, COWBOY);
-  });
-  $("#westworld").click(click);
-  draw();
+  DRAWABLES.push(FIRE);
 }
 
-function populate_world() {
-  var cactus = 15;
-  var rocks = 30;
+function grow_cactus() {
+  var cactus = Math.random() * 150 + 20;
   var cactus_types = ["cactus_large", "cactus_large_flower", "cactus_med",
       "cactus_med_flower"];
   for (var i = 0; i < cactus; i++) {
     var choice = Math.round(Math.random() * (cactus_types.length - 1))
     var cactus_type = cactus_types[choice];
     DRAWABLES.push({
-      image: function() {
+      image: function () {
         return IMAGES[this.type];
       },
       x: Math.random() * WIDTH,
       y: Math.random() * HEIGHT,
       type: cactus_type,
-      draw: function(ctx) {
+      draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
     });
   }
+}
 
+function place_rocks() {
+  var rocks = Math.random() * 300 + 40;
   for (var i = 0; i < rocks; i++) {
     DRAWABLES.push({
-      image: function() {
+      image: function () {
         return IMAGES["rock"];
       },
       x: Math.random() * WIDTH,
       y: Math.random() * HEIGHT,
-      draw: function(ctx) {
+      draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
     });
@@ -157,28 +195,38 @@ function draw() {
 }
 
 function press(e, actor) {
-  clear_intervals(actor.actions);
-  if (e.which == UP) {
-    actor.y -= actor.step() * 4;
-  }
-  if (e.which == DOWN) {
-    actor.y += actor.step() * 4;
-  }
-  if (e.which == LEFT) {
-    actor.x -= actor.step() * 4;
-  }
-  if (e.which == RIGHT) {
-    actor.x += actor.step() * 4;
-  }
-  // Toggle horse mode.
-  if (e.which == HORSE) {
-    actor.horse = !actor.horse;
-  }
   if (e.which == ENTER) {
-    console.log(actor.x, OUTHOUSE.x)
+    // horse
+    if (!HORSE.unbridled) {
+      actor.horse = !actor.horse;
+      HORSE.unbridled = !HORSE.unbridled;
+      HORSE.x = actor.x;
+      HORSE.y = actor.y;
+    } else if (Math.abs(actor.x - HORSE.x) < 15 &&
+        Math.abs(actor.y - HORSE.y) < 15) {
+      actor.horse = !actor.horse;
+      HORSE.unbridled = !HORSE.unbridled;
+    }
+    // outhouse
     if (Math.abs(actor.x - OUTHOUSE.x - OUTHOUSE.image().width / 2) < 15 &&
         Math.abs(actor.y - OUTHOUSE.y - OUTHOUSE.image().height) < 15) {
       OUTHOUSE.open = !OUTHOUSE.open;
+    }
+  } else {
+    actor.stop();
+    if (e.keyCode == UP || e.keyCode == 38) {
+      actor.y -= actor.step() * 4;
+    }
+    if (e.keyCode == DOWN || e.keyCode == 40) {
+      actor.y += actor.step() * 4;
+    }
+    if (e.keyCode == LEFT || e.keyCode == 37 ) {
+      actor.x -= actor.step() * 4;
+      actor.west = true;
+    }
+    if (e.keyCode == RIGHT || e.keyCode == 39 ) {
+      actor.x += actor.step() * 4;
+      actor.west = false;
     }
   }
   draw();
@@ -199,20 +247,13 @@ function set_waypoint(actor, x, y) {
   } else {
     actor.west = false;
   }
-  actor.actions.push(setInterval(function() { walk(actor); }, FRAMERATE));
-}
-
-function stop(actor) {
-  actor.way_x = actor.x;
-  actor.way_y = actor.y;
-  clear_intervals(actor.actions);
-  actor.actions = [];
+  actor.actions.push(setInterval(function () { walk(actor); }, FRAMERATE));
 }
 
 function walk(actor) {
   if (Math.abs(actor.x - actor.way_x) <= actor.step() &&
       Math.abs(actor.y - actor.way_y) <= actor.step()) {
-    stop(actor);
+    actor.stop();
   } else {
     if ((actor.x + actor.step()) < actor.way_x) {
       actor.x += actor.step();
@@ -232,13 +273,4 @@ function clear_intervals(intervals) {
   for (var i = 0; i < intervals.length; i++) {
     clearInterval(intervals[i]);
   }
-}
-
-function gather_press() {
-
-}
-
-function event_loop() {
-  gather_press(); 
-  draw();
 }

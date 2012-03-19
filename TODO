@@ -1,0 +1,9 @@
+- better class structure: inheritence with drawables, moveables,
+  projectiles.
+- better event loop: poll keyboard instead of waiting for events.
+- collision detection
+- projectile physics:
+  - slow down?
+  - tomahawk ark?
+  - arrow stay on ground
+- add killable critters

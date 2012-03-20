@@ -31,7 +31,8 @@ var KEYBOARD = {}
 
 var OUTHOUSE, COWBOY, HORSE;
 var DRAWABLES = [],
-    BACKGROUND = [];
+    BACKGROUND = [],
+    PROJECTILES = [];
 var SRC = [
   "bullet_north",
   "bullet_east",
@@ -65,7 +66,8 @@ var SRC = [
   "arrow_north",
   "arrow_east",
   "arrow_south",
-  "arrow_west"
+  "arrow_west",
+  "dead_horse"
 ];
 var IMAGES = {};
 
@@ -108,6 +110,7 @@ window.onload = function () {
     tick(COWBOY);
     draw_clear(fore_ctx);
     draw(fore_ctx, DRAWABLES);
+    draw(fore_ctx, PROJECTILES);
   }, FRAMERATE);
 }
 
@@ -161,17 +164,50 @@ function build_outhouse(ctx, a) {
 function birth_horse(ctx, a) {
   HORSE = {
     image: function () {
-      return IMAGES[["horse_north", "horse_east", "horse_south", "horse_west"][this.direction]];
+      if (this.alive) {
+        return IMAGES[["horse_north", "horse_east", "horse_south", "horse_west"][this.direction]];
+      } else {
+        return IMAGES["dead_horse"];
+      }
     },
     x: 70,
     y: 40,
     draw: function (ctx) {
-      if (this.unbridled) {
-        ctx.drawImage(this.image(), this.x - this.image().width / 2, this.y - this.image().height);
+      if (!this.alive) {
+        ctx.drawImage(this.image(),
+            this.frame_width * this.frame, 0, this.frame_width, this.frame_height,
+            this.x - Math.floor(this.frame_width / 2),
+            this.y - Math.floor(this.frame_height / 2),
+            this.frame_width, this.frame_height);
+      } else if (this.unbridled) {
+        ctx.drawImage(this.image(),
+            this.x - Math.floor(this.image().width / 2),
+            this.y - Math.floor(this.image().height / 2));
       }
     },
+    alive: true,
     unbridled: true,
-    direction: EAST
+    direction: EAST,
+    // death animation
+    frame_width: 17,
+    frame_height: 12,
+    frames: 7,
+    frame: 0,
+    delay: 2000,
+    kill: function() {
+      if (this.alive) {
+        this.alive = false;
+        this.decay(this);
+      }
+    },
+    decay: function (actor) {
+      actor.frame++;
+      if (actor.frame < actor.frames) {
+        setTimeout(function() {
+          actor.decay(actor);
+        }, actor.delay);
+      }
+    }
   }
   a.push(HORSE);
 }
@@ -230,7 +266,7 @@ function grow_cactus(ctx, a) {
   var cactus_types = ["cactus_large", "cactus_large_flower", "cactus_med",
       "cactus_med_flower"];
   for (var i = 0; i < cactus; i++) {
-    var choice = Math.round(Math.random() * (cactus_types.length - 1))
+    var choice = Math.floor(Math.random() * (cactus_types.length - 1))
     var cactus_type = cactus_types[choice];
     a.push({
       image: function () {
@@ -290,6 +326,11 @@ function shoot(weapon, x, y, direction, drawables) {
       this.x += this.speed * this.way_x;
       this.y += this.speed * this.way_y;
       ctx.drawImage(this.image(), this.x, this.y);
+      if (HORSE.unbridled &&
+            Math.abs(this.x - HORSE.x) < 7 &&
+            Math.abs(this.y - HORSE.y) < 7) {
+        HORSE.kill();
+      }
     },
     speed: weapon == PISTOL ? 12 : 6,
     type: weapon,
@@ -311,18 +352,20 @@ function press(e, actor) {
   if (KEYBOARD[SHIFT]) {
     actor.weapon = (actor.weapon + 1) % WEAPONS.length;
   } else if (KEYBOARD[SPACE]) {
-    shoot(actor.weapon, actor.x, actor.y, actor.direction, DRAWABLES);
+    shoot(actor.weapon, actor.x, actor.y, actor.direction, PROJECTILES);
   } else if (KEYBOARD[ENTER] || KEYBOARD[E]) {
     // horse
-    if (!HORSE.unbridled) {
-      actor.horse = !actor.horse;
-      HORSE.unbridled = !HORSE.unbridled;
-      HORSE.x = actor.x;
-      HORSE.y = actor.y;
-    } else if (Math.abs(actor.x - HORSE.x) < 15 &&
-        Math.abs(actor.y - HORSE.y) < 15) {
-      actor.horse = !actor.horse;
-      HORSE.unbridled = !HORSE.unbridled;
+    if (HORSE.alive) {
+      if (!HORSE.unbridled) {
+        actor.horse = !actor.horse;
+        HORSE.unbridled = !HORSE.unbridled;
+        HORSE.x = actor.x;
+        HORSE.y = actor.y;
+      } else if (Math.abs(actor.x - HORSE.x) < 15 &&
+          Math.abs(actor.y - HORSE.y) < 15) {
+        actor.horse = !actor.horse;
+        HORSE.unbridled = !HORSE.unbridled;
+      }
     }
     // outhouse
     if (Math.abs(actor.x - OUTHOUSE.x - OUTHOUSE.image().width / 2) < 15 &&

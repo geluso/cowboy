@@ -4,6 +4,17 @@ body {
  margin: 0;
 }
 
-#westworld {
+#stack {
+  width: 800px;
+  height: 600px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
   border: solid black 1px;
 }

@@ -1,14 +1,16 @@
 var TICKER;
+    TICKING = [];
 
 var NORTH = 0;
 var EAST = 1;
 var SOUTH = 2;
 var WEST = 3;
 
-var PISTOL = 0;
-var TOMAHAWK = 1;
-var ARROW = 2;
-var WEAPONS = [PISTOL, TOMAHAWK, ARROW];
+// weapons
+var PISTOL = 0,
+    TOMAHAWK = 1,
+    ARROW = 2,
+    WEAPONS = [PISTOL, TOMAHAWK, ARROW];
 
 var FRAMERATE = 1000 / 60;
 var WIDTH = 800;
@@ -17,16 +19,19 @@ var HEIGHT = 600;
 var canvas, ctx;
 var SCALE = 1;
 
-var UP = 87;
-var DOWN = 83;
-var LEFT = 65;
-var RIGHT = 68;
-var ENTER = 13;
-var SPACE = 32;
-var SHIFT = 16;
+var KEYBOARD = {}
+    UP = 87,
+    DOWN = 83,
+    LEFT = 65,
+    RIGHT = 68,
+    ENTER = 13,
+    E = 69,
+    SPACE = 32,
+    SHIFT = 16;
 
 var OUTHOUSE, COWBOY, HORSE;
-var DRAWABLES = [];
+var DRAWABLES = [],
+    BACKGROUND = [];
 var SRC = [
   "bullet_north",
   "bullet_east",
@@ -70,11 +75,17 @@ window.onload = function () {
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };
 
-  canvas = document.getElementById("westworld");
-  ctx = canvas.getContext("2d");
+  var background = document.getElementById("background");
+  var back_ctx = background.getContext("2d");
+  background.width = WIDTH;
+  background.height = HEIGHT;
+  back_ctx.fillRect(0,0,WIDTH, HEIGHT);
 
-  canvas.width = WIDTH;
-  canvas.height = HEIGHT;
+  var foreground = document.getElementById("westworld");
+  var fore_ctx = foreground.getContext("2d");
+
+  foreground.width = WIDTH;
+  foreground.height = HEIGHT;
 
   for (var i = 0; i < SRC.length; i++) {
     var img = new Image();
@@ -82,25 +93,57 @@ window.onload = function () {
     IMAGES[SRC[i]] = img;
   }
 
-  populate_world();
+  draw_background(back_ctx, BACKGROUND);
+  draw_foreground(fore_ctx, DRAWABLES);
+
   $(document).keydown(function (e) {
     press(e, COWBOY);
   });
+  $(document).keyup(function (e) {
+    release(e, COWBOY);
+  });
   $("#westworld").click(click);
   
-  setInterval(draw, FRAMERATE);
+  TICKER = setInterval(function() {
+    tick(COWBOY);
+    draw_clear(fore_ctx);
+    draw(fore_ctx, DRAWABLES);
+  }, FRAMERATE);
 }
 
-function populate_world() {
-  build_outhouse();
-  light_fire();
-  grow_cactus();
-  place_rocks();
-  birth_horse();
-  birth_cowboy();
+function draw_background(ctx, a) {
+  ctx.setFillColor("cccc66");
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  light_fire(ctx, a);
+  grow_cactus(ctx, a);
+  place_rocks(ctx, a);
+  draw(ctx, a);
 }
 
-function build_outhouse() {
+function draw_foreground(ctx, a) {
+  build_outhouse(ctx, a);
+  birth_horse(ctx, a);
+  birth_cowboy(ctx, a);
+}
+
+function draw_clear(ctx) {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+function draw(ctx, drawables) {
+  for (var i = 0; i < drawables.length; i++) {
+    var d = drawables[i];
+    if (d.x < 0 || d.y < 0 || d.x > WIDTH || d.y > HEIGHT) {
+      drawables.splice(i, 1);
+      i--;
+    } else {
+      d.draw(ctx);
+    }
+  }
+}
+
+
+function build_outhouse(ctx, a) {
   OUTHOUSE = {
     image: function () {
       return this.open ? IMAGES["outhouse_open"] : IMAGES["outhouse_closed"]; 
@@ -112,10 +155,10 @@ function build_outhouse() {
       ctx.drawImage(this.image(), this.x, this.y);
     }
   };
-  DRAWABLES.push(OUTHOUSE);
+  a.push(OUTHOUSE);
 }
 
-function birth_horse() {
+function birth_horse(ctx, a) {
   HORSE = {
     image: function () {
       return IMAGES[["horse_north", "horse_east", "horse_south", "horse_west"][this.direction]];
@@ -130,10 +173,10 @@ function birth_horse() {
     unbridled: true,
     direction: EAST
   }
-  DRAWABLES.push(HORSE);
+  a.push(HORSE);
 }
 
-function birth_cowboy() {
+function birth_cowboy(ctx, a) {
   COWBOY = {
     image: function () {
       if (this.horse) {
@@ -165,10 +208,10 @@ function birth_cowboy() {
     direction: EAST,
     weapon: PISTOL,
   }
-  DRAWABLES.push(COWBOY);
+  a.push(COWBOY);
 }
 
-function light_fire() {
+function light_fire(ctx, a) {
   var FIRE = {
     image: function () {
       return IMAGES["fire"];
@@ -179,17 +222,17 @@ function light_fire() {
       ctx.drawImage(this.image(), this.x, this.y);
     }
   }
-  DRAWABLES.push(FIRE);
+  a.push(FIRE);
 }
 
-function grow_cactus() {
+function grow_cactus(ctx, a) {
   var cactus = Math.random() * 150 + 20;
   var cactus_types = ["cactus_large", "cactus_large_flower", "cactus_med",
       "cactus_med_flower"];
   for (var i = 0; i < cactus; i++) {
     var choice = Math.round(Math.random() * (cactus_types.length - 1))
     var cactus_type = cactus_types[choice];
-    DRAWABLES.push({
+    a.push({
       image: function () {
         return IMAGES[this.type];
       },
@@ -203,10 +246,10 @@ function grow_cactus() {
   }
 }
 
-function place_rocks() {
+function place_rocks(ctx, a) {
   var rocks = Math.random() * 300 + 40;
   for (var i = 0; i < rocks; i++) {
-    DRAWABLES.push({
+    a.push({
       image: function () {
         return IMAGES["rock"];
       },
@@ -219,7 +262,7 @@ function place_rocks() {
   }
 }
 
-function shoot(weapon, x, y, direction) {
+function shoot(weapon, x, y, direction, drawables) {
   var image;
   if (weapon == PISTOL) {
     image = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
@@ -227,6 +270,7 @@ function shoot(weapon, x, y, direction) {
     image = ["tomahawk_north", "tomahawk_east", "tomahawk_south", "tomahawk_west"];
   } else if (weapon == ARROW) {
     image = ["arrow_north", "arrow_east", "arrow_south", "arrow_west"];
+
   }
   var projectile = {
     x: x,
@@ -253,29 +297,22 @@ function shoot(weapon, x, y, direction) {
     timer: 100,
     direction: direction,
   }
-  DRAWABLES.push(projectile);
+  drawables.push(projectile);
 }
 
-function draw() {
-  ctx.setFillColor("cccc66");
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  for (var i = 0; i < DRAWABLES.length; i++) {
-    var d = DRAWABLES[i];
-    if (d.x < 0 || d.y < 0 || d.x > WIDTH || d.y > HEIGHT) {
-      DRAWABLES.splice(i, 1);
-      i--;
-    } else {
-      d.draw(ctx);
-    }
-  }
+function release(e) {
+  KEYBOARD[e.which] = false;
+  KEYBOARD[e.keyCode] = false;
 }
 
 function press(e, actor) {
-  if (e.which == SHIFT) {
+  KEYBOARD[e.which] = true;
+  KEYBOARD[e.keyCode] = true;
+  if (KEYBOARD[SHIFT]) {
     actor.weapon = (actor.weapon + 1) % WEAPONS.length;
-  } else if (e.which == SPACE) {
-    shoot(actor.weapon, actor.x, actor.y, actor.direction);
-  } else if (e.which == ENTER) {
+  } else if (KEYBOARD[SPACE]) {
+    shoot(actor.weapon, actor.x, actor.y, actor.direction, DRAWABLES);
+  } else if (KEYBOARD[ENTER] || KEYBOARD[E]) {
     // horse
     if (!HORSE.unbridled) {
       actor.horse = !actor.horse;
@@ -294,24 +331,26 @@ function press(e, actor) {
     }
   } else {
     actor.stop();
-    if (e.keyCode == UP || e.keyCode == 38) {
-      actor.y -= actor.step() * 4;
-      actor.direction = NORTH;
-    }
-    if (e.keyCode == DOWN || e.keyCode == 40) {
-      actor.y += actor.step() * 4;
-      actor.direction = SOUTH;
-    }
-    if (e.keyCode == LEFT || e.keyCode == 37 ) {
-      actor.x -= actor.step() * 4;
-      actor.direction = WEST;
-    }
-    if (e.keyCode == RIGHT || e.keyCode == 39 ) {
-      actor.x += actor.step() * 4;
-      actor.direction = EAST;
-    }
   }
-  draw();
+}
+
+function tick(actor) {
+  if (KEYBOARD[UP] || KEYBOARD[38]) {
+    actor.y -= actor.step();
+    actor.direction = NORTH;
+  }
+  if (KEYBOARD[DOWN] || KEYBOARD[40]) {
+    actor.y += actor.step();
+    actor.direction = SOUTH;
+  }
+  if (KEYBOARD[LEFT] || KEYBOARD[37]) {
+    actor.x -= actor.step();
+    actor.direction = WEST;
+  }
+  if (KEYBOARD[RIGHT] || KEYBOARD[39]) {
+    actor.x += actor.step();
+    actor.direction = EAST;
+  }
 }
 
 function click(e) {
@@ -346,7 +385,6 @@ function walk(actor) {
       actor.x -= actor.step();
       actor.direction = WEST;
     }
-    draw();
   }
 }
 

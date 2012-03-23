@@ -19,6 +19,9 @@ var HEIGHT = 600;
 var canvas, ctx;
 var SCALE = 1;
 
+var MOUSE_X = 0,
+    MOUSE_Y = 0;
+
 var KEYBOARD = {}
     UP = 87,
     DOWN = 83,
@@ -104,6 +107,12 @@ window.onload = function () {
   $(document).keyup(function (e) {
     release(e, COWBOY);
   });
+
+  foreground.onmousemove = function(e) {
+    MOUSE_X = e.offsetX;
+    MOUSE_Y = e.offsetY;
+  }
+
   $("#westworld").click(click);
   
   TICKER = setInterval(function() {
@@ -298,21 +307,24 @@ function place_rocks(ctx, a) {
   }
 }
 
-function shoot(weapon, x, y, direction, drawables) {
+function shoot(actor, drawables) {
   var image;
-  if (weapon == PISTOL) {
+  if (actor.weapon == PISTOL) {
     image = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
-  } else if (weapon == TOMAHAWK) {
+  } else if (actor.weapon == TOMAHAWK) {
     image = ["tomahawk_north", "tomahawk_east", "tomahawk_south", "tomahawk_west"];
-  } else if (weapon == ARROW) {
+  } else if (actor.weapon == ARROW) {
     image = ["arrow_north", "arrow_east", "arrow_south", "arrow_west"];
-
   }
+
+  var dx = MOUSE_X - actor.x;
+  var dy = MOUSE_Y - actor.y;
+  var angle = Math.atan2(dy, dx);
+
   var projectile = {
-    x: x,
-    y: y - 10,
-    way_x: [0, 1, 0, -1][direction],
-    way_y: [-1, 0, 1, 0][direction],
+    x: actor.x,
+    y: actor.y - 10,
+    angle: angle,
     image: function () {
       this.tick++;
       if (this.type == TOMAHAWK) {
@@ -323,8 +335,8 @@ function shoot(weapon, x, y, direction, drawables) {
       return IMAGES[image[this.direction]];
     },
     draw: function (ctx) {
-      this.x += this.speed * this.way_x;
-      this.y += this.speed * this.way_y;
+      this.x += this.speed * Math.cos(this.angle);
+      this.y += this.speed * Math.sin(this.angle);
       ctx.drawImage(this.image(), this.x, this.y);
       if (HORSE.unbridled &&
             Math.abs(this.x - HORSE.x) < 7 &&
@@ -332,11 +344,11 @@ function shoot(weapon, x, y, direction, drawables) {
         HORSE.kill();
       }
     },
-    speed: weapon == PISTOL ? 12 : 6,
-    type: weapon,
+    speed: actor.weapon == PISTOL ? 12 : 6,
+    type: actor.weapon,
     tick: 0,
     timer: 100,
-    direction: direction,
+    direction: actor.direction,
   }
   drawables.push(projectile);
 }
@@ -352,7 +364,7 @@ function press(e, actor) {
   if (KEYBOARD[SHIFT]) {
     actor.weapon = (actor.weapon + 1) % WEAPONS.length;
   } else if (KEYBOARD[SPACE]) {
-    shoot(actor.weapon, actor.x, actor.y, actor.direction, PROJECTILES);
+    shoot(actor, PROJECTILES);
   } else if (KEYBOARD[ENTER] || KEYBOARD[E]) {
     // horse
     if (HORSE.alive) {

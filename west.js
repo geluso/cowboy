@@ -32,6 +32,8 @@ var KEYBOARD = {}
     SPACE = 32,
     SHIFT = 16;
 
+var SMOOTH_SHOOTING = false;
+
 var OUTHOUSE, COWBOY, HORSE;
 var DRAWABLES = [],
     BACKGROUND = [],
@@ -363,9 +365,11 @@ function press(e, actor) {
   KEYBOARD[e.keyCode] = true;
   if (KEYBOARD[SHIFT]) {
     actor.weapon = (actor.weapon + 1) % WEAPONS.length;
-  } else if (KEYBOARD[SPACE]) {
-    shoot(actor, PROJECTILES);
-  } else if (KEYBOARD[ENTER] || KEYBOARD[E]) {
+  }
+  if (!SMOOTH_SHOOTING && KEYBOARD[SPACE]) {
+      shoot(actor, PROJECTILES);
+  }
+  if (KEYBOARD[ENTER] || KEYBOARD[E]) {
     // horse
     if (HORSE.alive) {
       if (!HORSE.unbridled) {
@@ -384,27 +388,32 @@ function press(e, actor) {
         Math.abs(actor.y - OUTHOUSE.y - OUTHOUSE.image().height) < 15) {
       OUTHOUSE.open = !OUTHOUSE.open;
     }
-  } else {
-    actor.stop();
   }
 }
 
 function tick(actor) {
+  if (SMOOTH_SHOOTING && KEYBOARD[SPACE]) {
+    shoot(actor, PROJECTILES);
+  }
   if (KEYBOARD[UP] || KEYBOARD[38]) {
     actor.y -= actor.step();
     actor.direction = NORTH;
+    actor.stop();
   }
   if (KEYBOARD[DOWN] || KEYBOARD[40]) {
     actor.y += actor.step();
     actor.direction = SOUTH;
+    actor.stop();
   }
   if (KEYBOARD[LEFT] || KEYBOARD[37]) {
     actor.x -= actor.step();
     actor.direction = WEST;
+    actor.stop();
   }
   if (KEYBOARD[RIGHT] || KEYBOARD[39]) {
     actor.x += actor.step();
     actor.direction = EAST;
+    actor.stop();
   }
 }
 

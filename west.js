@@ -96,7 +96,7 @@ window.onload = function () {
   SPRITE = SPRITE.getContext("2d");
 
   var alphabet = new Image();
-  alphabet.src = "img/alphabet3.gif";
+  alphabet.src = "img/alphabet.gif";
   SPRITE.drawImage(alphabet, 0, 0);
 
   var text = document.getElementById("textworld");
@@ -125,6 +125,7 @@ window.onload = function () {
   $("#stack").mousemove(function(e) {
     MOUSE_X = e.offsetX;
     MOUSE_Y = e.offsetY;
+    draw_labels();
   });
 
   $("#stack").click(click);
@@ -135,6 +136,7 @@ window.onload = function () {
   TICKER = setInterval(function() {
     tick(COWBOY);
     draw_clear(fore_ctx);
+    draw_clear(text_ctx);
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
   }, FRAMERATE);
@@ -171,6 +173,18 @@ function draw(ctx, drawables) {
   }
 }
 
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+}
+
+function draw_labels() {
+  for (var i = 0; i < DRAWABLES.length; i++) {
+    var drawable = DRAWABLES[i];
+    if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
+      display(SPRITE, TEXT_CTX, drawable.label(), MOUSE_X + 115, MOUSE_Y);
+    }
+  }
+}
 
 
 function build_outhouse(ctx, a) {
@@ -181,6 +195,7 @@ function build_outhouse(ctx, a) {
     x: 400,
     y: 300,
     open: false,
+    label: function() { return "outhouse"; },
     draw: function (ctx) {
       ctx.drawImage(this.image(), this.x, this.y);
     }
@@ -199,6 +214,7 @@ function birth_horse(ctx, a) {
     },
     x: 70,
     y: 40,
+    label: function() { return "horse"; },
     draw: function (ctx) {
       if (!this.alive) {
         ctx.drawImage(this.image(),
@@ -265,6 +281,13 @@ function birth_cowboy(ctx, a) {
       this.actions = [];
     },
     horse: false,
+    label: function () {
+      if (this.horse) {
+        return "cowboy on horse";
+      } else {
+        return "cowboy";
+      }
+    },
     draw: function (ctx) {
       ctx.drawImage(this.image(), Math.floor(this.x - this.image().width / 2), this.y - this.image().height);
     },
@@ -281,6 +304,7 @@ function light_fire(ctx, a) {
     },
     x: 30,
     y: 20,
+    label: function() { return "campfire"; },
     draw: function (ctx) {
       ctx.drawImage(this.image(), this.x, this.y);
     }

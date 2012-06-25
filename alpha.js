@@ -39,19 +39,31 @@ var ALPHA = {
   " ": [240, 4],
 };
 
-function display(sprite, text, str, x, y) {
-  str = str.toLowerCase();
-  var print_char = function(key) {
-    var sprite_x = ALPHA[key][0],
-        width = ALPHA[key][1];
-        img = sprite.getImageData(sprite_x, 0, width, 16);
-    text.putImageData(img, x, y);
-    x += width;
-  }
+CACHE = {};
 
-  print_char("start");
-  for (var i = 0; i < str.length; i++) {
-    print_char(str.charAt(i));
+function display(sprite, text, str, x, y) {
+  if (CACHE[str]) {
+    text.putImageData(CACHE[str], x, y);
+  } else {
+    console.log("new string:", str);
+
+    var cursor = 0;
+    str = str.toLowerCase();
+    var print_char = function(key) {
+      var sprite_x = ALPHA[key][0],
+          width = ALPHA[key][1];
+          img = sprite.getImageData(sprite_x, 0, width, 16);
+      text.putImageData(img, x + cursor, y);
+      cursor += width;
+    }
+
+    print_char("start");
+    for (var i = 0; i < str.length; i++) {
+      print_char(str.charAt(i));
+    }
+    print_char("end");
+
+    var image = text.getImageData(x, y, cursor, 16); 
+    CACHE[str] = image;
   }
-  print_char("end");
 }

@@ -45,8 +45,6 @@ function display(sprite, text, str, x, y) {
   if (CACHE[str]) {
     text.putImageData(CACHE[str], x, y);
   } else {
-    console.log("new string:", str);
-
     var cursor = 0;
     str = str.toLowerCase();
     var print_char = function(key) {

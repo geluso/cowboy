@@ -461,7 +461,6 @@ function tick(actor) {
 function click(e) {
   var x = e.offsetX;
   var y = e.offsetY;
-  console.log("click!");
   set_waypoint(COWBOY, x, y);
 }
 

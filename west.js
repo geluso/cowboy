@@ -1,4 +1,4 @@
-var TICKER;
+var TICKER = 0;
     TICKING = [];
 
 var NORTH = 0;
@@ -74,11 +74,16 @@ var SRC = [
   "arrow_west",
   "dead_horse"
 ];
+
 var IMAGES = {};
 
 var INTERVALS = [];
 
+var SPRITE;
+
 window.onload = function () {
+  Math.seedrandom("COWBOY!!");
+
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };
 
@@ -90,9 +95,18 @@ window.onload = function () {
 
   var foreground = document.getElementById("westworld");
   var fore_ctx = foreground.getContext("2d");
-
   foreground.width = WIDTH;
   foreground.height = HEIGHT;
+
+  var text = document.getElementById("textworld");
+  var text_ctx = text.getContext("2d");
+  text.width = WIDTH;
+  text.height = HEIGHT;
+
+  SPRITE = document.getElementById("sprite");
+  SPRITE.width = WIDTH;
+  SPRITE.height = HEIGHT;
+  SPRITE = SPRITE.getContext("2d");
 
   for (var i = 0; i < SRC.length; i++) {
     var img = new Image();
@@ -110,19 +124,43 @@ window.onload = function () {
     release(e, COWBOY);
   });
 
-  foreground.onmousemove = function(e) {
+  $("#stack").mousemove(function(e) {
     MOUSE_X = e.offsetX;
     MOUSE_Y = e.offsetY;
-  }
+  });
 
-  $("#westworld").click(click);
+  $("#stack").click(click);
   
+  var alphabet = new Image();
+  alphabet.src = "img/alphabet.gif";
+
+  SPRITE.drawImage(alphabet, 0, 0);
+  text_ctx.putImageData(SPRITE.getImageData(0, 0, alphabet.width, alphabet.height), 50, 50);
+
+  print(text_ctx, "cab", 100, 100);
+
   TICKER = setInterval(function() {
     tick(COWBOY);
     draw_clear(fore_ctx);
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
   }, FRAMERATE);
+}
+
+function print(c, str, x, y) {
+  var print_char = function(key) {
+    var sprite_x = ALPHA[key][0],
+        width = ALPHA[key][1];
+        img = SPRITE.getImageData(sprite_x, 0, width, 16);
+    c.putImageData(img, x, y);
+    x += width;
+  }
+
+  print_char("start");
+  for (var i = 0; i < str.length; i++) {
+    print_char(str.charAt(i));
+  }
+  print_char("end");
 }
 
 function draw_background(ctx, a) {
@@ -155,6 +193,7 @@ function draw(ctx, drawables) {
     }
   }
 }
+
 
 
 function build_outhouse(ctx, a) {
@@ -283,8 +322,8 @@ function grow_cactus(ctx, a) {
       image: function () {
         return IMAGES[this.type];
       },
-      x: Math.random() * WIDTH,
-      y: Math.random() * HEIGHT,
+      x: Math.floor(Math.random() * WIDTH),
+      y: Math.floor(Math.random() * HEIGHT),
       type: cactus_type,
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
@@ -300,8 +339,8 @@ function place_rocks(ctx, a) {
       image: function () {
         return IMAGES["rock"];
       },
-      x: Math.random() * WIDTH,
-      y: Math.random() * HEIGHT,
+      x: Math.floor(Math.random() * WIDTH),
+      y: Math.floor(Math.random() * HEIGHT),
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
@@ -392,6 +431,7 @@ function press(e, actor) {
 }
 
 function tick(actor) {
+  TICKER++;
   if (SMOOTH_SHOOTING && KEYBOARD[SPACE]) {
     shoot(actor, PROJECTILES);
   }
@@ -420,6 +460,7 @@ function tick(actor) {
 function click(e) {
   var x = e.offsetX;
   var y = e.offsetY;
+  console.log("click!");
   set_waypoint(COWBOY, x, y);
 }
 

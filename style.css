@@ -18,3 +18,7 @@ canvas {
   left: 0;
   border: solid black 1px;
 }
+
+#sprite {
+  visibility: hidden;
+}

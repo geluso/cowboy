@@ -1,3 +1,5 @@
+var TEXT_CTX, SPRITE;
+
 var TICKER = 0;
     TICKING = [];
 
@@ -12,13 +14,7 @@ var PISTOL = 0,
     ARROW = 2,
     WEAPONS = [PISTOL, TOMAHAWK, ARROW];
 
-var FRAMERATE = 1000 / 60;
-var WIDTH = 800;
-var HEIGHT = 600;
-
 var canvas, ctx;
-var SCALE = 1;
-
 var MOUSE_X = 0,
     MOUSE_Y = 0;
 
@@ -31,8 +27,6 @@ var KEYBOARD = {}
     E = 69,
     SPACE = 32,
     SHIFT = 16;
-
-var SMOOTH_SHOOTING = false;
 
 var OUTHOUSE, COWBOY, HORSE;
 var DRAWABLES = [],
@@ -79,8 +73,6 @@ var IMAGES = {};
 
 var INTERVALS = [];
 
-var SPRITE;
-
 window.onload = function () {
   Math.seedrandom("COWBOY!!");
 
@@ -98,15 +90,21 @@ window.onload = function () {
   foreground.width = WIDTH;
   foreground.height = HEIGHT;
 
-  var text = document.getElementById("textworld");
-  var text_ctx = text.getContext("2d");
-  text.width = WIDTH;
-  text.height = HEIGHT;
-
   SPRITE = document.getElementById("sprite");
   SPRITE.width = WIDTH;
   SPRITE.height = HEIGHT;
   SPRITE = SPRITE.getContext("2d");
+
+  var alphabet = new Image();
+  alphabet.src = "img/alphabet3.gif";
+  SPRITE.drawImage(alphabet, 0, 0);
+
+  var text = document.getElementById("textworld");
+  var text_ctx = text.getContext("2d");
+  text.width = WIDTH;
+  text.height = HEIGHT;
+  TEXT_CTX = text_ctx;
+  
 
   for (var i = 0; i < SRC.length; i++) {
     var img = new Image();
@@ -131,13 +129,8 @@ window.onload = function () {
 
   $("#stack").click(click);
   
-  var alphabet = new Image();
-  alphabet.src = "img/alphabet.gif";
-
-  SPRITE.drawImage(alphabet, 0, 0);
-  text_ctx.putImageData(SPRITE.getImageData(0, 0, alphabet.width, alphabet.height), 50, 50);
-
-  print(text_ctx, "cab", 100, 100);
+  display(SPRITE, text_ctx, "Austin, welcome to the land of the cowboy.", 100, 100);
+  display(SPRITE, text_ctx, "anywhere, son!!!", 100, 400);
 
   TICKER = setInterval(function() {
     tick(COWBOY);
@@ -145,22 +138,6 @@ window.onload = function () {
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
   }, FRAMERATE);
-}
-
-function print(c, str, x, y) {
-  var print_char = function(key) {
-    var sprite_x = ALPHA[key][0],
-        width = ALPHA[key][1];
-        img = SPRITE.getImageData(sprite_x, 0, width, 16);
-    c.putImageData(img, x, y);
-    x += width;
-  }
-
-  print_char("start");
-  for (var i = 0; i < str.length; i++) {
-    print_char(str.charAt(i));
-  }
-  print_char("end");
 }
 
 function draw_background(ctx, a) {

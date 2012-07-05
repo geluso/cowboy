@@ -17,8 +17,14 @@ canvas {
   top: 0;
   left: 0;
   border: solid black 1px;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 
-#sprite {
+#backstage {
   visibility: hidden;
 }

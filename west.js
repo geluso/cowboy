@@ -1,4 +1,6 @@
-var TEXT_CTX, SPRITE;
+// canvases
+var TEXT_CTX, SPRITE, SCRATCH;
+var IMAGES_LOADED = 0;
 
 var TICKER = 0;
     TICKING = [];
@@ -33,6 +35,11 @@ var DRAWABLES = [],
     BACKGROUND = [],
     PROJECTILES = [];
 var SRC = [
+  "cactus_large",
+  "cactus_large_flower",
+  "cactus_med",
+  "cactus_med_flower",
+  "rock",
   "bullet_north",
   "bullet_east",
   "bullet_south",
@@ -44,11 +51,6 @@ var SRC = [
   "cowboy_4x",
   "outhouse_open",
   "outhouse_closed",
-  "rock",
-  "cactus_large",
-  "cactus_large_flower",
-  "cactus_med",
-  "cactus_med_flower",
   "horse_north",
   "horse_east",
   "horse_south",
@@ -66,7 +68,8 @@ var SRC = [
   "arrow_east",
   "arrow_south",
   "arrow_west",
-  "dead_horse"
+  "dead_horse",
+  "bones",
 ];
 
 var IMAGES = {};
@@ -79,7 +82,7 @@ window.onload = function () {
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };
 
-  var background = document.getElementById("background");
+  var background = document.getElementById("restworld");
   var back_ctx = background.getContext("2d");
   background.width = WIDTH;
   background.height = HEIGHT;
@@ -90,21 +93,25 @@ window.onload = function () {
   foreground.width = WIDTH;
   foreground.height = HEIGHT;
 
-  SPRITE = document.getElementById("sprite");
-  SPRITE.width = WIDTH;
-  SPRITE.height = HEIGHT;
-  SPRITE = SPRITE.getContext("2d");
-
-  var alphabet = new Image();
-  alphabet.src = "img/alphabet.gif";
-  SPRITE.drawImage(alphabet, 0, 0);
-
   var text = document.getElementById("textworld");
   var text_ctx = text.getContext("2d");
   text.width = WIDTH;
   text.height = HEIGHT;
   TEXT_CTX = text_ctx;
-  
+
+  SPRITE = document.getElementById("sprite");
+  SPRITE.width = WIDTH;
+  SPRITE.height = HEIGHT;
+  SPRITE = SPRITE.getContext("2d");
+
+  SCRATCH = document.getElementById("scratch");
+  SCRATCH.width = WIDTH;
+  SCRATCH.height = HEIGHT;
+  SCRATCH = SCRATCH.getContext("2d");
+
+  var alphabet = new Image();
+  alphabet.src = "img/alphabet.gif";
+  SPRITE.drawImage(alphabet, 0, 0);
 
   for (var i = 0; i < SRC.length; i++) {
     var img = new Image();
@@ -125,36 +132,34 @@ window.onload = function () {
   $("#stack").mousemove(function(e) {
     MOUSE_X = e.offsetX;
     MOUSE_Y = e.offsetY;
-    draw_labels();
   });
 
   $("#stack").click(click);
   
-  display(SPRITE, text_ctx, "Austin, welcome to the land of the cowboy.", 100, 100);
-  display(SPRITE, text_ctx, "anywhere, son!!!", 100, 400);
-
   TICKER = setInterval(function() {
     tick(COWBOY);
     draw_clear(fore_ctx);
     draw_clear(text_ctx);
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
+    draw_labels();
   }, FRAMERATE);
 }
 
 function draw_background(ctx, a) {
   ctx.setFillColor("cccc66");
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  light_fire(ctx, a);
   grow_cactus(ctx, a);
   place_rocks(ctx, a);
   draw(ctx, a);
 }
 
 function draw_foreground(ctx, a) {
+  light_fire(ctx, a);
   build_outhouse(ctx, a);
   birth_horse(ctx, a);
   birth_cowboy(ctx, a);
+  bones(ctx, a);
 }
 
 function draw_clear(ctx) {
@@ -177,15 +182,30 @@ function distance(x1, y1, x2, y2) {
   return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 
+function actor_distance(a1, a2) {
+  return distance(a1.x, a1.y, a2.x, a2.y);
+}
+
 function draw_labels() {
+  var labels = 0;
   for (var i = 0; i < DRAWABLES.length; i++) {
     var drawable = DRAWABLES[i];
     if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
-      display(SPRITE, TEXT_CTX, drawable.label(), MOUSE_X + 115, MOUSE_Y);
+      label(drawable.label(), MOUSE_X + 15, MOUSE_Y + labels * 18);
+      labels++
     }
+  }
+  if (labels == 0) {
+    label("go", MOUSE_X + 15, MOUSE_Y);
   }
 }
 
+function draw_actor(ctx, actor) {
+  var image = actor.image(),
+      x = Math.floor(actor.x - image.width / 2),
+      y = Math.floor(actor.y - image.height / 2);
+  ctx.drawImage(image, x, y);
+}
 
 function build_outhouse(ctx, a) {
   OUTHOUSE = {
@@ -197,10 +217,25 @@ function build_outhouse(ctx, a) {
     open: false,
     label: function() { return "outhouse"; },
     draw: function (ctx) {
-      ctx.drawImage(this.image(), this.x, this.y);
+      draw_actor(ctx, this);
     }
   };
   a.push(OUTHOUSE);
+}
+
+function bones(ctx, a) {
+  var bones = {
+    image: function () {
+      return IMAGES["bones"]; 
+    },
+    x: 600,
+    y: 200,
+    label: function() { return "BONE WARS"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  a.push(bones);
 }
 
 function birth_horse(ctx, a) {
@@ -223,9 +258,7 @@ function birth_horse(ctx, a) {
             this.y - Math.floor(this.frame_height / 2),
             this.frame_width, this.frame_height);
       } else if (this.unbridled) {
-        ctx.drawImage(this.image(),
-            this.x - Math.floor(this.image().width / 2),
-            this.y - Math.floor(this.image().height / 2));
+        draw_actor(ctx, this);
       }
     },
     alive: true,
@@ -289,7 +322,7 @@ function birth_cowboy(ctx, a) {
       }
     },
     draw: function (ctx) {
-      ctx.drawImage(this.image(), Math.floor(this.x - this.image().width / 2), this.y - this.image().height);
+      draw_actor(ctx, this);
     },
     direction: EAST,
     weapon: PISTOL,
@@ -306,7 +339,9 @@ function light_fire(ctx, a) {
     y: 20,
     label: function() { return "campfire"; },
     draw: function (ctx) {
-      ctx.drawImage(this.image(), this.x, this.y);
+      ctx.scale(SCALE,SCALE);
+      draw_actor(ctx, this);
+      ctx.scale(1/SCALE,1/SCALE);
     }
   }
   a.push(FIRE);
@@ -424,8 +459,7 @@ function press(e, actor) {
       }
     }
     // outhouse
-    if (Math.abs(actor.x - OUTHOUSE.x - OUTHOUSE.image().width / 2) < 15 &&
-        Math.abs(actor.y - OUTHOUSE.y - OUTHOUSE.image().height) < 15) {
+    if (actor_distance(COWBOY, OUTHOUSE) < 15) {
       OUTHOUSE.open = !OUTHOUSE.open;
     }
   }

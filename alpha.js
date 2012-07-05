@@ -40,28 +40,49 @@ var ALPHA = {
 };
 
 CACHE = {};
+var SCRATCH;
 
-function display(sprite, text, str, x, y) {
-  if (CACHE[str]) {
-    text.putImageData(CACHE[str], x, y);
-  } else {
-    var cursor = 0;
-    str = str.toLowerCase();
-    var print_char = function(key) {
-      var sprite_x = ALPHA[key][0],
-          width = ALPHA[key][1];
-          img = sprite.getImageData(sprite_x, 0, width, 16);
-      text.putImageData(img, x + cursor, y);
-      cursor += width;
-    }
+function tick() {
+  
+}
 
-    print_char("start");
-    for (var i = 0; i < str.length; i++) {
-      print_char(str.charAt(i));
-    }
-    print_char("end");
+function text(str, x, y) {
+  write(TEXT_CTX);
+}
 
-    var image = text.getImageData(x, y, cursor, 16); 
-    CACHE[str] = image;
+function notification(str, x, y) {
+
+}
+
+function label(str, x, y) {
+  write(TEXT_CTX, str, x, y);
+}
+
+// Writes the given string vertically centered at the given point.
+function write(canvas, str, x, y) {
+  if (!CACHE[str]) {
+    etch(str);
   }
+  var image = CACHE[str];
+  canvas.putImageData(image, x, y - image.height / 2);
+}
+
+function etch(str) {
+  var cursor = 0;
+  str = str.toLowerCase();
+  var etch_char = function(key) {
+    var sprite_x = ALPHA[key][0],
+        width = ALPHA[key][1];
+        img = SPRITE.getImageData(sprite_x, 0, width, 16);
+    SCRATCH.putImageData(img, cursor, 0);
+    cursor += width;
+  }
+
+  etch_char("start");
+  for (var i = 0; i < str.length; i++) {
+    etch_char(str.charAt(i));
+  }
+  etch_char("end");
+
+  CACHE[str] = SCRATCH.getImageData(0, 0, cursor, 16); 
 }

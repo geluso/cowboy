@@ -60,6 +60,7 @@ function label(str, x, y) {
 
 // Writes the given string vertically centered at the given point.
 function write(canvas, str, x, y) {
+  str = str.toLowerCase();
   if (!CACHE[str]) {
     etch(str);
   }
@@ -69,7 +70,6 @@ function write(canvas, str, x, y) {
 
 function etch(str) {
   var cursor = 0;
-  str = str.toLowerCase();
   var etch_char = function(key) {
     var sprite_x = ALPHA[key][0],
         width = ALPHA[key][1];

@@ -444,6 +444,7 @@ function press(e, actor) {
     actor.weapon = (actor.weapon + 1) % WEAPONS.length;
   }
   if (!SMOOTH_SHOOTING && KEYBOARD[SPACE]) {
+      e.preventDefault();
       shoot(actor, PROJECTILES);
   }
   if (KEYBOARD[ENTER] || KEYBOARD[E]) {

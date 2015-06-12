@@ -76,7 +76,9 @@ var IMAGES = {};
 
 var INTERVALS = [];
 
-window.onload = function () {
+window.onload = buildWorld;
+
+function buildWorld() {
   Math.seedrandom("COWBOY!!");
 
   // Prevent highlighting things on the page.
@@ -147,7 +149,7 @@ window.onload = function () {
 }
 
 function draw_background(ctx, a) {
-  ctx.setFillColor("cccc66");
+  ctx.fillStyle = "#cccc66";
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   grow_cactus(ctx, a);
   place_rocks(ctx, a);

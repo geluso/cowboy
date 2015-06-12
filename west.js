@@ -122,6 +122,7 @@ function buildWorld() {
   }
 
   draw_background(back_ctx, BACKGROUND);
+
   draw_foreground(fore_ctx, DRAWABLES);
 
   $(document).keydown(function (e) {
@@ -146,6 +147,10 @@ function buildWorld() {
     draw(fore_ctx, PROJECTILES);
     draw_labels();
   }, FRAMERATE);
+
+  TICKER = setInterval(function() {
+    draw(back_ctx, BACKGROUND);
+  }, 1000);
 }
 
 function draw_background(ctx, a) {

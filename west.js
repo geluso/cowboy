@@ -445,6 +445,13 @@ function release(e) {
 function press(e, actor) {
   KEYBOARD[e.which] = true;
   KEYBOARD[e.keyCode] = true;
+
+
+  if (KEYBOARD[UP] || KEYBOARD[38] || KEYBOARD[DOWN] || KEYBOARD[40] ||
+    KEYBOARD[LEFT] || KEYBOARD[37] || KEYBOARD[RIGHT] || KEYBOARD[39]) {
+    e.preventDefault();
+  }
+
   if (KEYBOARD[SHIFT]) {
     actor.weapon = (actor.weapon + 1) % WEAPONS.length;
   }

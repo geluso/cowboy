@@ -86,24 +86,16 @@ function buildWorld() {
 
   var background = document.getElementById("restworld");
   var back_ctx = background.getContext("2d");
-  background.width = WIDTH;
-  background.height = HEIGHT;
   back_ctx.fillRect(0,0,WIDTH, HEIGHT);
 
   var foreground = document.getElementById("westworld");
   var fore_ctx = foreground.getContext("2d");
-  foreground.width = WIDTH;
-  foreground.height = HEIGHT;
 
   var text = document.getElementById("textworld");
   var text_ctx = text.getContext("2d");
-  text.width = WIDTH;
-  text.height = HEIGHT;
   TEXT_CTX = text_ctx;
 
   SPRITE = document.getElementById("sprite");
-  SPRITE.width = WIDTH;
-  SPRITE.height = HEIGHT;
   SPRITE = SPRITE.getContext("2d");
 
   SCRATCH = document.getElementById("scratch");
@@ -208,10 +200,12 @@ function draw_labels() {
 }
 
 function draw_actor(ctx, actor) {
+  ctx.scale(SCALE,SCALE);
   var image = actor.image(),
       x = Math.floor(actor.x - image.width / 2),
       y = Math.floor(actor.y - image.height / 2);
   ctx.drawImage(image, x, y);
+  ctx.scale(1/SCALE,1/SCALE);
 }
 
 function build_outhouse(ctx, a) {
@@ -346,9 +340,7 @@ function light_fire(ctx, a) {
     y: 20,
     label: function() { return "campfire"; },
     draw: function (ctx) {
-      ctx.scale(SCALE,SCALE);
       draw_actor(ctx, this);
-      ctx.scale(1/SCALE,1/SCALE);
     }
   }
   a.push(FIRE);

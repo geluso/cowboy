@@ -317,9 +317,11 @@ function bones(ctx, a) {
 }
 
 function birth_cows(ctx, a) {
+  var x0 = WIDTH * .70;
+  var y0 = HEIGHT * .55;
   for (var i = 0; i < 15; i++) {
-    var x = Math.random() * WIDTH;
-    var y = Math.random() * HEIGHT;
+    x = x0 + Math.random() * 250;
+    y = y0 + Math.random() * 250;
     birth_cow(ctx, a, x, y);
   }
 }

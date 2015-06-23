@@ -549,6 +549,8 @@ function birth_cowboy(ctx, a) {
     actions: [],
     special_actions: [],
     trace_path: function() {
+      this.stop();
+
       var point = this.special_actions.shift();
       if (point) {
         set_waypoint(COWBOY, point[0], point[1], true);

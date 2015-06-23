@@ -73,6 +73,7 @@ var SRC = [
   "arrow_east",
   "arrow_south",
   "arrow_west",
+  "dead_cow",
   "dead_horse",
   "bones",
 ];
@@ -316,13 +317,17 @@ function bones(ctx, a) {
   a.push(bones);
 }
 
+var COWS = [];
 function birth_cows(ctx, a) {
+  var total = 23;
+
   var x0 = WIDTH * .70;
   var y0 = HEIGHT * .55;
-  for (var i = 0; i < 15; i++) {
+  for (var i = 0; i < total; i++) {
     x = x0 + Math.random() * 250;
     y = y0 + Math.random() * 250;
-    birth_cow(ctx, a, x, y);
+    cow = birth_cow(ctx, a, x, y);
+    COWS.push(cow);
   }
 }
 
@@ -333,7 +338,7 @@ function birth_cow(ctx, a, x, y) {
       if (this.alive) {
         return IMAGES[["cow_north", "cow_east", "cow_south", "cow_west"][this.direction]];
       } else {
-        return IMAGES["dead_horse"];
+        return IMAGES["dead_cow"];
       }
     },
     x: x,
@@ -351,9 +356,11 @@ function birth_cow(ctx, a, x, y) {
       cow.way_x = undefined;
       cow.way_y = undefined;
 
+      if (!cow.alive) {
+        return;
+      }
 
       var delay = Math.random() * 10;
-
       var move = Math.random() * 10;
       if (move < 6) {
         // don't always pick a destination
@@ -434,6 +441,8 @@ function birth_cow(ctx, a, x, y) {
   }
   cow.stop();
   a.push(cow);
+
+  return cow;
 }
 
 function birth_horse(ctx, a) {
@@ -656,6 +665,14 @@ function shoot(actor, drawables) {
             Math.abs(this.y - HORSE.y) < 7) {
         HORSE.kill();
       }
+
+      for (var i = 0; i < COWS.length; i++) {
+        var cow = COWS[i];
+        if (Math.abs(this.x - cow.x) < 7 &&
+            Math.abs(this.y - cow.y) < 7) {
+          cow.kill();
+        }
+      }
     },
     speed: actor.weapon == PISTOL ? 12 : 6,
     type: actor.weapon,
@@ -688,6 +705,16 @@ function press(e, actor) {
       e.preventDefault();
       shoot(actor, PROJECTILES);
   }
+
+  // cowboy is far from horse and cowboy is whistling.
+  if (KEYBOARD[F]) {
+    if (Math.abs(actor.x - HORSE.x) > 5 ||
+        Math.abs(actor.y - HORSE.y) > 5) {
+      // make horse run to cowboy.
+      set_waypoint(HORSE, COWBOY.x, COWBOY.y);
+    }
+  }
+
   if (KEYBOARD[ENTER] || KEYBOARD[E] || KEYBOARD[F]) {
     // horse
     if (HORSE.alive) {
@@ -698,10 +725,6 @@ function press(e, actor) {
       } else if (Math.abs(actor.x - HORSE.x) < 15 &&
           Math.abs(actor.y - HORSE.y) < 15) {
         HORSE.bridle();
-      // cowboy is far from horse and cowboy is whistling.
-      } else if (KEYBOARD[F]) {
-        // make horse run to cowboy.
-        set_waypoint(HORSE, COWBOY.x, COWBOY.y);
       }
     }
     // outhouse
@@ -752,6 +775,10 @@ function set_waypoint(actor, x, y) {
 }
 
 function walk(actor) {
+  if (!actor.alive && actor !== COWBOY) {
+    return;
+  }
+
   if (Math.abs(actor.x - actor.way_x) <= actor.step() &&
       Math.abs(actor.y - actor.way_y) <= actor.step()) {
     actor.stop();

@@ -160,6 +160,8 @@ function buildWorld() {
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
     draw_labels();
+
+    specialCactusDraw();
   }, FRAMERATE);
 
   TICKER = setInterval(function() {
@@ -182,18 +184,46 @@ function buildWorld() {
     SCALE = scale;
     $("#zoomlevel").val(SCALE);
 
-    foreground.width = WIDTH * SCALE;
-    foreground.height = HEIGHT * SCALE;
-    fore_ctx.width = WIDTH * SCALE;
-    fore_ctx.height = HEIGHT * SCALE;
+    setScale(WIDTH * scale, HEIGHT * scale);
   });
 }
+
+function setScale(width, height) {
+  if (!height) {
+    height = width;
+  }
+
+  var background = document.getElementById("restworld");
+  background.width = width;
+  background.height = height;
+  var back_ctx = background.getContext("2d");
+  back_ctx.width = width;
+  back_ctx.height = height;
+
+  var foreground = document.getElementById("westworld");
+  foreground.width = width;
+  foreground.height = height;
+  var fore_ctx = foreground.getContext("2d");
+  fore_ctx.width = width;
+  fore_ctx.height = height;
+
+  var text = document.getElementById("textworld");
+  text.width = width;
+  text.height = height;
+  var text_ctx = text.getContext("2d");
+  text_ctx.width = width;
+  text_ctx.height = height;
+
+  draw_background(back_ctx, BACKGROUND);
+};
 
 function draw_background(ctx, a) {
   ctx.fillStyle = "#cccc66";
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  grow_cactus(ctx, a);
-  place_rocks(ctx, a);
+  if (a.length === 0) {
+    grow_cactus(ctx, a);
+    place_rocks(ctx, a);
+  }
   draw(ctx, a);
 }
 
@@ -300,14 +330,25 @@ function birth_horse(ctx, a) {
     stop: function () {
       clear_intervals(this.actions);
       this.actions = [];
+      this.way_x = undefined;
+      this.way_y = undefined;
 
       // if the cowboy is still far away then set a new waypoint toward him.
-      if (Math.abs(COWBOY.x - HORSE.x) > 5 ||
-          Math.abs(COWBOY.y - HORSE.y) > 5) {
+      if (Math.abs(COWBOY.x - HORSE.x) > 1 ||
+          Math.abs(COWBOY.y - HORSE.y) > 1) {
         set_waypoint(HORSE, COWBOY.x, COWBOY.y);
+      } else {
+        HORSE.bridle();
       }
     },
     draw: function (ctx) {
+      if (this.way_x !== undefined && this.way_y !== undefined) {
+          if (Math.abs(COWBOY.x - HORSE.x) < 10 &&
+              Math.abs(COWBOY.y - HORSE.y) < 10) {
+            HORSE.bridle();
+          }
+      }
+
       if (!this.alive) {
         ctx.drawImage(this.image(),
             this.frame_width * this.frame, 0, this.frame_width, this.frame_height,
@@ -327,6 +368,21 @@ function birth_horse(ctx, a) {
     frames: 7,
     frame: 0,
     delay: 2000,
+    bridle: function() {
+        COWBOY.horse = true;
+        HORSE.unbridled = false;
+        HORSE.x = COWBOY.x;
+        HORSE.y = COWBOY.y;
+
+        HORSE.way_x = undefined;
+        HORSE.way_y = undefined;
+    },
+    unbridle: function() {
+        COWBOY.horse = false;
+        HORSE.unbridled = true;
+        HORSE.x = COWBOY.x;
+        HORSE.y = COWBOY.y;
+    },
     kill: function() {
       if (this.alive) {
         this.alive = false;
@@ -512,19 +568,14 @@ function press(e, actor) {
     if (HORSE.alive) {
       // Cowboy is on horse.
       if (!HORSE.unbridled) {
-        actor.horse = !actor.horse;
-        HORSE.unbridled = !HORSE.unbridled;
-        HORSE.x = actor.x;
-        HORSE.y = actor.y;
+        HORSE.unbridle();
       // Cowboy is near horse
       } else if (Math.abs(actor.x - HORSE.x) < 15 &&
           Math.abs(actor.y - HORSE.y) < 15) {
-        actor.horse = !actor.horse;
-        HORSE.unbridled = !HORSE.unbridled;
+        HORSE.bridle();
       // cowboy is far from horse and cowboy is whistling.
       } else if (KEYBOARD[F]) {
         // make horse run to cowboy.
-        console.log("whistle", COWBOY.x, COWBOY.y, HORSE);
         set_waypoint(HORSE, COWBOY.x, COWBOY.y);
       }
     }
@@ -600,5 +651,28 @@ function walk(actor) {
 function clear_intervals(intervals) {
   for (var i = 0; i < intervals.length; i++) {
     clearInterval(intervals[i]);
+  }
+}
+
+function specialCactusDraw() {
+  var foreground = document.getElementById("westworld");
+  var fore_ctx = foreground.getContext("2d");
+  for (var i = 0; i < BACKGROUND.length; i++) {
+    var asset = BACKGROUND[i];
+
+    if (asset.image().src.indexOf("cactus") !== -1) {
+      fore_ctx.fillText(i, asset.x, 10 + asset.y + asset.image().height);
+
+      if (Math.abs(asset.x - COWBOY.x) < 20 &&
+          Math.abs(asset.y - COWBOY.y) < 20) {
+        if (COWBOY.y > asset.y) {
+          asset.draw(fore_ctx);
+          COWBOY.draw(fore_ctx);
+        } else {
+          COWBOY.draw(fore_ctx);
+          asset.draw(fore_ctx);
+        }
+      }
+    }
   }
 }

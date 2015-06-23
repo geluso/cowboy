@@ -27,6 +27,7 @@ var KEYBOARD = {}
     RIGHT = 68,
     ENTER = 13,
     E = 69,
+    F = 70,
     SPACE = 32,
     SHIFT = 16;
 
@@ -291,7 +292,21 @@ function birth_horse(ctx, a) {
     },
     x: 70,
     y: 40,
+    way_x: undefined,
+    way_y: undefined,
+    actions: [],
     label: function() { return "horse"; },
+    step: function() { return 2; },
+    stop: function () {
+      clear_intervals(this.actions);
+      this.actions = [];
+
+      // if the cowboy is still far away then set a new waypoint toward him.
+      if (Math.abs(COWBOY.x - HORSE.x) > 5 ||
+          Math.abs(COWBOY.y - HORSE.y) > 5) {
+        set_waypoint(HORSE, COWBOY.x, COWBOY.y);
+      }
+    },
     draw: function (ctx) {
       if (!this.alive) {
         ctx.drawImage(this.image(),
@@ -492,18 +507,25 @@ function press(e, actor) {
       e.preventDefault();
       shoot(actor, PROJECTILES);
   }
-  if (KEYBOARD[ENTER] || KEYBOARD[E]) {
+  if (KEYBOARD[ENTER] || KEYBOARD[E] || KEYBOARD[F]) {
     // horse
     if (HORSE.alive) {
+      // Cowboy is on horse.
       if (!HORSE.unbridled) {
         actor.horse = !actor.horse;
         HORSE.unbridled = !HORSE.unbridled;
         HORSE.x = actor.x;
         HORSE.y = actor.y;
+      // Cowboy is near horse
       } else if (Math.abs(actor.x - HORSE.x) < 15 &&
           Math.abs(actor.y - HORSE.y) < 15) {
         actor.horse = !actor.horse;
         HORSE.unbridled = !HORSE.unbridled;
+      // cowboy is far from horse and cowboy is whistling.
+      } else if (KEYBOARD[F]) {
+        // make horse run to cowboy.
+        console.log("whistle", COWBOY.x, COWBOY.y, HORSE);
+        set_waypoint(HORSE, COWBOY.x, COWBOY.y);
       }
     }
     // outhouse

@@ -76,6 +76,10 @@ var SRC = [
   "dead_cow",
   "dead_horse",
   "bones",
+  "fence_east",
+  "fence_north",
+  "fence_south",
+  "fence_west",
 ];
 
 var IMAGES = {};
@@ -226,6 +230,7 @@ function draw_background(ctx, a) {
   if (a.length === 0) {
     grow_cactus(ctx, a);
     place_rocks(ctx, a);
+    place_fence(ctx, a);
   }
   draw(ctx, a);
 }
@@ -329,6 +334,67 @@ function birth_cows(ctx, a) {
   }
 }
 
+function place_fence(ctx, a) {
+  var leftmost = Math.round(WIDTH * .6);
+  var topmost = Math.round(HEIGHT * .5);
+  // top line
+  for (var i = 0; i < 20; i++) {
+    a.push({
+      image: function () {
+        return IMAGES["fence_north"];
+      },
+      x: leftmost + 24 * i,
+      y: topmost,
+      draw: function (ctx) {
+        ctx.drawImage(this.image(), this.x, this.y);
+      }
+    });
+  }
+
+  // west side
+  for (var i = 0; i < 13; i++) {
+    a.push({
+      image: function () {
+        return IMAGES["fence_west"];
+      },
+      x: leftmost - 8,
+      y: 6 + topmost + 24 * i,
+      draw: function (ctx) {
+        ctx.drawImage(this.image(), this.x, this.y);
+      }
+    });
+  }
+
+  // west side
+  for (var i = 0; i < 13; i++) {
+    a.push({
+      image: function () {
+        return IMAGES["fence_east"];
+      },
+      x: leftmost + 480,
+      y: 6 + topmost + 24 * i,
+      draw: function (ctx) {
+        ctx.drawImage(this.image(), this.x, this.y);
+      }
+    });
+  }
+
+  // bottom line
+  for (var i = 0; i < 20; i++) {
+    a.push({
+      image: function () {
+        return IMAGES["fence_south"];
+      },
+      x: leftmost + 24 * i,
+      y: topmost + 312,
+      draw: function (ctx) {
+        ctx.drawImage(this.image(), this.x, this.y);
+      }
+    });
+  }
+
+}
+
 function birth_cow(ctx, a, x, y) {
   var cow;
   cow = {
@@ -345,7 +411,10 @@ function birth_cow(ctx, a, x, y) {
     way_y: undefined,
     actions: [],
     label: function() { return "cow"; },
-    step: function() { return .6; },
+    step: function() {
+      var step = .6;
+      return step;
+    },
     stop: function () {
       if (cow.actions) {
         clear_intervals(cow.actions);
@@ -670,20 +739,27 @@ function shoot(actor, drawables) {
       return IMAGES[image[this.direction]];
     },
     draw: function (ctx) {
+      if(this.hit) {
+        return;
+      }
+
       this.x += this.speed * Math.cos(this.angle);
       this.y += this.speed * Math.sin(this.angle);
       ctx.drawImage(this.image(), this.x, this.y);
-      if (HORSE.unbridled &&
+      if (HORSE.alive && HORSE.unbridled &&
             Math.abs(this.x - HORSE.x) < 7 &&
             Math.abs(this.y - HORSE.y) < 7) {
         HORSE.kill();
+        this.hit = true;
       }
 
       for (var i = 0; i < COWS.length; i++) {
         var cow = COWS[i];
-        if (Math.abs(this.x - cow.x) < 7 &&
+        if (cow.alive &&
+            Math.abs(this.x - cow.x) < 7 &&
             Math.abs(this.y - cow.y) < 7) {
           cow.kill();
+          this.hit = true;
         }
       }
     },

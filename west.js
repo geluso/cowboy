@@ -151,11 +151,9 @@ function buildWorld() {
     release(e, COWBOY);
   });
 
-  $("#stack").mousemove(function(e) {
-    MOUSE_X = e.offsetX;
-    MOUSE_Y = e.offsetY;
-  });
-
+  $("#stack").mousemove(mousemove);
+  $("#stack").mousedown(mousedown);
+  $("#stack").mouseup(mouseup);
   $("#stack").click(click);
   
   TICKER = setInterval(function() {
@@ -549,6 +547,15 @@ function birth_cowboy(ctx, a) {
     way_x: undefined,
     way_y: undefined,
     actions: [],
+    special_actions: [],
+    trace_path: function() {
+      var point = this.special_actions.shift();
+      if (point) {
+        set_waypoint(COWBOY, point[0], point[1], true);
+      } else {
+        this.stop();
+      }
+    },
     step: function () {
       if (this.horse) {
         return 2
@@ -556,9 +563,13 @@ function birth_cowboy(ctx, a) {
         return 1;
       }
     },
-    stop: function () {
+    stop: function (route) {
       clear_intervals(this.actions);
-      this.actions = [];
+      if (route) {
+        COWBOY.trace_path();
+      } else {
+        this.actions = [];
+      }
     },
     horse: false,
     label: function () {
@@ -761,27 +772,83 @@ function tick(actor) {
   }
 }
 
+var MOUSEDOWN = false;
+var STACK_WAYPOINTS = [];
+var traceCourseTimer = undefined;
+var TRACE_COURSE = false;
+var LAST_MOUSEUP;
+
+var RANDOM;
+function mousedown(e) {
+  MOUSEDOWN = true;
+  var random = Math.random();
+  RANDOM = random;
+  var traceCourseTimer = setTimeout(function() {
+    if (MOUSEDOWN && RANDOM === random) {
+      traceCourse();
+    }
+  }, 100);
+}
+
+function traceCourse() {
+  STACK_WAYPOINTS = [];
+  STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
+  TRACE_COURSE = true;
+}
+  
+function mousemove(e) {
+  MOUSE_X = e.offsetX;
+  MOUSE_Y = e.offsetY;
+
+  if (TRACE_COURSE) {
+    STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
+  }
+};
+
+
+function mouseup(e) {
+  MOUSEDOWN = false;
+  if (TRACE_COURSE) {
+    LAST_MOUSEUP = (new Date()).getTime();
+
+    var point = STACK_WAYPOINTS.shift();
+    COWBOY.special_actions = STACK_WAYPOINTS;
+    COWBOY.trace_path();
+  }
+
+  TRACE_COURSE = false;
+}
+
 function click(e) {
+  // prevent clicks from counting immediately after recording routes.
+  var now = (new Date()).getTime();
+  if (now - LAST_MOUSEUP < 500) {
+    return;
+  }
+
   var x = e.offsetX;
   var y = e.offsetY;
   set_waypoint(COWBOY, x, y);
 }
 
 // Sets a destination for the cowboy, and makes him move toward it.
-function set_waypoint(actor, x, y) {
+function set_waypoint(actor, x, y, route) {
   actor.way_x = x;
   actor.way_y = y;
-  actor.actions.push(setInterval(function () { walk(actor); }, FRAMERATE));
+
+  var interval = setInterval(function () { walk(actor, route); }, FRAMERATE)
+  actor.actions.push(interval);
+  return interval;
 }
 
-function walk(actor) {
+function walk(actor, route) {
   if (!actor.alive && actor !== COWBOY) {
     return;
   }
 
   if (Math.abs(actor.x - actor.way_x) <= actor.step() &&
       Math.abs(actor.y - actor.way_y) <= actor.step()) {
-    actor.stop();
+    actor.stop(route);
   } else {
     if ((actor.y + actor.step()) < actor.way_y) {
       actor.y += actor.step();

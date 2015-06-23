@@ -12,6 +12,12 @@ body {
   margin-right: auto;
 }
 
+#zoom {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
 canvas {
   position: absolute;
   top: 0;

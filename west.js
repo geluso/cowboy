@@ -81,27 +81,48 @@ window.onload = buildWorld;
 function buildWorld() {
   Math.seedrandom("COWBOY!!");
 
+  WIDTH = window.innerWidth;
+  HEIGHT = window.innerHeight;
+
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };
 
   var background = document.getElementById("restworld");
   var back_ctx = background.getContext("2d");
+  background.width = WIDTH;
+  background.height = HEIGHT;
+  back_ctx.width = WIDTH;
+  back_ctx.height = HEIGHT;
   back_ctx.fillRect(0,0,WIDTH, HEIGHT);
 
   var foreground = document.getElementById("westworld");
   var fore_ctx = foreground.getContext("2d");
+  foreground.width = WIDTH;
+  foreground.height = HEIGHT;
+  fore_ctx.width = WIDTH;
+  fore_ctx.height = HEIGHT;
 
   var text = document.getElementById("textworld");
   var text_ctx = text.getContext("2d");
   TEXT_CTX = text_ctx;
+  text.width = WIDTH;
+  text.height = HEIGHT;
+  TEXT_CTX.width = WIDTH;
+  TEXT_CTX.height = HEIGHT;
 
   SPRITE = document.getElementById("sprite");
+  SPRITE.width = WIDTH;
+  SPRITE.height = HEIGHT;
   SPRITE = SPRITE.getContext("2d");
+  SPRITE.width = WIDTH;
+  SPRITE.height = HEIGHT;
 
   SCRATCH = document.getElementById("scratch");
   SCRATCH.width = WIDTH;
   SCRATCH.height = HEIGHT;
   SCRATCH = SCRATCH.getContext("2d");
+  SCRATCH.width = WIDTH;
+  SCRATCH.height = HEIGHT;
 
   var alphabet = new Image();
   alphabet.src = "img/alphabet.gif";
@@ -143,6 +164,28 @@ function buildWorld() {
   TICKER = setInterval(function() {
     draw(back_ctx, BACKGROUND);
   }, 1000);
+
+  $("#zoomin, #zoomout").click(function(e) {
+    var scale = SCALE;
+    if (e.target.id === "zoomin") {
+      scale += .1;
+    } else if (e.target.id === "zoomout") {
+      scale -= .1;
+    } else {
+      scale = $("#zoomlevel").val();
+    }
+
+    scale = Math.min(scale, 20);
+    scale = Math.max(scale, .1);
+
+    SCALE = scale;
+    $("#zoomlevel").val(SCALE);
+
+    foreground.width = WIDTH * SCALE;
+    foreground.height = HEIGHT * SCALE;
+    fore_ctx.width = WIDTH * SCALE;
+    fore_ctx.height = HEIGHT * SCALE;
+  });
 }
 
 function draw_background(ctx, a) {
@@ -200,12 +243,10 @@ function draw_labels() {
 }
 
 function draw_actor(ctx, actor) {
-  ctx.scale(SCALE,SCALE);
   var image = actor.image(),
       x = Math.floor(actor.x - image.width / 2),
       y = Math.floor(actor.y - image.height / 2);
   ctx.drawImage(image, x, y);
-  ctx.scale(1/SCALE,1/SCALE);
 }
 
 function build_outhouse(ctx, a) {

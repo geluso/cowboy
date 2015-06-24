@@ -20,7 +20,7 @@ var canvas, ctx;
 var MOUSE_X = 0,
     MOUSE_Y = 0;
 
-var KEYBOARD = {}
+var KEYBOARD = {},
     UP = 87,
     DOWN = 83,
     LEFT = 65,
@@ -28,6 +28,7 @@ var KEYBOARD = {}
     ENTER = 13,
     E = 69,
     F = 70,
+    X = 88,
     SPACE = 32,
     SHIFT = 16;
 
@@ -80,6 +81,7 @@ var SRC = [
   "fence_north",
   "fence_south",
   "fence_west",
+  "logo"
 ];
 
 var IMAGES = {};
@@ -651,6 +653,20 @@ function birth_cowboy(ctx, a) {
       }
     },
     draw: function (ctx) {
+      if (this.special_actions.length > 0) {
+        var p0 = this.special_actions[0];
+
+        ctx.beginPath();
+        ctx.moveTo(COWBOY.x, COWBOY.y);
+
+        for (var i = 0; i < this.special_actions.length; i++) {
+          var p1 = this.special_actions[i];
+          ctx.lineTo(p0[0], p0[1], p1[0], p1[1]);
+          p0 = p1;
+        }
+
+        ctx.stroke();
+      }
       draw_actor(ctx, this);
     },
     direction: EAST,
@@ -781,6 +797,9 @@ function press(e, actor) {
   KEYBOARD[e.which] = true;
   KEYBOARD[e.keyCode] = true;
 
+  if (KEYBOARD[X]) {
+    DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
+  }
 
   if (KEYBOARD[UP] || KEYBOARD[38] || KEYBOARD[DOWN] || KEYBOARD[40] ||
     KEYBOARD[LEFT] || KEYBOARD[37] || KEYBOARD[RIGHT] || KEYBOARD[39]) {
@@ -958,7 +977,6 @@ function specialCactusDraw() {
     var asset = BACKGROUND[i];
 
     if (asset.image().src.indexOf("cactus") !== -1) {
-      fore_ctx.fillText(i, asset.x, 10 + asset.y + asset.image().height);
 
       if (Math.abs(asset.x - COWBOY.x) < 20 &&
           Math.abs(asset.y - COWBOY.y) < 20) {

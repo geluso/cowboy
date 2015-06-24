@@ -54,7 +54,37 @@ function notification(str, x, y) {
 
 }
 
+var DRAW_HELP_TEXT = true;
+function draw_help_text() {
+  TEXT_CTX.drawImage(IMAGES["logo"], 20, 100);
+
+  var messages = [
+    "Welcome to Cowboy",
+    "use WASD or arrow keys to move around",
+    "press X to toggle this screen",
+    "press SPACE to shoot",
+    "press shift to switch weapons",
+    "press E or Enter to mount horse",
+    "press f to whistle horse over",
+    "tap f to have horse giddy up",
+    "click once to go somewhere",
+    "click many times to have cowboy giddy up",
+    "click and drag to have cowboy follow path",
+  ];
+
+  var initial = 250;
+  var spacer = 20;
+  for (var i = 0; i < messages.length; i++) {
+    write(TEXT_CTX, messages[i], 20, initial + i * spacer);
+  }
+}
+
+var DRAW_HELP_TEXT = true;
 function label(str, x, y) {
+  if (DRAW_HELP_TEXT) {
+    draw_help_text();
+  }
+
   write(TEXT_CTX, str, x, y);
 }
 

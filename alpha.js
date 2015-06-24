@@ -56,8 +56,6 @@ function notification(str, x, y) {
 
 var DRAW_HELP_TEXT = true;
 function draw_help_text() {
-  TEXT_CTX.drawImage(IMAGES["logo"], 20, 100);
-
   var messages = [
     "Welcome to Cowboy",
     "use WASD or arrow keys to move around",
@@ -72,10 +70,22 @@ function draw_help_text() {
     "click and drag to have cowboy follow path",
   ];
 
-  var initial = 250;
+  var width = 500;
+  var height = 400;
+
+  var leftOffset = WIDTH / 2 - width / 2;
+  var topOffset = HEIGHT / 2 - height / 2;
+
+  var textLeft = leftOffset + 150;
+  var textTop = topOffset + 150 - 60;
   var spacer = 20;
+
+  TEXT_CTX.drawImage(IMAGES["totem_half"], leftOffset, topOffset);
+  TEXT_CTX.drawImage(IMAGES["logo"], leftOffset + 150, topOffset - 60);
+  TEXT_CTX.drawImage(IMAGES["pole_half"], leftOffset + 400 + 20, topOffset);
+
   for (var i = 0; i < messages.length; i++) {
-    write(TEXT_CTX, messages[i], 20, initial + i * spacer);
+    write(TEXT_CTX, messages[i], textLeft, textTop + i * spacer);
   }
 }
 

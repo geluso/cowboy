@@ -81,7 +81,9 @@ var SRC = [
   "fence_north",
   "fence_south",
   "fence_west",
-  "logo"
+  "logo",
+  "totem_half",
+  "pole_half",
 ];
 
 var IMAGES = {};

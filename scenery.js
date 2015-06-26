@@ -5,8 +5,8 @@ function light_fire(ctx, a) {
     image: function () {
       return IMAGES["fire"];
     },
-    x: 30,
-    y: 20,
+    x: 0,
+    y: 0,
     label: function() { return "campfire"; },
     draw: function (ctx) {
       draw_actor(ctx, this);

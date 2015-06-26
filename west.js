@@ -86,6 +86,9 @@ function buildWorld() {
   draw_background(back_ctx, BACKGROUND);
   draw_foreground(fore_ctx, DRAWABLES);
 
+  // shift the cowboy from the front to the back so he is always drawn last.
+  DRAWABLES.push(DRAWABLES.shift());
+
   TICKER = setInterval(function() {
     tick(COWBOY);
 
@@ -165,7 +168,6 @@ function draw_background(ctx, a) {
 }
 
 function draw_foreground(ctx, a) {
-
   light_fire(ctx, a);
   build_outhouse(ctx, a);
   birth_horse(ctx, a);

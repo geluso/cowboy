@@ -7,3 +7,5 @@ var SCALE = 1;
 
 var SMOOTH_SHOOTING = false;
 
+var DRAW_COORDS = false;
+var SPECIAL_CACTUS_DRAW = false;

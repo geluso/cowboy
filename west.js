@@ -109,14 +109,18 @@ function buildWorld() {
     draw(back_ctx, BACKGROUND);
     draw_labels();
 
-    var step = 75;
-    for (var x = 0; x < WIDTH; x += step) {
-      for (var y = 0; y < HEIGHT; y += step) {
-        fore_ctx.fillText("x:" + x +", y: " + y, x, y);
+    if (DRAW_COORDS) {
+      var step = 75;
+      for (var x = 0; x < WIDTH; x += step) {
+        for (var y = 0; y < HEIGHT; y += step) {
+          fore_ctx.fillText("x:" + x +", y: " + y, x, y);
+        }
       }
     }
 
-    specialCactusDraw();
+    if (SPECIAL_CACTURE_DRAW) {
+      specialCactusDraw();
+    }
   }, FRAMERATE);
 }
 

@@ -79,8 +79,8 @@ function build_outhouse(ctx, a) {
     image: function () {
       return this.open ? IMAGES["outhouse_open"] : IMAGES["outhouse_closed"]; 
     },
-    x: 400,
-    y: 300,
+    x: 100,
+    y: 120,
     open: false,
     label: function() { return "outhouse"; },
     draw: function (ctx) {

@@ -1,21 +1,22 @@
 var COWS = [];
+var COW_CENTER_X = -400;
+var COW_CENTER_Y = 100;
+var COW_RADIUS = 250;
 
 function birth_cows(ctx, a) {
   var total = 23;
 
-  var x0 = WIDTH * .70;
-  var y0 = HEIGHT * .55;
   for (var i = 0; i < total; i++) {
-    x = x0 + Math.random() * 250;
-    y = y0 + Math.random() * 250;
+    var x = COW_CENTER_X + Math.random() * COW_RADIUS;
+    var y = COW_CENTER_Y + Math.random() * COW_RADIUS;
     cow = birth_cow(ctx, a, x, y);
     COWS.push(cow);
   }
 }
 
 function place_fence(ctx, a) {
-  var leftmost = Math.round(WIDTH * .6);
-  var topmost = Math.round(HEIGHT * .5);
+  var leftmost = COW_CENTER_X - 75;
+  var topmost = COW_CENTER_Y - 50;
   // top line
   for (var i = 0; i < 20; i++) {
     a.push({

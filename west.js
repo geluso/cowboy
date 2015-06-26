@@ -32,7 +32,7 @@ function buildWorld() {
   Math.seedrandom("COWBOY!!");
 
   WIDTH = window.innerWidth;
-  WIDTH = window.innerWidth;
+  HEIGHT = window.innerHeight;
   ORIGINAL_HEIGHT = HEIGHT;
   ORIGINAL_WIDTH = WIDTH;
 
@@ -109,6 +109,13 @@ function buildWorld() {
     draw(back_ctx, BACKGROUND);
     draw_labels();
 
+    var step = 75;
+    for (var x = 0; x < WIDTH; x += step) {
+      for (var y = 0; y < HEIGHT; y += step) {
+        fore_ctx.fillText("x:" + x +", y: " + y, x, y);
+      }
+    }
+
     specialCactusDraw();
   }, FRAMERATE);
 }
@@ -159,15 +166,19 @@ function draw(ctx, drawables) {
 
 function draw_labels() {
   var labels = 0;
+
+  var x = Math.round((REAL_MOUSE_X / ORIGINAL_WIDTH) * WIDTH);
+  var y = Math.round((REAL_MOUSE_Y / ORIGINAL_HEIGHT) * HEIGHT);
+
   for (var i = 0; i < DRAWABLES.length; i++) {
     var drawable = DRAWABLES[i];
     if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
-      label(drawable.label(), REAL_MOUSE_X + 15, REAL_MOUSE_Y + labels * 18);
+      label(drawable.label(), x, y + labels * 18);
       labels++
     }
   }
   if (labels == 0) {
-    label("go", REAL_MOUSE_X + 15, REAL_MOUSE_Y);
+    label("go", x, y);
   }
 }
 

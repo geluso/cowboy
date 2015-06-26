@@ -55,6 +55,11 @@ function notification(str, x, y) {
 }
 
 var DRAW_HELP_TEXT = true;
+
+setTimeout(function() {
+  DRAW_HELP_TEXT = false;
+}, 10000);
+
 function draw_help_text() {
   var messages = [
     "Welcome to Cowboy",

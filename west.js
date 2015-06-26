@@ -1,3 +1,6 @@
+var TRANSLATE_X = 0;
+var TRANSLATE_Y = 0;
+
 // canvases
 var TEXT_CTX, SPRITE, SCRATCH;
 var IMAGES_LOADED = 0;
@@ -189,9 +192,9 @@ function draw(ctx, drawables) {
     } else {
       ctx.save();
 
-      var x = (WIDTH / 2 - COWBOY.x);
-      var y = (HEIGHT / 2 - COWBOY.y);
-      ctx.translate(x, y);
+      TRANSLATE_X = (WIDTH / 2 - COWBOY.x);
+      TRANSLATE_Y = (HEIGHT / 2 - COWBOY.y);
+      ctx.translate(TRANSLATE_X, TRANSLATE_Y);
 
       d.draw(ctx);
 
@@ -205,12 +208,12 @@ function draw_labels() {
   for (var i = 0; i < DRAWABLES.length; i++) {
     var drawable = DRAWABLES[i];
     if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
-      label(drawable.label(), MOUSE_X + 15, MOUSE_Y + labels * 18);
+      label(drawable.label(), REAL_MOUSE_X + 15, REAL_MOUSE_Y + labels * 18);
       labels++
     }
   }
   if (labels == 0) {
-    label("go", MOUSE_X + 15, MOUSE_Y);
+    label("go", REAL_MOUSE_X + 15, REAL_MOUSE_Y);
   }
 }
 

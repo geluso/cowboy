@@ -1,3 +1,5 @@
+var REAL_MOUSE_X = 0,
+    REAL_MOUSE_Y = 0;
 var MOUSE_X = 0,
     MOUSE_Y = 0;
 
@@ -33,8 +35,11 @@ function traceCourse() {
 }
   
 function mousemove(e) {
-  MOUSE_X = e.offsetX;
-  MOUSE_Y = e.offsetY;
+  REAL_MOUSE_X = e.offsetX;
+  REAL_MOUSE_Y = e.offsetY;
+
+  MOUSE_X = e.offsetX - TRANSLATE_X;
+  MOUSE_Y = e.offsetY - TRANSLATE_Y;
 
   if (TRACE_COURSE) {
     STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
@@ -62,68 +67,5 @@ function click(e) {
     return;
   }
 
-  var x = e.offsetX;
-  var y = e.offsetY;
-  set_waypoint(COWBOY, x, y);
+  set_waypoint(COWBOY, MOUSE_X, MOUSE_Y);
 }
-
-
-var MOUSEDOWN = false;
-var STACK_WAYPOINTS = [];
-var traceCourseTimer = undefined;
-var TRACE_COURSE = false;
-var LAST_MOUSEUP;
-
-var RANDOM;
-function mousedown(e) {
-  MOUSEDOWN = true;
-  var random = Math.random();
-  RANDOM = random;
-  var traceCourseTimer = setTimeout(function() {
-    if (MOUSEDOWN && RANDOM === random) {
-      traceCourse();
-    }
-  }, 100);
-}
-
-function traceCourse() {
-  STACK_WAYPOINTS = [];
-  STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
-  TRACE_COURSE = true;
-}
-  
-function mousemove(e) {
-  MOUSE_X = e.offsetX;
-  MOUSE_Y = e.offsetY;
-
-  if (TRACE_COURSE) {
-    STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
-  }
-};
-
-
-function mouseup(e) {
-  MOUSEDOWN = false;
-  if (TRACE_COURSE) {
-    LAST_MOUSEUP = (new Date()).getTime();
-
-    var point = STACK_WAYPOINTS.shift();
-    COWBOY.special_actions = STACK_WAYPOINTS;
-    COWBOY.trace_path();
-  }
-
-  TRACE_COURSE = false;
-}
-
-function click(e) {
-  // prevent clicks from counting immediately after recording routes.
-  var now = (new Date()).getTime();
-  if (now - LAST_MOUSEUP < 500) {
-    return;
-  }
-
-  var x = e.offsetX;
-  var y = e.offsetY;
-  set_waypoint(COWBOY, x, y);
-}
-

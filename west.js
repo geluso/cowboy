@@ -81,23 +81,28 @@ function buildWorld() {
     IMAGES[SRC[i]] = img;
   }
 
+  // super important that cowboy is born before anything is drawn.
+  birth_cowboy(ctx, DRAWABLES);
   draw_background(back_ctx, BACKGROUND);
   draw_foreground(fore_ctx, DRAWABLES);
 
   TICKER = setInterval(function() {
     tick(COWBOY);
+
     draw_clear(fore_ctx);
     draw_clear(text_ctx);
+    draw_clear(back_ctx);
+
+    back_ctx.fillStyle = "#cccc66";
+    back_ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
+    draw(back_ctx, BACKGROUND);
     draw_labels();
 
     specialCactusDraw();
   }, FRAMERATE);
-
-  TICKER = setInterval(function() {
-    draw(back_ctx, BACKGROUND);
-  }, 1000);
 
   $("#zoomin, #zoomout").click(function(e) {
     var scale = SCALE;
@@ -160,10 +165,10 @@ function draw_background(ctx, a) {
 }
 
 function draw_foreground(ctx, a) {
+
   light_fire(ctx, a);
   build_outhouse(ctx, a);
   birth_horse(ctx, a);
-  birth_cowboy(ctx, a);
   birth_cows(ctx, a);
   bones(ctx, a);
 }
@@ -175,11 +180,20 @@ function draw_clear(ctx) {
 function draw(ctx, drawables) {
   for (var i = 0; i < drawables.length; i++) {
     var d = drawables[i];
-    if (d.x < 0 || d.y < 0 || d.x > WIDTH || d.y > HEIGHT) {
+    if (drawables === PROJECTILES && 
+        (d.x < 0 || d.y < 0 || d.x > WIDTH || d.y > HEIGHT)) {
       drawables.splice(i, 1);
       i--;
     } else {
+      ctx.save();
+
+      var x = (WIDTH / 2 - COWBOY.x);
+      var y = (HEIGHT / 2 - COWBOY.y);
+      ctx.translate(x, y);
+
       d.draw(ctx);
+
+      ctx.restore();
     }
   }
 }

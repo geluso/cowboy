@@ -13,6 +13,8 @@ var KEYBOARD = {},
     ENTER = 13,
     E = 69,
     F = 70,
+    I = 73,
+    O = 79,
     X = 88,
     SPACE = 32,
     SHIFT = 16;
@@ -28,6 +30,14 @@ function press(e, actor) {
 
   if (KEYBOARD[X]) {
     DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
+  }
+
+  if (KEYBOARD[I] || KEYBOARD[O]) {
+    if (KEYBOARD[O]) {
+      zoomout();
+    } else if (KEYBOARD[I]) {
+      zoomin();
+    }
   }
 
   if (KEYBOARD[UP] || KEYBOARD[38] || KEYBOARD[DOWN] || KEYBOARD[40] ||

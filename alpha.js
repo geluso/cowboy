@@ -73,6 +73,8 @@ function draw_help_text() {
     "click once to go somewhere",
     "click many times to have cowboy giddy up",
     "click and drag to have cowboy follow path",
+    "press i to zoom in",
+    "press o to zoom out",
   ];
 
   var width = 500;

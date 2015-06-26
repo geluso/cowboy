@@ -32,7 +32,9 @@ function buildWorld() {
   Math.seedrandom("COWBOY!!");
 
   WIDTH = window.innerWidth;
-  HEIGHT = window.innerHeight;
+  WIDTH = window.innerWidth;
+  ORIGINAL_HEIGHT = HEIGHT;
+  ORIGINAL_WIDTH = WIDTH;
 
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };
@@ -109,55 +111,7 @@ function buildWorld() {
 
     specialCactusDraw();
   }, FRAMERATE);
-
-  $("#zoomin, #zoomout").click(function(e) {
-    var scale = SCALE;
-    if (e.target.id === "zoomin") {
-      scale += .1;
-    } else if (e.target.id === "zoomout") {
-      scale -= .1;
-    } else {
-      scale = $("#zoomlevel").val();
-    }
-
-    scale = Math.min(scale, 20);
-    scale = Math.max(scale, .1);
-
-    SCALE = scale;
-    $("#zoomlevel").val(SCALE);
-
-    setScale(WIDTH * scale, HEIGHT * scale);
-  });
 }
-
-function setScale(width, height) {
-  if (!height) {
-    height = width;
-  }
-
-  var background = document.getElementById("restworld");
-  background.width = width;
-  background.height = height;
-  var back_ctx = background.getContext("2d");
-  back_ctx.width = width;
-  back_ctx.height = height;
-
-  var foreground = document.getElementById("westworld");
-  foreground.width = width;
-  foreground.height = height;
-  var fore_ctx = foreground.getContext("2d");
-  fore_ctx.width = width;
-  fore_ctx.height = height;
-
-  var text = document.getElementById("textworld");
-  text.width = width;
-  text.height = height;
-  var text_ctx = text.getContext("2d");
-  text_ctx.width = width;
-  text_ctx.height = height;
-
-  draw_background(back_ctx, BACKGROUND);
-};
 
 function draw_background(ctx, a) {
   ctx.fillStyle = "#cccc66";
@@ -179,7 +133,7 @@ function draw_foreground(ctx, a) {
 }
 
 function draw_clear(ctx) {
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  ctx.clearRect(0, 0, SCALE * WIDTH, SCALE * HEIGHT);
 }
 
 function draw(ctx, drawables) {
@@ -192,8 +146,8 @@ function draw(ctx, drawables) {
     } else {
       ctx.save();
 
-      TRANSLATE_X = (WIDTH / 2 - COWBOY.x);
-      TRANSLATE_Y = (HEIGHT / 2 - COWBOY.y);
+      TRANSLATE_X = ((SCALE * WIDTH) / 2 - COWBOY.x);
+      TRANSLATE_Y = ((SCALE * HEIGHT) / 2 - COWBOY.y);
       ctx.translate(TRANSLATE_X, TRANSLATE_Y);
 
       d.draw(ctx);

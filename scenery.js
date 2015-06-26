@@ -16,18 +16,29 @@ function light_fire(ctx, a) {
 }
 
 function grow_cactus(ctx, a) {
-  var cactus = Math.random() * 150 + 20;
+  var cactus = 4 * (Math.random() * 150 + 20);
   var cactus_types = ["cactus_large", "cactus_large_flower", "cactus_med",
       "cactus_med_flower"];
   for (var i = 0; i < cactus; i++) {
-    var choice = Math.floor(Math.random() * (cactus_types.length - 1))
+    var choice = Math.floor(Math.random() * (cactus_types.length - 1));
     var cactus_type = cactus_types[choice];
+
+    var x = Math.floor(Math.random() * WIDTH);
+    var y = Math.floor(Math.random() * HEIGHT);
+
+    if (Math.random() < .5) {
+      x = -x;
+    }
+    if (Math.random() < .5) {
+      y = -y;
+    }
+
     a.push({
       image: function () {
         return IMAGES[this.type];
       },
-      x: Math.floor(Math.random() * WIDTH),
-      y: Math.floor(Math.random() * HEIGHT),
+      x: Math.floor(x),
+      y: Math.floor(y),
       type: cactus_type,
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
@@ -37,14 +48,25 @@ function grow_cactus(ctx, a) {
 }
 
 function place_rocks(ctx, a) {
-  var rocks = Math.random() * 300 + 40;
+  var rocks = 4 * (Math.random() * 300 + 40);
   for (var i = 0; i < rocks; i++) {
+
+    var x = Math.floor(Math.random() * WIDTH);
+    var y = Math.floor(Math.random() * HEIGHT);
+
+    if (Math.random() < .5) {
+      x = -x;
+    }
+    if (Math.random() < .5) {
+      y = -y;
+    }
+
     a.push({
       image: function () {
         return IMAGES["rock"];
       },
-      x: Math.floor(Math.random() * WIDTH),
-      y: Math.floor(Math.random() * HEIGHT),
+      x: x,
+      y: y,
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }

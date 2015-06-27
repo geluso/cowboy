@@ -106,19 +106,20 @@ function bones(ctx, a) {
 }
 
 
-function place_tipee(ctx, a, x, y) {
-  var tipee = {
+function place_tepee(ctx, a, x, y) {
+  var tepee = {
     image: function () {
-      return IMAGES["tipee"]; 
+      return IMAGES["tepee"]; 
     },
     x: x,
     y: y,
-    label: function() { return "tipee"; },
+    label: function() { return "tepee"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
   };
-  a.push(tipee);
+  a.push(tepee);
+  return tepee;
 }
 
 function place_totem(ctx, a, x, y) {
@@ -138,9 +139,13 @@ function place_totem(ctx, a, x, y) {
 var NATIVE1;
 var NATIVE2;
 var NATIVE3;
+var NATIVES = [NATIVE1, NATIVE2, NATIVE3];
+
+var TEPEE1, TEPEE1;
+
 function birth_natives(ctx, a) {
-  place_tipee(ctx, a, 375, 280);
-  place_tipee(ctx, a, 400, 300);
+  TEPEE1 = place_tepee(ctx, a, 375, 280);
+  TEPEE2 = place_tepee(ctx, a, 400, 300);
   light_fire(ctx, a, 360, 310);
   place_totem(ctx, a, 330, 290);
 
@@ -160,6 +165,9 @@ function birth_native_dude(ctx, a, x, y) {
     y: y,
     label: function() { return "native"; },
     draw: function (ctx) {
+      if (nativedude.inTent) {
+        return;
+      }
       draw_actor(ctx, this);
     },
     way_x: undefined,
@@ -184,7 +192,23 @@ function birth_native_dude(ctx, a, x, y) {
       var delay = Math.random() * 10;
       var move = Math.random() * 10;
 
-      if (move < 6) {
+      if (nativedude.inTent) {
+        // 50/50 chance to leave tent
+        if (Math.random() < .5) {
+          nativedude.inTent = false;
+        }
+      }
+
+      // decide to go to tent
+      if (move < .9) {
+        nativedude.goingToTent = true;
+        if (Math.random() < .5) {
+          nativedude.destinationTent = TEPEE1;
+        } else {
+          nativedude.destinationTent = TEPEE2;
+        }
+        set_waypoint(nativedude, nativedude.destinationTent.x, nativedude.destinationTent.y);
+      } else if (move < 6) {
         // don't always pick a destination
         setTimeout(nativedude.stop, delay * 1000);
       } else {
@@ -207,6 +231,17 @@ function birth_native_dude(ctx, a, x, y) {
         set_waypoint(nativedude, x, y);
       }
     },
+    walkFinished: function() {
+      if (!nativedude.destinationTent) {
+        return;
+      }
+      if (nativedude.x === nativedude.destinationTent.x && 
+          nativedude.y === nativedude.destinationTent.y) {
+        nativedude.destinationTent = undefined;
+        nativedude.goingToTent = false;
+        nativedude.inTent = true;
+      }
+    }
   };
   nativedude.stop();
   a.push(nativedude);

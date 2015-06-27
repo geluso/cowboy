@@ -49,6 +49,6 @@ var SRC = [
   "pole_half",
   "native",
   "native_chief",
-  "tipee",
+  "tepee",
   "totem",
 ];

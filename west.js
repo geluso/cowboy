@@ -259,6 +259,13 @@ function walk(actor, route) {
       actor.direction = WEST;
     }
   }
+
+  actor.x = Math.round(actor.x);
+  actor.y = Math.round(actor.y);
+
+  if (actor.walkFinished) {
+    actor.walkFinished();
+  }
 }
 
 function clear_intervals(intervals) {

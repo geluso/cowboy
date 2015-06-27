@@ -9,8 +9,8 @@ function birth_cowboy(ctx, a) {
         return IMAGES[["cowboy_north", "cowboy_east", "cowboy_south", "cowboy_west"][this.direction]];
       }
     },
-    x: 40,
-    y: 80,
+    x: -3 + 50,
+    y: 20 + 50,
     way_x: undefined,
     way_y: undefined,
     actions: [],

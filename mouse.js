@@ -25,7 +25,7 @@ function mousedown(e) {
     if (MOUSEDOWN && RANDOM === random) {
       traceCourse();
     }
-  }, 100);
+  }, 500);
 }
 
 function traceCourse() {

@@ -94,11 +94,13 @@ function buildWorld() {
   // shift the cowboy from the front to the back so he is always drawn last.
   DRAWABLES.push(DRAWABLES.shift());
 
+  // start super zoomed in.
+  setScale(.1);
+
   TICKER = setInterval(function() {
     tick(COWBOY);
 
     draw_clear(fore_ctx);
-    draw_clear(text_ctx);
     draw_clear(back_ctx);
 
     back_ctx.fillStyle = "#cccc66";
@@ -118,7 +120,7 @@ function buildWorld() {
       }
     }
 
-    if (SPECIAL_CACTURE_DRAW) {
+    if (SPECIAL_CACTUS_DRAW) {
       specialCactusDraw();
     }
   }, FRAMERATE);
@@ -136,10 +138,13 @@ function draw_background(ctx, a) {
 }
 
 function draw_foreground(ctx, a) {
-  light_fire(ctx, a);
+  light_fire(ctx, a, 50, 50);
   build_outhouse(ctx, a);
   birth_horse(ctx, a);
   birth_cows(ctx, a);
+
+  birth_natives(ctx, a);
+
   bones(ctx, a);
 }
 

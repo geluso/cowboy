@@ -9,8 +9,8 @@ function birth_horse(ctx, a) {
         return IMAGES["dead_horse"];
       }
     },
-    x: 70,
-    y: 40,
+    x: 20 + 50,
+    y: 20 + 50,
     way_x: undefined,
     way_y: undefined,
     actions: [],

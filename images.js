@@ -47,4 +47,8 @@ var SRC = [
   "logo",
   "totem_half",
   "pole_half",
+  "native",
+  "native_chief",
+  "tipee",
+  "totem",
 ];

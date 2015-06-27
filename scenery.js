@@ -1,18 +1,18 @@
 var OUTHOUSE;
 
-function light_fire(ctx, a) {
-  var FIRE = {
+function light_fire(ctx, a, x, y) {
+  var fire = {
     image: function () {
       return IMAGES["fire"];
     },
-    x: 0,
-    y: 0,
+    x: x,
+    y: y,
     label: function() { return "campfire"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
   }
-  a.push(FIRE);
+  a.push(fire);
 }
 
 function grow_cactus(ctx, a) {
@@ -79,8 +79,8 @@ function build_outhouse(ctx, a) {
     image: function () {
       return this.open ? IMAGES["outhouse_open"] : IMAGES["outhouse_closed"]; 
     },
-    x: 100,
-    y: 120,
+    x: 85,
+    y: 45,
     open: false,
     label: function() { return "outhouse"; },
     draw: function (ctx) {
@@ -105,3 +105,78 @@ function bones(ctx, a) {
   a.push(bones);
 }
 
+
+function place_tipee(ctx, a, x, y) {
+  var tipee = {
+    image: function () {
+      return IMAGES["tipee"]; 
+    },
+    x: x,
+    y: y,
+    label: function() { return "tipee"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  a.push(tipee);
+}
+
+function place_totem(ctx, a, x, y) {
+  var totem = {
+    image: function () {
+      return IMAGES["totem"]; 
+    },
+    x: x,
+    y: y,
+    label: function() { return "totem"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  a.push(totem);
+}
+var NATIVE1;
+var NATIVE2;
+var NATIVE3;
+function birth_natives(ctx, a) {
+  place_tipee(ctx, a, 375, 280);
+  place_tipee(ctx, a, 400, 300);
+  light_fire(ctx, a, 360, 310);
+  place_totem(ctx, a, 330, 290);
+
+  NATIVE1 = birth_native_dude(ctx, a, 380, 340);
+  NATIVE2 = birth_native_dude(ctx, a, 300, 300);
+  NATIVE3 = birth_native_dude(ctx, a, 320, 330);
+  birth_chief(ctx, a, 350, 350);
+}
+
+function birth_native_dude(ctx, a, x, y) {
+  var nativedude = {
+    image: function () {
+      return IMAGES["native"]; 
+    },
+    x: x,
+    y: y,
+    label: function() { return "native"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  a.push(nativedude);
+  return nativedude;
+}
+
+function birth_chief(ctx, a, x, y) {
+  var chief = {
+    image: function () {
+      return IMAGES["native_chief"]; 
+    },
+    x: x,
+    y: y,
+    label: function() { return "chief"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  a.push(chief);
+}

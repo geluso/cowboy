@@ -54,12 +54,5 @@ function setScale(scale) {
   var fore_ctx = foreground.getContext("2d");
   fore_ctx.width = width;
   fore_ctx.height = height;
-
-  var text = document.getElementById("textworld");
-  text.width = width;
-  text.height = height;
-  var text_ctx = text.getContext("2d");
-  text_ctx.width = width;
-  text_ctx.height = height;
 };
 

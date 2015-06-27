@@ -6,6 +6,11 @@ var COW_RADIUS = 250;
 function birth_cows(ctx, a) {
   var total = 23;
 
+  var x = -3;
+  var y = 20 + 50;
+  var cow = birth_cow(ctx, a, x, y);
+  COWS.push(cow);
+
   for (var i = 0; i < total; i++) {
     var x = COW_CENTER_X + Math.random() * COW_RADIUS;
     var y = COW_CENTER_Y + Math.random() * COW_RADIUS;
@@ -15,7 +20,7 @@ function birth_cows(ctx, a) {
 }
 
 function place_fence(ctx, a) {
-  var leftmost = COW_CENTER_X - 75;
+  var leftmost = COW_CENTER_X - 75 + 10;
   var topmost = COW_CENTER_Y - 50;
   // top line
   for (var i = 0; i < 20; i++) {

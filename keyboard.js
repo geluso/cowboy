@@ -30,6 +30,12 @@ function press(e, actor) {
 
   if (KEYBOARD[X]) {
     DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
+
+    if(DRAW_HELP_TEXT) {
+      $("#textworld").hide();
+    } else {
+      $("#textworld").show();
+    }
   }
 
   if (KEYBOARD[I] || KEYBOARD[O]) {

@@ -58,7 +58,8 @@ var DRAW_HELP_TEXT = true;
 
 setTimeout(function() {
   DRAW_HELP_TEXT = false;
-}, 10000);
+  $("#textworld").hide();
+}, 2000);
 
 function draw_help_text() {
   var messages = [
@@ -98,6 +99,7 @@ function draw_help_text() {
 
 var DRAW_HELP_TEXT = true;
 function label(str, x, y) {
+  TEXT_CTX.clearRect(0, 0, ORIGINAL_WIDTH, ORIGINAL_HEIGHT);
   if (DRAW_HELP_TEXT) {
     draw_help_text();
   }

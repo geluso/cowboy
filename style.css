@@ -30,3 +30,7 @@ canvas {
 #backstage {
   visibility: hidden;
 }
+
+#textworld {
+  display: none;
+}

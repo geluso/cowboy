@@ -1,3 +1,6 @@
+var SCALE_WIDTH;
+var SCALE_HEIGHT;
+
 var ZOOMIN = {
   1: .5,
   .5: .25,
@@ -34,25 +37,26 @@ function setScale(scale) {
 
   $("#zoomlevel").val(SCALE);
 
-  var width = scale * ORIGINAL_WIDTH;
-  var height = scale * ORIGINAL_HEIGHT;
+  SCALE_WIDTH = scale * ORIGINAL_WIDTH;
+  SCALE_HEIGHT = scale * ORIGINAL_HEIGHT;
 
-  if (!height) {
-    height = width;
+  // why is this here?
+  if (!SCALE_WIDTH) {
+    SCALE_HEIGHT = SCALE_WIDTH;
   }
 
   var background = document.getElementById("restworld");
-  background.width = width;
-  background.height = height;
+  background.width = SCALE_WIDTH;
+  background.height = SCALE_HEIGHT;
   var back_ctx = background.getContext("2d");
-  back_ctx.width = width;
-  back_ctx.height = height;
+  back_ctx.width = SCALE_WIDTH;
+  back_ctx.height = SCALE_HEIGHT;
 
   var foreground = document.getElementById("westworld");
-  foreground.width = width;
-  foreground.height = height;
+  foreground.width = SCALE_WIDTH;
+  foreground.height = SCALE_HEIGHT;
   var fore_ctx = foreground.getContext("2d");
-  fore_ctx.width = width;
-  fore_ctx.height = height;
+  fore_ctx.width = SCALE_WIDTH;
+  fore_ctx.height = SCALE_HEIGHT;
 };
 

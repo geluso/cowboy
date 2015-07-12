@@ -42,8 +42,8 @@ function mousemove(e) {
   REAL_MOUSE_X = e.offsetX;
   REAL_MOUSE_Y = e.offsetY;
 
-  MOUSE_X = (e.offsetX / ORIGINAL_WIDTH) * WIDTH - TRANSLATE_X;
-  MOUSE_Y = (e.offsetY / ORIGINAL_HEIGHT) * HEIGHT - TRANSLATE_Y;
+  MOUSE_X = (e.offsetX / ORIGINAL_WIDTH) * SCALE_WIDTH - TRANSLATE_X;
+  MOUSE_Y = (e.offsetY / ORIGINAL_HEIGHT) * SCALE_HEIGHT - TRANSLATE_Y;
 
   if (TRACE_COURSE) {
     STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
@@ -77,6 +77,9 @@ function click(e) {
     }
   }
 
+  // reset any special path actions if the cowboy currently has any.
   COWBOY.special_actions = [];
-  set_waypoint(COWBOY, MOUSE_X, MOUSE_Y);
+
+  var cowboyOffset = COWBOY.image().height / 2 - 1;
+  set_waypoint(COWBOY, MOUSE_X, MOUSE_Y - cowboyOffset);
 }

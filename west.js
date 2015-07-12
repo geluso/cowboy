@@ -155,8 +155,11 @@ function draw_clear(ctx) {
 function draw(ctx, drawables) {
   for (var i = 0; i < drawables.length; i++) {
     var d = drawables[i];
-    if (drawables === PROJECTILES && 
-        (d.x < 0 || d.y < 0 || d.x > WIDTH || d.y > HEIGHT)) {
+
+    var xOffscreen = Math.abs(d.x - COWBOY.x) > WIDTH / 2;
+    var yOffscreen = Math.abs(d.y - COWBOY.y) > HEIGHT / 2;
+
+    if (drawables === PROJECTILES && (xOffscreen || yOffscreen)) {
       drawables.splice(i, 1);
       i--;
     } else {

@@ -19,6 +19,9 @@ var LAST_MOUSEUP;
 
 var RANDOM;
 function mousedown(e) {
+  DOWN_X = e.offsetX;
+  DOWN_Y = e.offsetX;
+
   MOUSEDOWN = true;
   var random = Math.random();
   RANDOM = random;
@@ -38,8 +41,6 @@ function traceCourse() {
 function mousemove(e) {
   REAL_MOUSE_X = e.offsetX;
   REAL_MOUSE_Y = e.offsetY;
-  DOWN_X = e.offsetX;
-  DOWN_Y = e.offsetX;
 
   MOUSE_X = (e.offsetX / ORIGINAL_WIDTH) * WIDTH - TRANSLATE_X;
   MOUSE_Y = (e.offsetY / ORIGINAL_HEIGHT) * HEIGHT - TRANSLATE_Y;
@@ -76,5 +77,6 @@ function click(e) {
     }
   }
 
+  COWBOY.special_actions = [];
   set_waypoint(COWBOY, MOUSE_X, MOUSE_Y);
 }

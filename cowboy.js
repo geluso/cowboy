@@ -127,7 +127,7 @@ function shoot(actor, drawables) {
     type: actor.weapon,
     tick: 0,
     timer: 100,
-    direction: actor.direction,
+    direction: angleToDirection(angle),
   }
   drawables.push(projectile);
 }

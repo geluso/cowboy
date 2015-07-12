@@ -135,25 +135,17 @@ function birth_cow(ctx, a, x, y) {
       }
     },
     draw: function (ctx) {
-      if (this.way_x !== undefined && this.way_y !== undefined) {
-          if (Math.abs(COWBOY.x - this.x) < 10 &&
-              Math.abs(COWBOY.y - this.y) < 10) {
-            this.bridle();
-          }
-      }
-
       if (!this.alive) {
         ctx.drawImage(this.image(),
             this.frame_width * this.frame, 0, this.frame_width, this.frame_height,
             this.x - Math.floor(this.frame_width / 2),
             this.y - Math.floor(this.frame_height / 2),
             this.frame_width, this.frame_height);
-      } else if (this.unbridled) {
+      } else {
         draw_actor(ctx, this);
       }
     },
     alive: true,
-    unbridled: true,
     direction: EAST,
     // death animation
     frame_width: 17,
@@ -161,21 +153,6 @@ function birth_cow(ctx, a, x, y) {
     frames: 7,
     frame: 0,
     delay: 2000,
-    bridle: function() {
-        COWBOY.horse = true;
-        this.unbridled = false;
-        this.x = COWBOY.x;
-        this.y = COWBOY.y;
-
-        this.way_x = undefined;
-        this.way_y = undefined;
-    },
-    unbridle: function() {
-        COWBOY.horse = false;
-        this.unbridled = true;
-        this.x = COWBOY.x;
-        this.y = COWBOY.y;
-    },
     kill: function() {
       if (this.alive) {
         this.alive = false;

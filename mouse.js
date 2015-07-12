@@ -1,3 +1,4 @@
+var DOWN_X, DOWN_Y, UP_X, UP_Y;
 var REAL_MOUSE_X = 0,
     REAL_MOUSE_Y = 0;
 var MOUSE_X = 0,
@@ -25,7 +26,7 @@ function mousedown(e) {
     if (MOUSEDOWN && RANDOM === random) {
       traceCourse();
     }
-  }, 500);
+  }, 100);
 }
 
 function traceCourse() {
@@ -37,6 +38,8 @@ function traceCourse() {
 function mousemove(e) {
   REAL_MOUSE_X = e.offsetX;
   REAL_MOUSE_Y = e.offsetY;
+  DOWN_X = e.offsetX;
+  DOWN_Y = e.offsetX;
 
   MOUSE_X = (e.offsetX / ORIGINAL_WIDTH) * WIDTH - TRANSLATE_X;
   MOUSE_Y = (e.offsetY / ORIGINAL_HEIGHT) * HEIGHT - TRANSLATE_Y;
@@ -48,6 +51,9 @@ function mousemove(e) {
 
 
 function mouseup(e) {
+  UP_X = e.offsetX;
+  UP_Y = e.offsetX;
+
   MOUSEDOWN = false;
   if (TRACE_COURSE) {
     LAST_MOUSEUP = (new Date()).getTime();
@@ -61,10 +67,13 @@ function mouseup(e) {
 }
 
 function click(e) {
-  // prevent clicks from counting immediately after recording routes.
-  var now = (new Date()).getTime();
-  if (now - LAST_MOUSEUP < 500) {
-    return;
+  var sameClick = UP_X === DOWN_X && UP_Y === DOWN_Y;
+  if (!sameClick) {
+    // prevent clicks from counting immediately after recording routes.
+    var now = (new Date()).getTime();
+    if (now - LAST_MOUSEUP < 500) {
+      return;
+    }
   }
 
   set_waypoint(COWBOY, MOUSE_X, MOUSE_Y);

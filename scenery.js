@@ -72,6 +72,26 @@ function place_rocks(ctx, a) {
       }
     });
   }
+  a.push({
+    image: function () {
+      return IMAGES["rock"];
+    },
+    x: 0,
+    y: 0,
+    draw: function (ctx) {
+      ctx.drawImage(this.image(), this.x, this.y);
+    }
+  });
+  a.push({
+    image: function () {
+      return IMAGES["rock"];
+    },
+    x: CHUNK_SIZE,
+    y: CHUNK_SIZE,
+    draw: function (ctx) {
+      ctx.drawImage(this.image(), this.x, this.y);
+    }
+  });
 }
 
 function build_outhouse(ctx, a) {

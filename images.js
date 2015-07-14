@@ -13,6 +13,7 @@ var SRC = [
   "cow_east",
   "cow_south",
   "cow_west",
+  "cow_west_branded",
   "cowboy_north",
   "cowboy_east",
   "cowboy_south",

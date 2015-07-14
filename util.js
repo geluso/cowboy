@@ -23,3 +23,15 @@ function angleToDirection(angle) {
 
   return direction;
 }
+
+function gameXToScreenX(x) {
+  return (SCALE * x) + TRANSLATE_X;
+}
+
+function gameYToScreenY(y) {
+  return (SCALE * y) + TRANSLATE_Y;
+}
+
+function absScale(n) {
+  return SCALE * n;
+}

@@ -22,7 +22,6 @@ var PISTOL = 0,
 var canvas, ctx;
 
 var DRAWABLES = [],
-    BACKGROUND = [],
     PROJECTILES = [];
 var INTERVALS = [];
 
@@ -109,6 +108,11 @@ function buildWorld() {
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
     draw(back_ctx, BACKGROUND);
+
+    if (DRAW_CHUNK_BORDERS) {
+      drawChunkBorders(back_ctx);
+    }
+
     draw_labels();
 
     if (DRAW_COORDS) {

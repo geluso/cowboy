@@ -85,7 +85,7 @@ function birth_cow(ctx, a, x, y) {
   cow = {
     image: function () {
       if (this.alive) {
-        return IMAGES[["cow_north", "cow_east", "cow_south", "cow_west"][this.direction]];
+        return IMAGES[["cow_north", "cow_east", "cow_south", "cow_west_branded"][this.direction]];
       } else {
         return IMAGES["dead_cow"];
       }

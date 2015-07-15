@@ -157,6 +157,12 @@ function draw_clear(ctx) {
 }
 
 function draw(ctx, drawables) {
+  ctx.save();
+
+  TRANSLATE_X = ((SCALE * WIDTH) / 2 - COWBOY.x);
+  TRANSLATE_Y = ((SCALE * HEIGHT) / 2 - COWBOY.y);
+  ctx.translate(TRANSLATE_X, TRANSLATE_Y);
+
   for (var i = 0; i < drawables.length; i++) {
     var d = drawables[i];
 
@@ -167,17 +173,12 @@ function draw(ctx, drawables) {
       drawables.splice(i, 1);
       i--;
     } else {
-      ctx.save();
-
-      TRANSLATE_X = ((SCALE * WIDTH) / 2 - COWBOY.x);
-      TRANSLATE_Y = ((SCALE * HEIGHT) / 2 - COWBOY.y);
-      ctx.translate(TRANSLATE_X, TRANSLATE_Y);
 
       d.draw(ctx);
-
-      ctx.restore();
     }
   }
+
+  ctx.restore();
 }
 
 function draw_labels() {

@@ -1,8 +1,8 @@
 var BACKGROUND = [];
-var CHUNK_SIZE = 500;
+var CHUNK_SIZE = 1000;
 var DRAW_CHUNK_BORDERS = true;
 
-var chunks = {
+var CHUNKS = {
   "0,0": []
 }
 
@@ -42,11 +42,11 @@ function drawChunkBorders(ctx) {
 }
 
 function drawChunk(ctx, key) {
-  var x = key.split(",")[0];
-  var y = key.split(",")[1];
+  var x = Number(key.split(",")[0], 10);
+  var y = Number(key.split(",")[1], 10);
 
-  x = gameXToScreenX(x);
-  y = gameYToScreenY(y);
+  xg = gameXToScreenX(x);
+  yg = gameYToScreenY(y);
   ctx.strokeStyle = "black";
-  ctx.strokeRect(x, y, absScale(CHUNK_SIZE), absScale(CHUNK_SIZE));
+  ctx.strokeRect(xg, yg, CHUNK_SIZE, CHUNK_SIZE);
 }

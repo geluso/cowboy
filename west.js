@@ -27,16 +27,13 @@ var INTERVALS = [];
 
 window.onload = buildWorld;
 
-function buildWorld() {
-  Math.seedrandom("COWBOY!!");
+window.onresize = resize;
 
+function resize() {
   WIDTH = window.innerWidth;
   HEIGHT = window.innerHeight;
   ORIGINAL_HEIGHT = HEIGHT;
   ORIGINAL_WIDTH = WIDTH;
-
-  // Prevent highlighting things on the page.
-  document.onselectstart = function () { return false; };
 
   var background = document.getElementById("restworld");
   var back_ctx = background.getContext("2d");
@@ -74,6 +71,24 @@ function buildWorld() {
   SCRATCH = SCRATCH.getContext("2d");
   SCRATCH.width = WIDTH;
   SCRATCH.height = HEIGHT;
+
+  setScale(SCALE);
+}
+
+function buildWorld() {
+  resize();
+
+  Math.seedrandom("COWBOY!!");
+
+  // Prevent highlighting things on the page.
+  document.onselectstart = function () { return false; };
+
+  var back_ctx = document.getElementById("restworld").getContext("2d");
+  var fore_ctx = document.getElementById("westworld").getContext("2d");
+  var text_ctx = document.getElementById("textworld").getContext("2d");
+
+  SPRITE = document.getElementById("sprite").getContext("2d");
+  SCRATCH = document.getElementById("scratch").getContext("2d");
 
   var alphabet = new Image();
   alphabet.src = "img/alphabet.gif";
@@ -270,6 +285,8 @@ function walk(actor, route) {
 
   actor.x = Math.round(actor.x);
   actor.y = Math.round(actor.y);
+
+  actor.chunk = positionToChunkKey(actor.x, actor.y);
 
   if (actor.walkFinished) {
     actor.walkFinished();

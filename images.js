@@ -53,5 +53,7 @@ var SRC = [
   "tepee",
   "totem",
   "cabin",
-  "station"
+  "station",
+  "saloon",
+  "mansion",
 ];

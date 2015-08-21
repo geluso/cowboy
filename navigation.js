@@ -42,38 +42,15 @@ function getGridKey(x, y) {
 function drawNavGrid(ctx) {
   ctx = ctx || document.getElementById("restworld").getContext("2d");
 
-  var x = x || COWBOY.x;
-  var y = y || COWBOY.y;
+  for (var key in NON_NAV_GRIDS) {
+    var x = Number(key.split(",")[0]);
+    var y = Number(key.split(",")[1]);
 
-  var x0 = Math.round(x - WIDTH / 2);
-  var x1 = Math.round(x + WIDTH / 2);
-  x0 = nToGridSize(x0);
-  x1 = nToGridSize(x1);
+    var xg = gameXToScreenX(x);
+    var yg = gameYToScreenY(y);
 
-  var y0 = Math.round(y - HEIGHT / 2);
-  var y1 = Math.round(y + HEIGHT / 2);
-  y0 = nToGridSize(y0);
-  y1 = nToGridSize(y1);
-
-  for (var x = x0; x < x1; x+= NAV_GRID_SIZE) {
-    for (var y = y0; y < y1; y += NAV_GRID_SIZE) {
-      var key = getGridKey(x, y);
-      var grid = NON_NAV_GRIDS[key];
-
-      if (grid) {
-        // red
-        fill = "rgba(255,0,0,.5)";
-      } else {
-        // green
-        fill = "rgba(0,255,0,.5)";
-      }
-
-      var xg = gameXToScreenX(x);
-      var yg = gameYToScreenY(y);
-
-      ctx.fillStyle= fill;
-      ctx.fillRect(xg, yg, NAV_GRID_SIZE, NAV_GRID_SIZE);
-    }
+    ctx.fillStyle = "rgba(255,0,0,.5)";
+    ctx.fillRect(xg, yg, NAV_GRID_SIZE, NAV_GRID_SIZE);
   }
 }
 

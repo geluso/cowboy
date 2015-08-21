@@ -5,6 +5,7 @@ function build_station() {
     },
     x: 200,
     y: -100,
+    isStatic: true,
     label: function() { return "station"; },
     draw: function (ctx) {
       draw_actor(ctx, this);

@@ -9,6 +9,7 @@ function newCabin(x, y) {
     },
     x: x,
     y: y,
+    isStatic: true,
     label: function() { return "cabin"; },
     draw: function (ctx) {
       draw_actor(ctx, this);

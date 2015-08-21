@@ -7,6 +7,7 @@ function light_fire(ctx, a, x, y) {
     },
     x: x,
     y: y,
+    isStatic: true,
     label: function() { return "campfire"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
@@ -39,6 +40,7 @@ function grow_cactus(ctx, a) {
       },
       x: Math.floor(x),
       y: Math.floor(y),
+      isStatic: true,
       type: cactus_type,
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
@@ -101,6 +103,7 @@ function build_outhouse(ctx, a) {
     },
     x: 85,
     y: 45,
+    isStatic: true,
     open: false,
     label: function() { return "outhouse"; },
     draw: function (ctx) {
@@ -133,6 +136,7 @@ function place_tepee(ctx, a, x, y) {
     },
     x: x,
     y: y,
+    isStatic: true,
     label: function() { return "tepee"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
@@ -149,6 +153,7 @@ function place_totem(ctx, a, x, y) {
     },
     x: x,
     y: y,
+    isStatic: true,
     label: function() { return "totem"; },
     draw: function (ctx) {
       draw_actor(ctx, this);

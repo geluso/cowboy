@@ -111,6 +111,7 @@ function buildWorld() {
   // start super zoomed in.
   setScale(START_SCALE);
 
+  var lastFrame = Date.now();
   TICKER = setInterval(function() {
     tick(COWBOY);
 
@@ -141,6 +142,16 @@ function buildWorld() {
 
     if (SPECIAL_CACTUS_DRAW) {
       specialCactusDraw();
+    }
+
+    if (DRAW_FRAMERATE) {
+      var now = Date.now();
+      var dt = Date.now() - lastFrame;
+      lastFrame = now;
+
+      var framerate = Math.round(1000 / dt);
+      var text = framerate + " fps";
+      fore_ctx.strokeText(text, 50, 50);
     }
   }, FRAMERATE);
 }
@@ -225,11 +236,15 @@ function draw_actor(ctx, actor) {
       x = Math.floor(actor.x - image.width / 2),
       y = Math.floor(actor.y - image.height / 2);
 
-  if (DRAW_BOUNDING_BOXES) {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(x, y, image.width, image.height);
-  } else {
+  if (!DRAW_BOUNDING_BOXES) {
     ctx.drawImage(image, x, y);
+  } else {
+    if (actor.isStatic || !ONLY_STATIC_BOUNDING_BOXES) {
+      ctx.fillStyle = 'black';
+      ctx.fillRect(x, y, image.width, image.height);
+    } else {
+      ctx.drawImage(image, x, y);
+    }
   }
 }
 

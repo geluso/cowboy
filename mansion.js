@@ -5,6 +5,7 @@ function build_mansion() {
     },
     x: 500,
     y: -82,
+    isStatic: true,
     label: function() { return "mansion"; },
     draw: function (ctx) {
       draw_actor(ctx, this);

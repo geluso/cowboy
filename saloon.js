@@ -5,6 +5,7 @@ function build_saloon() {
     },
     x: 340,
     y: -82,
+    isStatic: true,
     label: function() { return "saloon"; },
     draw: function (ctx) {
       draw_actor(ctx, this);

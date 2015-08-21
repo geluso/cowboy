@@ -16,6 +16,10 @@ var KEYBOARD = {},
     F = 70,
     I = 73,
     O = 79,
+    P = 80,
+    Q = 81,
+    R = 82,
+    S = 83,
     X = 88,
     SPACE = 32,
     SHIFT = 16;
@@ -33,8 +37,18 @@ function press(e, actor) {
     DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
   }
 
+  // Toggle bounding box draw
   if (KEYBOARD[B]) {
     DRAW_BOUNDING_BOXES = !DRAW_BOUNDING_BOXES;
+  }
+
+  // toggle only drawing static objects
+  if (KEYBOARD[S]) {
+    ONLY_STATIC_BOUNDING_BOXES = !ONLY_STATIC_BOUNDING_BOXES;
+  }
+
+  if (KEYBOARD[R]) {
+    DRAW_FRAMERATE = !DRAW_FRAMERATE;
   }
 
   if (KEYBOARD[I] || KEYBOARD[O]) {

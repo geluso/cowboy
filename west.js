@@ -112,6 +112,8 @@ function buildWorld() {
   setScale(START_SCALE);
 
   var lastFrame = Date.now();
+  var lastX = undefined;
+  var lastY = undefined;
   TICKER = setInterval(function() {
     tick(COWBOY);
 
@@ -123,14 +125,18 @@ function buildWorld() {
 
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);
-    draw(back_ctx, BACKGROUND);
 
-    if (DRAW_CHUNK_BORDERS) {
-      drawChunkBorders(back_ctx);
-    }
+    // no need to update background if cowboy hasn't moved.
+    if (COWBOY.x !== lastX || COWBOY.y !== lastY) {
+      draw(back_ctx, BACKGROUND);
 
-    if (DRAW_NAV_GRID) {
-      drawNavGrid(back_ctx);
+      if (DRAW_CHUNK_BORDERS) {
+        drawChunkBorders(back_ctx);
+      }
+
+      if (DRAW_NAV_GRID) {
+        drawNavGrid(back_ctx);
+      }
     }
 
     draw_labels();

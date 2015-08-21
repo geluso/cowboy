@@ -72,18 +72,20 @@ function place_fence() {
 
   // bottom line
   for (var i = 0; i < 20; i++) {
-    DRAWABLES.push({
-      image: function () {
-        return IMAGES["fence_south"];
-      },
-      x: leftmost + 24 * i,
-      y: topmost + 312,
-      isStatic: true,
-      label: function() { return "fence"; },
-      draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
-      }
-    });
+    if (i < 12 || i > 14) {
+      DRAWABLES.push({
+        image: function () {
+          return IMAGES["fence_south"];
+        },
+        x: leftmost + 24 * i,
+        y: topmost + 312,
+        isStatic: true,
+        label: function() { return "fence"; },
+        draw: function (ctx) {
+          ctx.drawImage(this.image(), this.x, this.y);
+        }
+      });
+    }
   }
 
 }

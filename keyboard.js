@@ -15,6 +15,7 @@ var KEYBOARD = {},
     E = 69,
     F = 70,
     I = 73,
+    N = 78,
     O = 79,
     P = 80,
     Q = 81,
@@ -40,6 +41,10 @@ function press(e, actor) {
   // Toggle bounding box draw
   if (KEYBOARD[B]) {
     DRAW_BOUNDING_BOXES = !DRAW_BOUNDING_BOXES;
+  }
+
+  if (KEYBOARD[N]) {
+    DRAW_NAV_GRID = !DRAW_NAV_GRID;
   }
 
   // toggle only drawing static objects

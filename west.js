@@ -129,6 +129,10 @@ function buildWorld() {
       drawChunkBorders(back_ctx);
     }
 
+    if (DRAW_NAV_GRID) {
+      drawNavGrid(back_ctx);
+    }
+
     draw_labels();
 
     if (DRAW_COORDS) {

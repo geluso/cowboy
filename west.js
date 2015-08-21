@@ -265,26 +265,53 @@ function tick(actor) {
   if (SMOOTH_SHOOTING && KEYBOARD[SPACE]) {
     shoot(actor, PROJECTILES);
   }
+
+  var dx = 0;
+  var dy = 0;
+
   if (KEYBOARD[UP] || KEYBOARD[38]) {
-    actor.y -= actor.step();
+    dy = -1;
     actor.direction = NORTH;
-    actor.stop();
   }
   if (KEYBOARD[DOWN] || KEYBOARD[40]) {
-    actor.y += actor.step();
+    dy = 1;
     actor.direction = SOUTH;
-    actor.stop();
   }
   if (KEYBOARD[LEFT] || KEYBOARD[37]) {
-    actor.x -= actor.step();
+    dx = -1;
     actor.direction = WEST;
-    actor.stop();
   }
   if (KEYBOARD[RIGHT] || KEYBOARD[39]) {
-    actor.x += actor.step();
+    dx = 1;
     actor.direction = EAST;
-    actor.stop();
   }
+
+  if (dx || dy) {
+    actor.stop();
+    stepActor(actor, dx, dy);
+  }
+}
+
+// dx and dy are either -1,0,1
+function stepActor(actor, dx, dy) {
+  var newX = actor.x;
+  var newY = actor.y;
+
+  if (dx) {
+    newX = actor.x + actor.step() * dx;
+  }
+
+  if (dy) {
+    newY = actor.y + actor.step() * dy;
+  }
+
+  if (validPosition(newX, newY)) {
+    actor.x = newX;
+    actor.y = newY;
+    return true;
+  }
+
+  return false;
 }
 
 // Sets a destination for the cowboy, and makes him move toward it.

@@ -7,6 +7,12 @@ function nToGridSize(n) {
   return n;
 }
 
+function validPosition(x, y) {
+  var key = getGridKey(x, y);
+  var blocked = NON_NAV_GRIDS[key];
+  return !blocked;
+}
+
 function createNavMesh(drawables) {
   for (var i = 0; i < drawables.length; i++) {
     var item = drawables[i];

@@ -3,10 +3,6 @@ var CABIN_TOWN_X = -500;
 var CABIN_TOWN_Y = -500;
 
 function newCabin(x, y) {
-  if (x === undefined || y === undefined) {
-    console.log(x, y)
-  }
-
   var cabin = {
     image: function () {
       return IMAGES["cabin"];

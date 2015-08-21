@@ -164,6 +164,7 @@ function draw_foreground(ctx, a) {
 
   // reducing dependencies on ctx and a when creating new structures.
   build_cabin();
+  build_station();
 
   birth_natives(ctx, a);
 

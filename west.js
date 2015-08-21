@@ -296,11 +296,11 @@ function tick(actor) {
 function stepActor(actor, dx, dy) {
   var newX = actor.x;
   var newY = actor.y;
+  var moved = false;
 
   if (dx) {
     newX = actor.x + actor.step() * dx;
   }
-
   if (dy) {
     newY = actor.y + actor.step() * dy;
   }
@@ -308,10 +308,16 @@ function stepActor(actor, dx, dy) {
   if (validPosition(newX, newY)) {
     actor.x = newX;
     actor.y = newY;
-    return true;
+    moved = true;
+  } else if (validPosition(newX, actor.y)) {
+    actor.x = newX;
+    moved = true;
+  } else if (validPosition(actor.x, newY)) {
+    actor.y = newY;
+    moved = true;
   }
 
-  return false;
+  return moved;
 }
 
 // Sets a destination for the cowboy, and makes him move toward it.

@@ -1,7 +1,7 @@
 var COWS = [];
 var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
-var COW_RADIUS = 250;
+var COW_RADIUS = 180;
 
 function birth_cows(ctx, a) {
   var total = 23;

@@ -333,19 +333,29 @@ function walk(actor, route) {
       Math.abs(actor.y - actor.way_y) <= actor.step()) {
     actor.stop(route);
   } else {
+    var dx = 0;
+    var dy = 0;
+
     if ((actor.y + actor.step()) < actor.way_y) {
-      actor.y += actor.step();
+      dy = 1;
       actor.direction = SOUTH;
     } else if ((actor.y - actor.step()) > actor.way_y) {
-      actor.y -= actor.step();
+      dy = -1;
       actor.direction = NORTH;
     }
     if ((actor.x + actor.step()) < actor.way_x) {
-      actor.x += actor.step();
+      dx = 1;
       actor.direction = EAST;
     } else if ((actor.x - actor.step()) > actor.way_x) {
-      actor.x -= actor.step();
+      dx = -1;
       actor.direction = WEST;
+    }
+
+    if (dx || dy) {
+      var moved = stepActor(actor, dx, dy);
+      if (!moved) {
+        actor.stop(route);
+      }
     }
   }
 

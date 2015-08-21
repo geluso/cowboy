@@ -174,10 +174,10 @@ function birth_natives(ctx, a) {
   light_fire(ctx, a, 360, 310);
   place_totem(ctx, a, 330, 290);
 
-  NATIVE1 = birth_native_dude(ctx, a, 380, 340);
+  NATIVE1 = birth_native_dude(ctx, a, 380, 370);
   NATIVE2 = birth_native_dude(ctx, a, 300, 300);
-  NATIVE3 = birth_native_dude(ctx, a, 320, 330);
-  birth_chief(ctx, a, 350, 350);
+  NATIVE3 = birth_native_dude(ctx, a, 320, 380);
+  birth_chief(ctx, a, 350, 360);
 }
 
 function birth_native_dude(ctx, a, x, y) {

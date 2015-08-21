@@ -109,7 +109,7 @@ function buildWorld() {
   DRAWABLES.push(DRAWABLES.shift());
 
   // start super zoomed in.
-  setScale(.1);
+  setScale(START_SCALE);
 
   TICKER = setInterval(function() {
     tick(COWBOY);
@@ -161,6 +161,9 @@ function draw_foreground(ctx, a) {
   build_outhouse(ctx, a);
   birth_horse(ctx, a);
   birth_cows(ctx, a);
+
+  // reducing dependencies on ctx and a when creating new structures.
+  build_cabin();
 
   birth_natives(ctx, a);
 

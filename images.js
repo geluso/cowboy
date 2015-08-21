@@ -52,4 +52,5 @@ var SRC = [
   "native_chief",
   "tepee",
   "totem",
+  "cabin"
 ];

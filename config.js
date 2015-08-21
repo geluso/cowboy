@@ -4,6 +4,7 @@ var WIDTH = 800;
 var HEIGHT = 600;
 
 var SCALE = 1;
+var START_SCALE = 1;
 
 var SMOOTH_SHOOTING = false;
 

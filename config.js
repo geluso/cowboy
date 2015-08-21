@@ -10,3 +10,5 @@ var SMOOTH_SHOOTING = false;
 
 var DRAW_COORDS = false;
 var SPECIAL_CACTUS_DRAW = false;
+
+var DRAW_BOUNDING_BOXES = false;

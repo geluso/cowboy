@@ -11,6 +11,7 @@ var KEYBOARD = {},
     LEFT = 65,
     RIGHT = 68,
     ENTER = 13,
+    B = 66,
     E = 69,
     F = 70,
     I = 73,
@@ -30,6 +31,10 @@ function press(e, actor) {
 
   if (KEYBOARD[X]) {
     DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
+  }
+
+  if (KEYBOARD[B]) {
+    DRAW_BOUNDING_BOXES = !DRAW_BOUNDING_BOXES;
   }
 
   if (KEYBOARD[I] || KEYBOARD[O]) {

@@ -195,7 +195,6 @@ function draw(ctx, drawables) {
       drawables.splice(i, 1);
       i--;
     } else {
-
       d.draw(ctx);
     }
   }
@@ -225,7 +224,13 @@ function draw_actor(ctx, actor) {
   var image = actor.image(),
       x = Math.floor(actor.x - image.width / 2),
       y = Math.floor(actor.y - image.height / 2);
-  ctx.drawImage(image, x, y);
+
+  if (DRAW_BOUNDING_BOXES) {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(x, y, image.width, image.height);
+  } else {
+    ctx.drawImage(image, x, y);
+  }
 }
 
 function tick(actor) {

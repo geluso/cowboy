@@ -19,17 +19,19 @@ function birth_cows(ctx, a) {
   }
 }
 
-function place_fence(ctx, a) {
+function place_fence() {
   var leftmost = COW_CENTER_X - 75 + 10;
   var topmost = COW_CENTER_Y - 50;
   // top line
   for (var i = 0; i < 20; i++) {
-    a.push({
+    DRAWABLES.push({
       image: function () {
         return IMAGES["fence_north"];
       },
       x: leftmost + 24 * i,
       y: topmost,
+      isStatic: true,
+      label: function() { return "fence"; },
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
@@ -38,12 +40,14 @@ function place_fence(ctx, a) {
 
   // west side
   for (var i = 0; i < 13; i++) {
-    a.push({
+    DRAWABLES.push({
       image: function () {
         return IMAGES["fence_west"];
       },
       x: leftmost - 8,
       y: 6 + topmost + 24 * i,
+      isStatic: true,
+      label: function() { return "fence"; },
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
@@ -52,12 +56,14 @@ function place_fence(ctx, a) {
 
   // west side
   for (var i = 0; i < 13; i++) {
-    a.push({
+    DRAWABLES.push({
       image: function () {
         return IMAGES["fence_east"];
       },
       x: leftmost + 480,
       y: 6 + topmost + 24 * i,
+      isStatic: true,
+      label: function() { return "fence"; },
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
@@ -66,12 +72,14 @@ function place_fence(ctx, a) {
 
   // bottom line
   for (var i = 0; i < 20; i++) {
-    a.push({
+    DRAWABLES.push({
       image: function () {
         return IMAGES["fence_south"];
       },
       x: leftmost + 24 * i,
       y: topmost + 312,
+      isStatic: true,
+      label: function() { return "fence"; },
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }

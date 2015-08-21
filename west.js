@@ -172,7 +172,6 @@ function draw_background(ctx, a) {
   if (a.length === 0) {
     grow_cactus(ctx, a);
     place_rocks(ctx, a);
-    place_fence(ctx, a);
   }
   draw(ctx, a);
 }
@@ -189,6 +188,9 @@ function draw_foreground(ctx, a) {
   build_station();
   build_saloon();
   build_mansion();
+  place_fence();
+
+  createNavMesh(DRAWABLES);
 
   birth_natives(ctx, a);
 
@@ -243,8 +245,8 @@ function draw_labels() {
 
 function draw_actor(ctx, actor) {
   var image = actor.image(),
-      x = Math.floor(actor.x - image.width / 2),
-      y = Math.floor(actor.y - image.height / 2);
+      x = actor.x,
+      y = actor.y;
 
   if (!DRAW_BOUNDING_BOXES) {
     ctx.drawImage(image, x, y);

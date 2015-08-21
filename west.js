@@ -190,9 +190,9 @@ function draw_foreground(ctx, a) {
   build_mansion();
   place_fence();
 
-  createNavMesh(DRAWABLES);
-
   birth_natives(ctx, a);
+
+  createNavMesh(DRAWABLES);
 
   bones(ctx, a);
 }

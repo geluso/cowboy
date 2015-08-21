@@ -163,7 +163,8 @@ function draw_foreground(ctx, a) {
   birth_cows(ctx, a);
 
   // reducing dependencies on ctx and a when creating new structures.
-  build_cabin();
+  buildCabin();
+  buildCabinTown();
   build_station();
   build_saloon();
   build_mansion();

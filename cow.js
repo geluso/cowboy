@@ -30,7 +30,7 @@ function place_fence() {
       },
       x: leftmost + 24 * i,
       y: topmost,
-      isStatic: true,
+      isStatic: false,
       label: function() { return "fence"; },
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);

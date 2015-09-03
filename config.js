@@ -16,3 +16,5 @@ var ONLY_STATIC_BOUNDING_BOXES = false;
 var DRAW_FRAMERATE = false;
 var DRAW_NAV_GRID = false;
 var SHOW_HOVER_COORDS = false;
+
+var COW_BRAIN = false;

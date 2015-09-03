@@ -3,6 +3,11 @@ var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
 var COW_RADIUS = 180;
 
+var GATE = {
+  x: -145,
+  y: 370
+};
+
 function birth_cows(ctx, a) {
   var total = 23;
 
@@ -153,6 +158,15 @@ function birth_cow(ctx, a, x, y) {
             this.frame_width, this.frame_height);
       } else {
         draw_actor(ctx, this);
+      }
+
+      if (COW_BRAIN) {
+        if (this.way_x && this.way_y) {
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.way_x, this.way_y);
+          ctx.stroke();
+        }
       }
     },
     alive: true,

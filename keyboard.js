@@ -22,6 +22,9 @@ var KEYBOARD = {},
     Q = 81,
     R = 82,
     S = 83,
+    T = 84,
+    U = 85,
+    V = 86,
     X = 88,
     SPACE = 32,
     SHIFT = 16;
@@ -46,6 +49,10 @@ function press(e, actor) {
 
   if (KEYBOARD[C]) {
     SHOW_HOVER_COORDS = !SHOW_HOVER_COORDS;
+  }
+
+  if (KEYBOARD[V]) {
+    COW_BRAIN = !COW_BRAIN;
   }
 
   if (KEYBOARD[N]) {

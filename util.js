@@ -34,6 +34,18 @@ function gameYToScreenY(y) {
   return y;
 }
 
+function screenXToGameX(x) {
+  x = x - TRANSLATE_X;
+  x = x / SCALE;
+  return x;
+}
+
+function screenYToGameY(y) {
+  y = y - TRANSLATE_Y;
+  y = y / SCALE;
+  return y;
+}
+
 function absScale(n) {
   return SCALE * n;
 }

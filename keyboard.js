@@ -12,6 +12,7 @@ var KEYBOARD = {},
     RIGHT = 68,
     ENTER = 13,
     B = 66,
+    C = 67,
     E = 69,
     F = 70,
     I = 73,
@@ -41,6 +42,10 @@ function press(e, actor) {
   // Toggle bounding box draw
   if (KEYBOARD[B]) {
     DRAW_BOUNDING_BOXES = !DRAW_BOUNDING_BOXES;
+  }
+
+  if (KEYBOARD[C]) {
+    SHOW_HOVER_COORDS = !SHOW_HOVER_COORDS;
   }
 
   if (KEYBOARD[N]) {

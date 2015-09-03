@@ -239,8 +239,23 @@ function draw_labels() {
     }
   }
   if (labels == 0) {
-    label("go", x, y);
+    if (SHOW_HOVER_COORDS) {
+      drawScreenCoordinates(x, y);
+    } else {
+      label("go", x, y);
+    }
   }
+}
+
+function drawScreenCoordinates(x, y) {
+  var coords = "(x,y)";
+  var xg = screenXToGameX(x);
+  var yg = screenYToGameY(y);
+
+  coords = coords.replace(/x/, xg);
+  coords = coords.replace(/y/, yg);
+
+  label(coords, x, y);
 }
 
 function draw_actor(ctx, actor) {

@@ -24,6 +24,32 @@ function angleToDirection(angle) {
   return direction;
 }
 
+function unitVector(x, y) {
+  var angle = angleFromOrigin(x, y);
+
+  var vx = Math.cos(angle);
+  var vy = Math.sin(angle);
+
+  var vector = {
+    x: vx,
+    y: vy
+  }
+
+  return vector;
+}
+
+function angleFromOrigin(x, y) {
+  return angle(0, 0, x, y);
+}
+
+function angle(x0, y0, x1, y1) {
+  var angle = Math.atan2(y1 - y0, x1 - x0);
+  if (angle < 0) {
+    angle = 2 * Math.PI + angle;
+  }
+  return angle;
+}
+
 function gameXToScreenX(x) {
   x = x + TRANSLATE_X;
   return x;

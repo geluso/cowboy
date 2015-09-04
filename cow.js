@@ -110,12 +110,92 @@ function birth_cow(ctx, a, x, y) {
     way_x: undefined,
     way_y: undefined,
     actions: [],
+
+    // wander steering
+    mass: 100,
+    MaxSpeed: 5,
+    MaxForce: undefined,
+    MaxTurnRate: undefined,
+
+    velocity: {
+      x: 0,
+      y: 0
+    },
+
+    targetLocation: function() {
+      // have target in mind?
+      if (this.way_x && this.way_y) {
+        // on target?
+        if (this.x === this.way_x && this.y === this.way_y) {
+          // slim chance that we pick new target once arriving at current target.
+          if (Math.random() < .001) {
+            this.way_x = this.x + 100 * Math.random();
+            this.way_y = this.y + 100 * Math.random();
+          }
+        }
+      } else {
+        if (Math.random() < .1) {
+          this.way_x = GATE.x;
+          this.way_y = GATE.y;
+        } else {
+          this.way_x = this.x + 100 * Math.random();
+          this.way_y = this.y + 100 * Math.random();
+        }
+      }
+
+      var loc = {
+        x: this.way_x,
+        y: this.way_y
+      }
+
+      return loc;
+    },
+
+    steer: function() {
+      var loc = this.targetLocation();
+
+      var fx = loc.x - this.x;
+      var fy = loc.y - this.y;
+
+      var desiredVelocity = unitVector(fx, fy);
+
+      desiredVelocity.x *= this.MaxSpeed;
+      desiredVelocity.y *= this.MaxSpeed;
+
+      var steeringX = desiredVelocity.x - this.velocity.x;
+      var steeringY = desiredVelocity.y - this.velocity.y;
+
+      var steering = {
+        x: steeringX,
+        y: steeringY,
+      }
+
+      return steering;
+    },
+
+    update: function() {
+      var steer = this.steer();
+      steer.x = steer.x / this.mass;
+      steer.y = steer.y / this.mass;
+
+      this.velocity.x += steer.x;
+      this.velocity.y += steer.y;
+
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
+
+      this.x = Math.round(this.x);
+      this.y = Math.round(this.y);
+    },
+
     label: function() { return "cow"; },
     step: function() {
       var step = .6;
       return step;
     },
     stop: function () {
+      return;
+
       if (cow.actions) {
         clear_intervals(cow.actions);
       }
@@ -150,6 +230,9 @@ function birth_cow(ctx, a, x, y) {
       }
     },
     draw: function (ctx) {
+
+      this.update();
+
       if (!this.alive) {
         ctx.drawImage(this.image(),
             this.frame_width * this.frame, 0, this.frame_width, this.frame_height,
@@ -159,6 +242,8 @@ function birth_cow(ctx, a, x, y) {
       } else {
         draw_actor(ctx, this);
       }
+
+      return;
 
       if (COW_BRAIN) {
         if (this.way_x && this.way_y) {

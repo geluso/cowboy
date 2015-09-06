@@ -111,11 +111,19 @@ function birth_cow(ctx, a, x, y) {
     way_y: undefined,
     actions: [],
 
-    // wander steering
-    mass: 100,
-    MaxSpeed: 5,
-    MaxForce: undefined,
+    // steering
+    mass: 500,
+    MaxSpeed: 1,
+    MaxForce: 10,
     MaxTurnRate: undefined,
+
+    VehicleHeading: {x: 1, y:0},
+    VehicleSide: {x: 0, y: -1},
+
+    // wandering
+    WanderRadius: 20,
+    WanderDistance: 25,
+    WanderJitter: 30,
 
     velocity: {
       x: 0,
@@ -198,20 +206,26 @@ function birth_cow(ctx, a, x, y) {
     },
 
     wander: function() {
-      var steering = {
-        x: -this.velocity.x || 0,
-        y: -this.velocity.y || 0
-      }
+      var jitterX = randomNegPos();
+      var jitterY = randomNegPos();
 
-      return steering;
+      var target = unitVector(jitterX, jitterY);
+      target = scaleVector(target, this.WanderRadius);
+
+      var distance = scaleVector(this.VehicleHeading, this.WanderDistance);
+
+      target = vectorAdd(target, distance);
+      return target;
     },
 
     steer: function() {
+      var steer;
       if (vectorDistance(COWBOY, this) < 30) {
-        return this.flee();
+        steer = this.flee();
       } else {
-        return this.wander();
+        steer = this.wander();
       }
+      return steer;
     },
 
     update: function() {
@@ -221,17 +235,26 @@ function birth_cow(ctx, a, x, y) {
         return
       }
 
+      // restrict it if it's too much force
+      steer = capVector(steer, this.MaxForce);
+
       steer.x = steer.x / this.mass;
       steer.y = steer.y / this.mass;
 
       this.velocity.x += steer.x;
       this.velocity.y += steer.y;
 
+      this.velocity = capVector(this.velocity, this.MaxSpeed);
+
       this.x += this.velocity.x;
       this.y += this.velocity.y;
 
       this.x = Math.round(this.x);
       this.y = Math.round(this.y);
+
+      if (vectorLength > .0001) {
+        VehicleHeading = unitVectorFromVector(this.velocity);
+      }
     },
 
     label: function() { return "cow"; },

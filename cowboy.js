@@ -10,7 +10,7 @@ function birth_cowboy(ctx, a) {
       }
     },
     x: -3 + 50,
-    y: 20 + 50,
+    y: 110,
     way_x: undefined,
     way_y: undefined,
     actions: [],

@@ -53,31 +53,15 @@ function place_fence() {
     });
   }
 
-  // west side
+  // east side
   for (var i = 0; i < 13; i++) {
-    DRAWABLES.push({
-      image: function () {
-        return IMAGES["fence_east"];
-      },
-      x: leftmost + 480,
-      y: 6 + topmost + 24 * i,
-      isStatic: true,
-      label: function() { return "fence"; },
-      draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
-      }
-    });
-  }
-
-  // bottom line
-  for (var i = 0; i < 20; i++) {
-    if (i < 12 || i > 14) {
+    if (i < 2 || i > 4) {
       DRAWABLES.push({
         image: function () {
-          return IMAGES["fence_south"];
+          return IMAGES["fence_east"];
         },
-        x: leftmost + 24 * i,
-        y: topmost + 312,
+        x: leftmost + 480,
+        y: 6 + topmost + 24 * i,
         isStatic: true,
         label: function() { return "fence"; },
         draw: function (ctx) {
@@ -85,6 +69,22 @@ function place_fence() {
         }
       });
     }
+  }
+
+  // bottom line
+  for (var i = 0; i < 20; i++) {
+    DRAWABLES.push({
+      image: function () {
+        return IMAGES["fence_south"];
+      },
+      x: leftmost + 24 * i,
+      y: topmost + 312,
+      isStatic: true,
+      label: function() { return "fence"; },
+      draw: function (ctx) {
+        ctx.drawImage(this.image(), this.x, this.y);
+      }
+    });
   }
 
 }
@@ -271,9 +271,13 @@ function birth_cow(ctx, a, x, y) {
         }
 
         if (this.x > -10) {
-          this.behavior = 'seek';
-          this.x = -10;
-          this.velocity.x *= -1;
+          if (this.y > 100 && this.y < 175) {
+            return;
+          } else {
+            this.behavior = 'seek';
+            this.x = -10;
+            this.velocity.x *= -1;
+          }
         }
 
         if (this.y < 70) {
@@ -283,13 +287,9 @@ function birth_cow(ctx, a, x, y) {
         }
 
         if (this.y > 340) {
-          if (this.x > -175 && this.x < -100) {
-            return;
-          } else {
-            this.behavior = 'seek';
-            this.y = 340;
-            this.velocity.y *= -1;
-          }
+          this.behavior = 'seek';
+          this.y = 340;
+          this.velocity.y *= -1;
         }
       }
 

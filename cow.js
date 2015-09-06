@@ -135,13 +135,17 @@ function birth_cow(ctx, a, x, y) {
         }
       } else {
         if (Math.random() < .1) {
-          this.way_x = GATE.x;
-          this.way_y = GATE.y;
+          this.way_x = HORSE.x;
+          this.way_y = HORSE.y;
         } else {
           this.way_x = this.x + 100 * Math.random();
           this.way_y = this.y + 100 * Math.random();
         }
       }
+
+      // forcing everything to HORSE for now.
+      this.way_x = HORSE.x;
+      this.way_y = HORSE.y;
 
       var loc = {
         x: this.way_x,
@@ -151,7 +155,27 @@ function birth_cow(ctx, a, x, y) {
       return loc;
     },
 
-    steer: function() {
+    flee: function() {
+      var fx = this.x - COWBOY.x;
+      var fy = this.y - COWBOY.y;
+
+      var desiredVelocity = unitVector(fx, fy);
+
+      desiredVelocity.x *= this.MaxSpeed;
+      desiredVelocity.y *= this.MaxSpeed;
+
+      var steeringX = desiredVelocity.x - this.velocity.x;
+      var steeringY = desiredVelocity.y - this.velocity.y;
+
+      var steering = {
+        x: steeringX,
+        y: steeringY,
+      }
+
+      return steering;
+    },
+
+    seek: function() {
       var loc = this.targetLocation();
 
       var fx = loc.x - this.x;
@@ -173,8 +197,30 @@ function birth_cow(ctx, a, x, y) {
       return steering;
     },
 
+    wander: function() {
+      var steering = {
+        x: -this.velocity.x || 0,
+        y: -this.velocity.y || 0
+      }
+
+      return steering;
+    },
+
+    steer: function() {
+      if (vectorDistance(COWBOY, this) < 30) {
+        return this.flee();
+      } else {
+        return this.wander();
+      }
+    },
+
     update: function() {
       var steer = this.steer();
+
+      if (!steer) {
+        return
+      }
+
       steer.x = steer.x / this.mass;
       steer.y = steer.y / this.mass;
 

@@ -1,4 +1,5 @@
 var COWS = [];
+var TOTAL_COWS = 1;
 var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
 var COW_RADIUS = 180;
@@ -9,14 +10,7 @@ var GATE = {
 };
 
 function birth_cows(ctx, a) {
-  var total = 23;
-
-  var x = -3;
-  var y = 20 + 50;
-  var cow = birth_cow(ctx, a, x, y);
-  COWS.push(cow);
-
-  for (var i = 0; i < total; i++) {
+  for (var i = 0; i < TOTAL_COWS; i++) {
     var x = COW_CENTER_X + Math.random() * COW_RADIUS;
     var y = COW_CENTER_Y + Math.random() * COW_RADIUS;
     cow = birth_cow(ctx, a, x, y);
@@ -112,7 +106,7 @@ function birth_cow(ctx, a, x, y) {
     actions: [],
 
     // steering
-    mass: 500,
+    mass: 10,
     MaxSpeed: 1,
     MaxForce: 10,
     MaxTurnRate: undefined,
@@ -220,7 +214,7 @@ function birth_cow(ctx, a, x, y) {
 
     steer: function() {
       var steer;
-      if (vectorDistance(COWBOY, this) < 30) {
+      if (vectorDistance(COWBOY, this) < 60) {
         steer = this.flee();
       } else {
         steer = this.wander();

@@ -1,5 +1,5 @@
 var COWS = [];
-var TOTAL_COWS = 1;
+var TOTAL_COWS = 23;
 var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
 var COW_RADIUS = 180;
@@ -111,13 +111,17 @@ function birth_cow(ctx, a, x, y) {
     MaxForce: 10,
     MaxTurnRate: undefined,
 
-    VehicleHeading: {x: 1, y:0},
-    VehicleSide: {x: 0, y: -1},
+    VehicleHeading: randomUnitVector(),
+    //VehicleSide: {x: 0, y: -1},
 
     // wandering
-    WanderRadius: 20,
-    WanderDistance: 25,
-    WanderJitter: 30,
+    WanderRadius: 2,
+    WanderDistance: 5,
+    WanderJitter: 1,
+    WanderTarget: {
+      x: 0,
+      y: 0
+    },
 
     velocity: {
       x: 0,
@@ -200,8 +204,8 @@ function birth_cow(ctx, a, x, y) {
     },
 
     wander: function() {
-      var jitterX = randomNegPos();
-      var jitterY = randomNegPos();
+      var jitterX = this.WanderTarget.x + this.WanderJitter * randomNegPos();
+      var jitterY = this.WanderTarget.y + this.WanderJitter * randomNegPos();
 
       var target = unitVector(jitterX, jitterY);
       target = scaleVector(target, this.WanderRadius);

@@ -239,6 +239,11 @@ function birth_cow(ctx, a, x, y) {
     },
 
     update: function() {
+      // dead cows don't move.
+      if (!this.alive) {
+        return;
+      }
+
       var steer = this.steer();
 
       if (!steer) {

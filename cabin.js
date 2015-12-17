@@ -25,6 +25,7 @@ function buildCabin() {
 }
 
 function buildCabinTown() {
+  return
   for (var i = 0; i < NUMBER_OF_CABINS; i++) {
     var randomX = CABIN_TOWN_X * Math.random();
     var randomY = CABIN_TOWN_Y * Math.random();

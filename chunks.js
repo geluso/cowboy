@@ -1,6 +1,6 @@
 var BACKGROUND = [];
 var CHUNK_SIZE = 1000;
-var DRAW_CHUNK_BORDERS = true;
+var DRAW_CHUNK_BORDERS = false;
 
 var CHUNKS = {
   "0,0": []

@@ -1,3 +1,6 @@
+var COWBOY_START_X = -3 + 50;
+var COWBOY_START_Y = 110;
+
 var COWBOY;
 
 function birth_cowboy(ctx, a) {
@@ -9,8 +12,8 @@ function birth_cowboy(ctx, a) {
         return IMAGES[["cowboy_north", "cowboy_east", "cowboy_south", "cowboy_west"][this.direction]];
       }
     },
-    x: -3 + 50,
-    y: 110,
+    x: COWBOY_START_X,
+    y: COWBOY_START_Y,
     way_x: undefined,
     way_y: undefined,
     actions: [],

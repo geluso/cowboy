@@ -15,6 +15,8 @@ var KEYBOARD = {},
     C = 67,
     E = 69,
     F = 70,
+    G = 71,
+    H = 72,
     I = 73,
     N = 78,
     O = 79,
@@ -38,10 +40,6 @@ function press(e, actor) {
   KEYBOARD[e.which] = true;
   KEYBOARD[e.keyCode] = true;
 
-  if (KEYBOARD[X]) {
-    DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
-  }
-
   // Toggle bounding box draw
   if (KEYBOARD[B]) {
     DRAW_BOUNDING_BOXES = !DRAW_BOUNDING_BOXES;
@@ -51,21 +49,10 @@ function press(e, actor) {
     SHOW_HOVER_COORDS = !SHOW_HOVER_COORDS;
   }
 
-  if (KEYBOARD[V]) {
-    COW_BRAIN = !COW_BRAIN;
-  }
-
-  if (KEYBOARD[N]) {
-    DRAW_NAV_GRID = !DRAW_NAV_GRID;
-  }
-
-  // toggle only drawing static objects
-  if (KEYBOARD[S]) {
-    ONLY_STATIC_BOUNDING_BOXES = !ONLY_STATIC_BOUNDING_BOXES;
-  }
-
-  if (KEYBOARD[R]) {
-    DRAW_FRAMERATE = !DRAW_FRAMERATE;
+  if (KEYBOARD[H]) {
+    // Send cowboy home.
+    console.log("go home");
+    set_waypoint(COWBOY, COWBOY_START_X, COWBOY_START_Y);
   }
 
   if (KEYBOARD[I] || KEYBOARD[O]) {
@@ -74,6 +61,27 @@ function press(e, actor) {
     } else if (KEYBOARD[I]) {
       zoomin();
     }
+  }
+
+  if (KEYBOARD[N]) {
+    DRAW_NAV_GRID = !DRAW_NAV_GRID;
+  }
+
+  if (KEYBOARD[R]) {
+    DRAW_FRAMERATE = !DRAW_FRAMERATE;
+  }
+
+  // toggle only drawing static objects
+  if (KEYBOARD[S]) {
+    ONLY_STATIC_BOUNDING_BOXES = !ONLY_STATIC_BOUNDING_BOXES;
+  }
+
+  if (KEYBOARD[V]) {
+    COW_BRAIN = !COW_BRAIN;
+  }
+
+  if (KEYBOARD[X]) {
+    DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
   }
 
   if (KEYBOARD[UP] || KEYBOARD[38] || KEYBOARD[DOWN] || KEYBOARD[40] ||

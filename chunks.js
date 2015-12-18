@@ -1,6 +1,6 @@
 var BACKGROUND = [];
 var CHUNK_SIZE = 1000;
-var DRAW_CHUNK_BORDERS = false;
+var DRAW_CHUNK_BORDERS = true;
 
 var CHUNKS = {
   "0,0": []
@@ -50,3 +50,20 @@ function drawChunk(ctx, key) {
   ctx.strokeStyle = "black";
   ctx.strokeRect(xg, yg, CHUNK_SIZE, CHUNK_SIZE);
 }
+
+function registerActorInChunk(actor) {
+  var pos = positionToChunkKey(actor.x, actor.y);
+  if (CHUNKS[pos] === undefined) {
+    CHUNKS[pos] = [];
+  }
+  CHUNKS[pos].push(actor);
+}
+
+function crossingChunkBorder(pos) {
+  var x = pos.split(",")[0];
+  var y = pos.split(",")[1];
+
+  if (CHUNKS[pos] === undefined) {
+    console.log("new chunk!!");
+  }
+};

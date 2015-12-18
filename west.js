@@ -309,6 +309,9 @@ function tick(actor) {
 
 // dx and dy are either -1,0,1
 function stepActor(actor, dx, dy) {
+  var oldX = actor.x;
+  var oldY = actor.y;
+
   var newX = actor.x;
   var newY = actor.y;
   var moved = false;
@@ -330,6 +333,15 @@ function stepActor(actor, dx, dy) {
   } else if (validPosition(actor.x, newY)) {
     actor.y = newY;
     moved = true;
+  }
+
+  if (actor === COWBOY && moved) {
+    oldPos = positionToChunkKey(oldX, oldY);
+    newPos = positionToChunkKey(newX, newY);
+
+    if (oldPos !== newPos) {
+      crossingChunkBorder(newPos);
+    }
   }
 
   return moved;

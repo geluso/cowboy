@@ -34,7 +34,7 @@ function grow_cactus(ctx, a) {
       y = -y;
     }
 
-    a.push({
+    var newCactus = {
       image: function () {
         return IMAGES[this.type];
       },
@@ -45,8 +45,13 @@ function grow_cactus(ctx, a) {
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
-    });
+    };
+
+    a.push(newCactus);
+    registerActorInChunk(newCactus);
   }
+
+  console.log(CHUNKS);
 }
 
 function place_rocks(ctx, a) {

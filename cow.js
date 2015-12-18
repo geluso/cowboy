@@ -1,5 +1,5 @@
 var COWS = [];
-var TOTAL_COWS = 23;
+var TOTAL_COWS = 100;
 var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
 var COW_RADIUS = 180;

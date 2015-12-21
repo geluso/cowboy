@@ -173,7 +173,6 @@ function draw_background(ctx, a) {
     grow_cactus(ctx, a);
     place_rocks(ctx, a);
   }
-  draw(ctx, a);
 }
 
 function draw_foreground(ctx, a) {

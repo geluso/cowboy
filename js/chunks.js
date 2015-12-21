@@ -1,10 +1,9 @@
 var BACKGROUND = [];
 var CHUNK_SIZE = 1000;
-var DRAW_CHUNK_BORDERS = true;
+var DRAW_CHUNK_BORDERS = false;
 
-var CHUNKS = {
-  "0,0": []
-}
+// "0,0": []
+var CHUNKS = {};
 
 var positionToChunkKey = function(x, y) {
   x = Math.floor(x / CHUNK_SIZE);
@@ -60,10 +59,29 @@ function registerActorInChunk(actor) {
 }
 
 function crossingChunkBorder(pos) {
-  var x = pos.split(",")[0];
-  var y = pos.split(",")[1];
+  var x = Number(pos.split(",")[0]);
+  var y = Number(pos.split(",")[1]);
 
   if (CHUNKS[pos] === undefined) {
-    console.log("new chunk!!");
+    generateChunk(pos);
   }
 };
+
+function generateChunk(pos) {
+  var x = Number(pos.split(",")[0]);
+  var y = Number(pos.split(",")[1]);
+
+  if (CHUNKS[pos]) {
+    return CHUNKS[pos];
+  } else {
+    var chunkContents = [];
+
+    var cacti = grow_cactus(x, y, CHUNK_SIZE, CHUNK_SIZE);
+    var rocks = place_rocks(x, y, CHUNK_SIZE, CHUNK_SIZE);
+
+    chunkContents = _.union(cacti, rocks);
+
+    CHUNKS[pos] = chunkContents;
+    return chunkContents;
+  }
+}

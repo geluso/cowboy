@@ -16,89 +16,60 @@ function light_fire(ctx, a, x, y) {
   a.push(fire);
 }
 
-function grow_cactus(ctx, a) {
-  var cactus = 4 * (Math.random() * 150 + 20);
+function grow_cactus(x, y, width, height) {
+  var newCacti = [];
+
+  var cactus = Math.random() * 30 + 15;
   var cactus_types = ["cactus_large", "cactus_large_flower", "cactus_med",
       "cactus_med_flower"];
   for (var i = 0; i < cactus; i++) {
-    var choice = Math.floor(Math.random() * (cactus_types.length - 1));
-    var cactus_type = cactus_types[choice];
+    var cactus_type = _.sample(cactus_types);
 
-    var x = Math.floor(Math.random() * WIDTH);
-    var y = Math.floor(Math.random() * HEIGHT);
-
-    if (Math.random() < .5) {
-      x = -x;
-    }
-    if (Math.random() < .5) {
-      y = -y;
-    }
+    var xx = x + Math.floor(Math.random() * width);
+    var yy = y + Math.floor(Math.random() * width);
 
     var newCactus = {
       image: function () {
         return IMAGES[this.type];
       },
-      x: Math.floor(x),
-      y: Math.floor(y),
+      x: Math.floor(xx),
+      y: Math.floor(yy),
       isStatic: true,
       type: cactus_type,
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
     };
-
-    a.push(newCactus);
-    registerActorInChunk(newCactus);
+    newCacti.push(newCactus);
   }
 
-  console.log(CHUNKS);
+  return newCacti;
 }
 
-function place_rocks(ctx, a) {
-  var rocks = 4 * (Math.random() * 300 + 40);
+function place_rocks(x, y, width, height) {
+  var newRocks = [];
+
+  var rocks = Math.random() * 30 + 50;
   for (var i = 0; i < rocks; i++) {
 
-    var x = Math.floor(Math.random() * WIDTH);
-    var y = Math.floor(Math.random() * HEIGHT);
+    var xx = x + Math.floor(Math.random() * width);
+    var yy = y + Math.floor(Math.random() * height);
 
-    if (Math.random() < .5) {
-      x = -x;
-    }
-    if (Math.random() < .5) {
-      y = -y;
-    }
-
-    a.push({
+    var rock = {
       image: function () {
         return IMAGES["rock"];
       },
-      x: x,
-      y: y,
+      x: xx,
+      y: yy,
       draw: function (ctx) {
         ctx.drawImage(this.image(), this.x, this.y);
       }
-    });
+    };
+
+    newRocks.push(rock);
   }
-  a.push({
-    image: function () {
-      return IMAGES["rock"];
-    },
-    x: 0,
-    y: 0,
-    draw: function (ctx) {
-      ctx.drawImage(this.image(), this.x, this.y);
-    }
-  });
-  a.push({
-    image: function () {
-      return IMAGES["rock"];
-    },
-    x: CHUNK_SIZE,
-    y: CHUNK_SIZE,
-    draw: function (ctx) {
-      ctx.drawImage(this.image(), this.x, this.y);
-    }
-  });
+
+  return newRocks;
 }
 
 function build_outhouse(ctx, a) {

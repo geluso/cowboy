@@ -102,7 +102,7 @@ function buildWorld() {
 
   // super important that cowboy is born before anything is drawn.
   birth_cowboy(ctx, DRAWABLES);
-  draw_background(back_ctx, BACKGROUND);
+  generateBackground(back_ctx);
   draw_foreground(fore_ctx, DRAWABLES);
 
   // shift the cowboy from the front to the back so he is always drawn last.
@@ -128,7 +128,7 @@ function buildWorld() {
 
     // no need to update background if cowboy hasn't moved.
     if (COWBOY.x !== lastX || COWBOY.y !== lastY) {
-      draw(back_ctx, BACKGROUND);
+      drawBackground(back_ctx);
 
       if (DRAW_CHUNK_BORDERS) {
         drawChunkBorders(back_ctx);
@@ -166,13 +166,14 @@ function buildWorld() {
   }, FRAMERATE);
 }
 
-function draw_background(ctx, a) {
+function generateBackground(ctx, a) {
   ctx.fillStyle = "#cccc66";
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  if (a.length === 0) {
-    grow_cactus(ctx, a);
-    place_rocks(ctx, a);
-  }
+
+  var chunks = currentChunkKeys();
+  _.each(chunks, function(chunk) {
+    generateChunk(chunk);
+  });
 }
 
 function draw_foreground(ctx, a) {
@@ -273,6 +274,16 @@ function draw_actor(ctx, actor) {
     }
   }
 }
+
+function drawBackground(ctx) {
+  var chunks = currentChunkKeys();
+  _.each(chunks, function(chunkKey) {
+    var chunk = CHUNKS[chunkKey];
+    if (chunk) {
+      draw(ctx, chunk);
+    }
+  }, this);
+};
 
 function tick(actor) {
   TICKER++;

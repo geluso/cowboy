@@ -74,19 +74,9 @@ function generateChunk(pos) {
     var cacti = grow_cactus(x, y, CHUNK_SIZE, CHUNK_SIZE);
     var rocks = place_rocks(x, y, CHUNK_SIZE, CHUNK_SIZE);
 
+    // random chance that the chunk will have a heart of cows.
     if (Math.random() < .3) {
-      var numCows = Math.random() * 4;
-      for (var i = 0; i < numCows; i++) {
-        var xx = x + Math.random() * CHUNK_SIZE;
-        var yy = y + Math.random() * CHUNK_SIZE;
-
-        xx = Math.floor(xx);
-        yy = Math.floor(yy);
-
-        var cow = birthCow(xx, yy);
-        COWS.push(cow);
-        DRAWABLES.push(cow);
-      }
+      createCowHerd(x, y);
     }
 
     chunkContents = _.union(cacti, rocks);

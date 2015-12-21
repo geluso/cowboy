@@ -231,6 +231,16 @@ function birthCow(x, y) {
 
     steer: function() {
       var steer;
+
+      // herders only run from the cowboy until they're in the pen.
+      if (this.herd) {
+        if (vectorDistance(COWBOY, this) < 150) {
+          steer = this.flee();
+          return steer;
+        }
+        return {x: 0, y:0};
+      }
+
       if (vectorDistance(COWBOY, this) < 150) {
         steer = this.flee();
       } else if (this.behavior === 'seek') {
@@ -402,3 +412,20 @@ function birthCow(x, y) {
   return cow;
 }
 
+
+function createCowHerd(x, y) {
+  console.log("herd", x, y);
+
+  var size = Math.random() * 12 + 5;
+
+  for (var i = 0; i < size; i++) {
+    var xx = x + Math.random() * 40;
+    var yy = y + Math.random() * 40;
+
+    var cow = birthCow(xx, yy);
+    cow.herd = true;
+
+    DRAWABLES.push(cow);
+    COWS.push(cow);
+  }
+}

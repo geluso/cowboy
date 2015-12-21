@@ -345,15 +345,6 @@ function stepActor(actor, dx, dy) {
     moved = true;
   }
 
-  if (actor === COWBOY && moved) {
-    oldPos = positionToChunkKey(oldX, oldY);
-    newPos = positionToChunkKey(newX, newY);
-
-    if (oldPos !== newPos) {
-      crossingChunkBorder(newPos);
-    }
-  }
-
   return moved;
 }
 

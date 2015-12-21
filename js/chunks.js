@@ -27,6 +27,10 @@ var currentChunkKeys = function() {
     for (var yy = y0; yy < y1 + CHUNK_SIZE; yy += CHUNK_SIZE) {
       var chunk = positionToChunkKey(xx, yy);
       chunks.push(chunk);
+
+      if (CHUNKS[chunk] === undefined) {
+        generateChunk(chunk);
+      }
     }
   }
   return chunks;
@@ -57,15 +61,6 @@ function registerActorInChunk(actor) {
   }
   CHUNKS[pos].push(actor);
 }
-
-function crossingChunkBorder(pos) {
-  var x = Number(pos.split(",")[0]);
-  var y = Number(pos.split(",")[1]);
-
-  if (CHUNKS[pos] === undefined) {
-    generateChunk(pos);
-  }
-};
 
 function generateChunk(pos) {
   var x = Number(pos.split(",")[0]);

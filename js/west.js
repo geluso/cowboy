@@ -193,6 +193,9 @@ function generateStart(ctx, a) {
   birth_natives(ctx, a);
   bones(ctx, a);
 
+  // create a guaranteed herd of cows near the start.
+  createCowHerd(-200, -200);
+
   createNavMesh(DRAWABLES);
 }
 

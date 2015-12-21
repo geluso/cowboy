@@ -91,29 +91,27 @@ function place_fence() {
 }
 
 function birthCow(x, y) {
-  console.log("moo");
-
   var cow;
   cow = {
     image: function () {
       if (this.alive) {
-        return IMAGES[["cow_north", "cow_east", "cow_south", "cow_west_branded"][this.direction]];
+        var direction = this.direction;
+        return IMAGES[["cow_north", "cow_east", "cow_south", "cow_west"][direction]];
       } else {
         return IMAGES["dead_cow"];
       }
     },
     x: x,
     y: y,
-    way_x: undefined,
-    way_y: undefined,
+    target: undefined,
     actions: [],
 
-    behavior: 'wander',
+    behavior: 'seek',
 
     // steering
     mass: 50,
-    MaxSpeed: 2,
-    MaxForce: 2,
+    MaxSpeed: 15,
+    MaxForce: 8,
     MaxTurnRate: undefined,
 
     VehicleHeading: randomUnitVector(),
@@ -134,47 +132,29 @@ function birthCow(x, y) {
     },
 
     way_attempts: 0,
-    lastX: undefined,
-    lastY: undefined,
+    newTarget: function() {
+      this.acquiringTarget = false;
+
+      this.target = {};
+      this.target.x = Math.round(this.x + 100 * randomNegPos());
+      this.target.y = Math.round(this.y + 100 * randomNegPos());
+      
+      return this.target;
+    },
     targetLocation: function() {
-      // have target in mind?
-      if (this.way_x && this.way_y) {
-        if (Math.abs(this.lastX - this.x) < 2 &&
-            Math.abs(this.lastY - this.y) < 2) {
-          this.way_attempts++;
-        }
-
-        this.lastX = this.x;
-        this.lastY = this.y;
-
-        if (this.way_attempts > 100) {
-          this.way_attempts = 0;
-          this.way_x = 0;
-          this.way_y = 0;
-        }
-
-        if (this.x === this.way_x && this.y === this.way_y) {
-          this.behavior = 'wander';
-        }
-      } else {
-        if (Math.random() < .1) {
-          this.way_x = HORSE.x;
-          this.way_y = HORSE.y;
-        } else {
-          this.way_x = Math.round(this.x + 100 * randomNegPos());
-          this.way_y = Math.round(this.y + 100 * randomNegPos());
-        }
+      if (this.acquiringTarget || this.target === undefined) {
+        return {
+          x: this.x,
+          y: this.y
+        };
       }
 
-      var loc = {
-        x: this.way_x,
-        y: this.way_y
-      }
-
-      return loc;
+      return this.target;
     },
 
     flee: function() {
+      this.target = undefined;
+
       var fx = this.x - COWBOY.x;
       var fy = this.y - COWBOY.y;
 
@@ -199,6 +179,19 @@ function birthCow(x, y) {
 
       var fx = loc.x - this.x;
       var fy = loc.y - this.y;
+
+      if (Math.abs(fx) < 3 && Math.abs(fy) < 3) {
+        if (!this.acquiringTarget) {
+          this.acquiringTarget = true;
+          var delay = Math.random() * 7000 + 4000;
+
+          var that = this;
+          setTimeout(function() {
+            that.newTarget();
+          }, delay);
+        }
+        return {x: 0, y:0};
+      }
 
       var desiredVelocity = unitVector(fx, fy);
 
@@ -235,6 +228,8 @@ function birthCow(x, y) {
       // herders only run from the cowboy until they're in the pen.
       if (this.herd) {
         if (vectorDistance(COWBOY, this) < 150) {
+          // cows will stop standing still once the cowboy finds them.
+          this.herd = false;
           steer = this.flee();
           return steer;
         }
@@ -248,6 +243,7 @@ function birthCow(x, y) {
       } else {
         steer = this.wander();
       }
+
       return steer;
     },
 
@@ -258,10 +254,12 @@ function birthCow(x, y) {
       }
 
       var steer = this.steer();
-
-      if (!steer) {
+      if (!steer || (steer.x === 0 && steer.y === 0)) {
         return
       }
+
+      var angle = angleFromOrigin(steer.x, steer.y);
+      this.direction = angleToDirection(angle);
 
       // restrict it if it's too much force
       steer = capVector(steer, this.MaxForce);
@@ -310,6 +308,9 @@ function birthCow(x, y) {
         }
       }
 
+      this.velocity.x *= .9;
+      this.velocity.y *= .9;
+
       if (vectorLength > .0001) {
         VehicleHeading = unitVectorFromVector(this.velocity);
       }
@@ -330,8 +331,7 @@ function birthCow(x, y) {
         clear_intervals(cow.actions);
       }
       cow.actions = [];
-      cow.way_x = undefined;
-      cow.way_y = undefined;
+      cow.target = undefined;
 
       if (!cow.alive) {
         return;
@@ -360,7 +360,6 @@ function birthCow(x, y) {
       }
     },
     draw: function (ctx) {
-
       this.update();
 
       if (!this.alive) {
@@ -373,13 +372,14 @@ function birthCow(x, y) {
         draw_actor(ctx, this);
       }
 
-      return;
-
       if (COW_BRAIN) {
-        if (this.way_x && this.way_y) {
+        if (this.WanderTarget) {
+          var xx = this.targetLocation().x;
+          var yy = this.targetLocation().y;
+
           ctx.beginPath();
           ctx.moveTo(this.x, this.y);
-          ctx.lineTo(this.way_x, this.way_y);
+          ctx.lineTo(xx, yy);
           ctx.stroke();
         }
       }
@@ -414,13 +414,11 @@ function birthCow(x, y) {
 
 
 function createCowHerd(x, y) {
-  console.log("herd", x, y);
-
   var size = Math.random() * 12 + 5;
 
   for (var i = 0; i < size; i++) {
-    var xx = x + Math.random() * 40;
-    var yy = y + Math.random() * 40;
+    var xx = x + Math.random() * 70;
+    var yy = y + Math.random() * 70;
 
     var cow = birthCow(xx, yy);
     cow.herd = true;

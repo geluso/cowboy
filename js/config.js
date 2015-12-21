@@ -3,8 +3,11 @@ var FRAMERATE = 1000 / 60;
 var WIDTH = 800;
 var HEIGHT = 600;
 
-var SCALE = 1;
-var START_SCALE = 1;
+var SCALE = .2;
+var START_SCALE = .2;
+
+SCALE = 1;
+START_SCALE = 1;
 
 var SMOOTH_SHOOTING = false;
 

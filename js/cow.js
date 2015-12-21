@@ -1,5 +1,5 @@
 var COWS = [];
-var TOTAL_COWS = 23;
+var TOTAL_COWS = 7;
 var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
 var COW_RADIUS = 180;
@@ -91,6 +91,8 @@ function place_fence() {
 }
 
 function birthCow(x, y) {
+  console.log("moo");
+
   var cow;
   cow = {
     image: function () {
@@ -268,8 +270,7 @@ function birthCow(x, y) {
       this.x = this.x;
       this.y = this.y;
 
-      if (this.x > -460 && this.x < 0 &&
-          this.y > 60 && this.y < 350) {
+      if (this.insideCorral()) {
         if (this.x < -450) {
           this.behavior = 'seek';
           this.x = -450;
@@ -304,6 +305,9 @@ function birthCow(x, y) {
       }
     },
 
+    insideCorral: function() {
+      return (-460 < this.x && this.x < 0 && 60 < this.y && this.y < 350);
+    },
     label: function() { return "cow"; },
     step: function() {
       var step = .6;

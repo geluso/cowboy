@@ -9,11 +9,12 @@ var GATE = {
   y: 370
 };
 
-function birth_cows(ctx, a) {
+function birthCows(ctx, a) {
   for (var i = 0; i < TOTAL_COWS; i++) {
     var x = COW_CENTER_X + Math.random() * COW_RADIUS;
     var y = COW_CENTER_Y + Math.random() * COW_RADIUS;
-    cow = birth_cow(ctx, a, x, y);
+    cow = birthCow(x, y);
+    a.push(cow);
     COWS.push(cow);
   }
 }
@@ -89,7 +90,7 @@ function place_fence() {
 
 }
 
-function birth_cow(ctx, a, x, y) {
+function birthCow(x, y) {
   var cow;
   cow = {
     image: function () {
@@ -393,7 +394,6 @@ function birth_cow(ctx, a, x, y) {
     }
   }
   cow.stop();
-  a.push(cow);
 
   return cow;
 }

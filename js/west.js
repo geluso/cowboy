@@ -103,7 +103,7 @@ function buildWorld() {
   // super important that cowboy is born before anything is drawn.
   birth_cowboy(ctx, DRAWABLES);
   generateBackground(back_ctx);
-  draw_foreground(fore_ctx, DRAWABLES);
+  generateStart(fore_ctx, DRAWABLES);
 
   // shift the cowboy from the front to the back so he is always drawn last.
   DRAWABLES.push(DRAWABLES.shift());
@@ -176,11 +176,10 @@ function generateBackground(ctx, a) {
   });
 }
 
-function draw_foreground(ctx, a) {
+function generateStart(ctx, a) {
   light_fire(ctx, a, 50, 50);
   build_outhouse(ctx, a);
   birth_horse(ctx, a);
-  birth_cows(ctx, a);
 
   // reducing dependencies on ctx and a when creating new structures.
   buildCabin();
@@ -190,11 +189,11 @@ function draw_foreground(ctx, a) {
   build_mansion();
   place_fence();
 
+  birthCows(ctx, a);
   birth_natives(ctx, a);
+  bones(ctx, a);
 
   createNavMesh(DRAWABLES);
-
-  bones(ctx, a);
 }
 
 function draw_clear(ctx) {

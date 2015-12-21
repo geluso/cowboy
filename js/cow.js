@@ -109,9 +109,9 @@ function birthCow(x, y) {
     behavior: 'wander',
 
     // steering
-    mass: 10,
-    MaxSpeed: 1,
-    MaxForce: 10,
+    mass: 50,
+    MaxSpeed: 2,
+    MaxForce: 2,
     MaxTurnRate: undefined,
 
     VehicleHeading: randomUnitVector(),
@@ -229,7 +229,7 @@ function birthCow(x, y) {
 
     steer: function() {
       var steer;
-      if (vectorDistance(COWBOY, this) < 60) {
+      if (vectorDistance(COWBOY, this) < 150) {
         steer = this.flee();
       } else if (this.behavior === 'seek') {
         steer = this.seek();
@@ -262,11 +262,11 @@ function birthCow(x, y) {
 
       this.velocity = capVector(this.velocity, this.MaxSpeed);
 
-      this.x += this.velocity.x;
-      this.y += this.velocity.y;
+      this.x += this.velocity.x / 2;
+      this.y += this.velocity.y / 2;
 
-      this.x = Math.round(this.x);
-      this.y = Math.round(this.y);
+      this.x = this.x;
+      this.y = this.y;
 
       if (this.x > -460 && this.x < 0 &&
           this.y > 60 && this.y < 350) {

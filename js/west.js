@@ -187,6 +187,7 @@ function generateStart(ctx, a) {
   build_station();
   build_saloon();
   build_mansion();
+  build_bank();
   place_fence();
 
   birthCows(ctx, a);

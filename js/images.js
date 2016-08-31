@@ -5,6 +5,7 @@ var SRC = [
   "cactus_med",
   "cactus_med_flower",
   "rock",
+  "bank",
   "bullet_north",
   "bullet_east",
   "bullet_south",

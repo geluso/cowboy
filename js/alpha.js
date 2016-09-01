@@ -52,13 +52,14 @@ var ALPHA = {
   "]": [311, 3],
   " ": [314, 4],
   "-": [318, 7],
+  "$": [326, 8]
 };
 
 CACHE = {};
 var SCRATCH;
 
 function tick() {
-  
+
 }
 
 function text(str, x, y) {
@@ -143,5 +144,5 @@ function etch(str) {
   }
   etch_char("end");
 
-  CACHE[str] = SCRATCH.getImageData(0, 0, cursor, 16); 
+  CACHE[str] = SCRATCH.getImageData(0, 0, cursor, 16);
 }

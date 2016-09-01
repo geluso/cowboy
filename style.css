@@ -33,3 +33,7 @@ canvas {
 
 #textworld {
 }
+
+#image-container {
+  display: none;
+}

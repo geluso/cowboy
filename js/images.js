@@ -6,10 +6,15 @@ var SRC = [
   "cactus_med_flower",
   "rock",
   "bank",
+  "billboard_1",
+  "billboard_2",
+  "billboard_3",
+  "billboard_4",
   "bullet_north",
   "bullet_east",
   "bullet_south",
   "bullet_west",
+  "church",
   "cow_north",
   "cow_east",
   "cow_south",
@@ -58,3 +63,12 @@ var SRC = [
   "saloon",
   "mansion",
 ];
+
+document.addEventListener("DOMContentLoaded", function() {
+  var cont = document.getElementById("image-container");
+  for (var i = 0; i < SRC.length; i++) {
+    var img = document.createElement("img");
+    img.src = "img/" + SRC[i] + ".gif";
+    cont.appendChild(img);
+  }
+});

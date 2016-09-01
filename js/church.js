@@ -6,7 +6,7 @@ function build_church() {
     x: 680,
     y: 0,
     isStatic: true,
-    label: function() { return "church"; },
+    label: function() { return "repent!"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }

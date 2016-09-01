@@ -238,7 +238,8 @@ function draw_labels() {
 
   for (var i = 0; i < DRAWABLES.length; i++) {
     var drawable = DRAWABLES[i];
-    if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
+    if (drawableContains(drawable, MOUSE_X, MOUSE_Y)) {
+    //if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
       label(drawable.label(), x, y + labels * 18);
       labels++
     }

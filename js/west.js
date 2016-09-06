@@ -190,6 +190,7 @@ function generateStart(ctx, a) {
   build_bank();
   build_church();
   build_billboard();
+  build_watertower();
   place_fence();
 
   birthCows(ctx, a);

@@ -62,6 +62,9 @@ var SRC = [
   "station",
   "saloon",
   "mansion",
+  "signpost",
+  "signpost_tall",
+  "watertower",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

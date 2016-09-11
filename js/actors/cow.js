@@ -25,15 +25,15 @@ function place_fence() {
   // top line
   for (var i = 0; i < 20; i++) {
     DRAWABLES.push({
-      image: function () {
+      get image() {
         return IMAGES["fence_north"];
       },
       x: leftmost + 24 * i,
       y: topmost,
       isStatic: true,
-      label: function() { return "fence"; },
+      get label() { return "fence"; },
       draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
+        ctx.drawImage(this.image, this.x, this.y);
       }
     });
   }
@@ -41,15 +41,15 @@ function place_fence() {
   // west side
   for (var i = 0; i < 13; i++) {
     DRAWABLES.push({
-      image: function () {
+      get image() {
         return IMAGES["fence_west"];
       },
       x: leftmost - 8,
       y: 6 + topmost + 24 * i,
       isStatic: true,
-      label: function() { return "fence"; },
+      get label() { return "fence"; },
       draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
+        ctx.drawImage(this.image, this.x, this.y);
       }
     });
   }
@@ -58,15 +58,15 @@ function place_fence() {
   for (var i = 0; i < 13; i++) {
     if (i < 2 || i > 4) {
       DRAWABLES.push({
-        image: function () {
+        get image() {
           return IMAGES["fence_east"];
         },
         x: leftmost + 480,
         y: 6 + topmost + 24 * i,
         isStatic: true,
-        label: function() { return "fence"; },
+        get label() { return "fence"; },
         draw: function (ctx) {
-          ctx.drawImage(this.image(), this.x, this.y);
+          ctx.drawImage(this.image, this.x, this.y);
         }
       });
     }
@@ -75,15 +75,15 @@ function place_fence() {
   // bottom line
   for (var i = 0; i < 20; i++) {
     DRAWABLES.push({
-      image: function () {
+      get image() {
         return IMAGES["fence_south"];
       },
       x: leftmost + 24 * i,
       y: topmost + 312,
       isStatic: true,
-      label: function() { return "fence"; },
+      get label() { return "fence"; },
       draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
+        ctx.drawImage(this.image, this.x, this.y);
       }
     });
   }
@@ -93,7 +93,7 @@ function place_fence() {
 function birthCow(x, y) {
   var cow;
   cow = {
-    image: function () {
+    get image() {
       if (this.alive) {
         var direction = this.direction;
         return IMAGES[["cow_north", "cow_east", "cow_south", "cow_west"][direction]];
@@ -319,7 +319,7 @@ function birthCow(x, y) {
     insideCorral: function() {
       return (-460 < this.x && this.x < 0 && 60 < this.y && this.y < 350);
     },
-    label: function() { return "cow"; },
+    get label() { return "cow"; },
     step: function() {
       var step = .6;
       return step;
@@ -363,7 +363,7 @@ function birthCow(x, y) {
       this.update();
 
       if (!this.alive) {
-        ctx.drawImage(this.image(),
+        ctx.drawImage(this.image,
             this.frame_width * this.frame, 0, this.frame_width, this.frame_height,
             this.x - Math.floor(this.frame_width / 2),
             this.y - Math.floor(this.frame_height / 2),

@@ -80,6 +80,6 @@ function click(e) {
   // reset any special path actions if the cowboy currently has any.
   COWBOY.special_actions = [];
 
-  var cowboyOffset = COWBOY.image().height / 2 - 1;
+  var cowboyOffset = COWBOY.image.height / 2 - 1;
   set_waypoint(COWBOY, MOUSE_X, MOUSE_Y - cowboyOffset);
 }

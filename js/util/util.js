@@ -78,8 +78,8 @@ function randomNegPos(weight) {
 function drawableContains(drawable, x1, y2) {
   var x = drawable.x;
   var y = drawable.y;
-  var w = drawable.image().width;
-  var h = drawable.image().height;
+  var w = drawable.image.width;
+  var h = drawable.image.height;
 
   if (x < x1 && x1 < x + w && y < y2 && y2 < y + h) {
     return true;

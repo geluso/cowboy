@@ -2,7 +2,7 @@ var HORSE;
 
 function birth_horse(ctx, a) {
   HORSE = {
-    image: function () {
+    get image() {
       if (this.alive) {
         return IMAGES[["horse_north", "horse_east", "horse_south", "horse_west"][this.direction]];
       } else {
@@ -14,7 +14,7 @@ function birth_horse(ctx, a) {
     way_x: undefined,
     way_y: undefined,
     actions: [],
-    label: function() { return "horse"; },
+    get label() { return "horse"; },
     step: function() { return 2; },
     stop: function () {
       clear_intervals(this.actions);
@@ -39,7 +39,7 @@ function birth_horse(ctx, a) {
       }
 
       if (!this.alive) {
-        ctx.drawImage(this.image(),
+        ctx.drawImage(this.image,
             this.frame_width * this.frame, 0, this.frame_width, this.frame_height,
             this.x - Math.floor(this.frame_width / 2),
             this.y - Math.floor(this.frame_height / 2),

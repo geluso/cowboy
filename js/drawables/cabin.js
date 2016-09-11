@@ -3,25 +3,14 @@ var CABIN_TOWN_X = -500;
 var CABIN_TOWN_Y = -500;
 
 function newCabin(x, y) {
-  var cabin = {
-    image: function () {
-      return IMAGES["cabin"];
-    },
-    x: x,
-    y: y,
-    isStatic: true,
-    label: function() { return "cabin"; },
-    draw: function (ctx) {
-      draw_actor(ctx, this);
-    }
-  };
-
-  return cabin;
+  var cabin = new Drawable("cabin");
+  cabin.setPosition(x, y);
+  cabin.image = "cabin";
+  cabin.build();
 }
 
 function buildCabin() {
   var cabin = newCabin(0, 0);
-  DRAWABLES.push(cabin);
 }
 
 function buildCabinTown() {
@@ -34,6 +23,5 @@ function buildCabinTown() {
     randomY = Math.round(randomY);
 
     var cabin = newCabin(randomX, randomY);
-    DRAWABLES.push(cabin);
   }
 }

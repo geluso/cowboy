@@ -1,3 +1,5 @@
+var START_TIME = Date.now();
+
 var TRANSLATE_X = 0;
 var TRANSLATE_Y = 0;
 
@@ -241,7 +243,7 @@ function draw_labels() {
     var drawable = DRAWABLES[i];
     if (drawableContains(drawable, MOUSE_X, MOUSE_Y)) {
     //if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
-      label(drawable.label(), x, y + labels * 18);
+      label(drawable.label, x, y + labels * 18);
       labels++
     }
   }
@@ -266,7 +268,7 @@ function drawScreenCoordinates(x, y) {
 }
 
 function draw_actor(ctx, actor) {
-  var image = actor.image(),
+  var image = actor.image,
       x = actor.x,
       y = actor.y;
 
@@ -422,7 +424,7 @@ function specialCactusDraw() {
   for (var i = 0; i < BACKGROUND.length; i++) {
     var asset = BACKGROUND[i];
 
-    if (asset.image().src.indexOf("cactus") !== -1) {
+    if (asset.image.src.indexOf("cactus") !== -1) {
 
       if (Math.abs(asset.x - COWBOY.x) < 20 &&
           Math.abs(asset.y - COWBOY.y) < 20) {

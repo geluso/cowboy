@@ -1,4 +1,5 @@
 var DOWN_X, DOWN_Y, UP_X, UP_Y;
+var COWBOY_DOWN_X, COWBOY_DOWN_Y;
 var REAL_MOUSE_X = 0,
     REAL_MOUSE_Y = 0;
 var MOUSE_X = 0,
@@ -20,7 +21,15 @@ var LAST_MOUSEUP;
 var RANDOM;
 function mousedown(e) {
   DOWN_X = e.offsetX;
-  DOWN_Y = e.offsetX;
+  DOWN_Y = e.offsetY;
+
+  if (COWBOY.special_actions.length === 0) {
+    COWBOY_DOWN_X = COWBOY.x;
+    COWBOY_DOWN_Y = COWBOY.y;
+  } else { 
+    COWBOY_DOWN_X = COWBOY.special_actions[COWBOY.special_actions.length - 1][0];
+    COWBOY_DOWN_Y = COWBOY.special_actions[COWBOY.special_actions.length - 1][1];
+  }
 
   MOUSEDOWN = true;
   var random = Math.random();
@@ -34,7 +43,11 @@ function mousedown(e) {
 
 function traceCourse() {
   STACK_WAYPOINTS = [];
-  STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
+
+  var xx = (REAL_MOUSE_X - DOWN_X) + COWBOY_DOWN_X;
+  var yy = (REAL_MOUSE_Y - DOWN_Y) + COWBOY_DOWN_Y;
+
+  STACK_WAYPOINTS.push([xx, yy]);
   TRACE_COURSE = true;
 }
   
@@ -46,7 +59,16 @@ function mousemove(e) {
   MOUSE_Y = (e.offsetY / ORIGINAL_HEIGHT) * SCALE_HEIGHT - TRANSLATE_Y;
 
   if (TRACE_COURSE) {
-    STACK_WAYPOINTS.push([MOUSE_X, MOUSE_Y]);
+    var xx = (REAL_MOUSE_X - DOWN_X) + COWBOY_DOWN_X;
+    var yy = (REAL_MOUSE_Y - DOWN_Y) + COWBOY_DOWN_Y;
+
+    if (COWBOY.special_actions.length !== 0) {
+      COWBOY.special_actions.push([xx,yy]);
+    } else {
+      STACK_WAYPOINTS.push([xx, yy]);
+    }
+
+    COWBOY.trace_path();
   }
 };
 
@@ -60,7 +82,10 @@ function mouseup(e) {
     LAST_MOUSEUP = (new Date()).getTime();
 
     var point = STACK_WAYPOINTS.shift();
-    COWBOY.special_actions = STACK_WAYPOINTS;
+    
+    if (COWBOY.special_actions.length === 0) {
+      COWBOY.special_actions = STACK_WAYPOINTS;
+    }
     COWBOY.trace_path();
   }
 

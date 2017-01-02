@@ -38,3 +38,7 @@ canvas {
 #image-container {
   display: none;
 }
+
+img {
+  display: none;
+}

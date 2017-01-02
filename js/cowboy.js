@@ -18,14 +18,15 @@ function birth_cowboy(ctx, a) {
     way_y: undefined,
     actions: [],
     special_actions: [],
+    isFollowingPath: false,
     trace_path: function() {
-      this.stop();
-
-      var point = this.special_actions.shift();
-      if (point) {
-        set_waypoint(COWBOY, point[0], point[1], true);
-      } else {
-        this.stop();
+      if (this.isFollowingPath) {
+        var point = this.special_actions.shift();
+        if (point) {
+          set_waypoint(COWBOY, point[0], point[1], true);
+        } else {
+          this.stop();
+        }
       }
     },
     step: function () {
@@ -41,6 +42,7 @@ function birth_cowboy(ctx, a) {
         COWBOY.trace_path();
       } else {
         this.actions = [];
+        this.isFollowingPath = false;
       }
     },
     horse: false,

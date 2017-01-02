@@ -13,7 +13,6 @@ $(document).ready(function() {
 });
 
 var MOUSEDOWN = false;
-var STACK_WAYPOINTS = [];
 var traceCourseTimer = undefined;
 var TRACE_COURSE = false;
 var LAST_MOUSEUP;
@@ -42,13 +41,13 @@ function mousedown(e) {
 }
 
 function traceCourse() {
-  STACK_WAYPOINTS = [];
+  TRACE_COURSE = true;
 
   var xx = (REAL_MOUSE_X - DOWN_X) + COWBOY_DOWN_X;
   var yy = (REAL_MOUSE_Y - DOWN_Y) + COWBOY_DOWN_Y;
 
-  STACK_WAYPOINTS.push([xx, yy]);
-  TRACE_COURSE = true;
+  // Why do I have to push this twice??
+  COWBOY.special_actions.push([xx, yy]);
 }
   
 function mousemove(e) {
@@ -59,16 +58,7 @@ function mousemove(e) {
   MOUSE_Y = (e.offsetY / ORIGINAL_HEIGHT) * SCALE_HEIGHT - TRANSLATE_Y;
 
   if (TRACE_COURSE) {
-    var xx = (REAL_MOUSE_X - DOWN_X) + COWBOY_DOWN_X;
-    var yy = (REAL_MOUSE_Y - DOWN_Y) + COWBOY_DOWN_Y;
-
-    if (COWBOY.special_actions.length !== 0) {
-      COWBOY.special_actions.push([xx,yy]);
-    } else {
-      STACK_WAYPOINTS.push([xx, yy]);
-    }
-
-    COWBOY.trace_path();
+    traceCourse();
   }
 };
 
@@ -81,11 +71,7 @@ function mouseup(e) {
   if (TRACE_COURSE) {
     LAST_MOUSEUP = (new Date()).getTime();
 
-    var point = STACK_WAYPOINTS.shift();
-    
-    if (COWBOY.special_actions.length === 0) {
-      COWBOY.special_actions = STACK_WAYPOINTS;
-    }
+    COWBOY.isFollowingPath = true;
     COWBOY.trace_path();
   }
 

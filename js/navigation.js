@@ -18,8 +18,8 @@ function createNavMesh(drawables) {
     var item = drawables[i];
 
     if (item.isStatic) {
-      var maxx = item.x + item.image().width;
-      var maxy = item.y + item.image().height;
+      var maxx = item.x + item.image.width;
+      var maxy = item.y + item.image.height;
 
       for (var x = item.x; x < maxx; x += NAV_GRID_SIZE) {
         for (var y = item.y; y < maxy; y += NAV_GRID_SIZE) {

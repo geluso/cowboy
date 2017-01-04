@@ -5,7 +5,7 @@ var COWBOY;
 
 function birth_cowboy(ctx, a) {
   COWBOY = {
-    image: function () {
+    get image() {
       if (this.horse) {
         return IMAGES[["cowboy_horse_north", "cowboy_horse_east", "cowboy_horse_south", "cowboy_horse_west"][this.direction]];
       } else {
@@ -77,13 +77,13 @@ function birth_cowboy(ctx, a) {
 }
 
 function shoot(actor, drawables) {
-  var image;
+  var ff;
   if (actor.weapon == PISTOL) {
-    image = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
+    ff = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
   } else if (actor.weapon == TOMAHAWK) {
-    image = ["tomahawk_north", "tomahawk_east", "tomahawk_south", "tomahawk_west"];
+    ff = ["tomahawk_north", "tomahawk_east", "tomahawk_south", "tomahawk_west"];
   } else if (actor.weapon == ARROW) {
-    image = ["arrow_north", "arrow_east", "arrow_south", "arrow_west"];
+    ff = ["arrow_north", "arrow_east", "arrow_south", "arrow_west"];
   }
 
   var dx = MOUSE_X - actor.x;
@@ -94,14 +94,14 @@ function shoot(actor, drawables) {
     x: actor.x,
     y: actor.y - 10,
     angle: angle,
-    image: function () {
+    get image() {
       this.tick++;
       if (this.type == TOMAHAWK) {
         if (this.tick % 8 == 0) {
           this.direction = (this.direction + 1) % 4;
         }
       }
-      return IMAGES[image[this.direction]];
+      return IMAGES[ff[this.direction]];
     },
     draw: function (ctx) {
       if(this.hit) {
@@ -110,7 +110,7 @@ function shoot(actor, drawables) {
 
       this.x += this.speed * Math.cos(this.angle);
       this.y += this.speed * Math.sin(this.angle);
-      ctx.drawImage(this.image(), this.x, this.y);
+      ctx.drawImage(this.image, this.x, this.y);
       if (HORSE.alive && HORSE.unbridled &&
             Math.abs(this.x - HORSE.x) < 7 &&
             Math.abs(this.y - HORSE.y) < 7) {

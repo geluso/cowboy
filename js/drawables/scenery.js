@@ -2,13 +2,13 @@ var OUTHOUSE;
 
 function light_fire(ctx, a, x, y) {
   var fire = {
-    image: function () {
+    get image() {
       return IMAGES["fire"];
     },
     x: x,
     y: y,
     isStatic: true,
-    label: function() { return "campfire"; },
+    get label() { return "campfire"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
@@ -29,7 +29,7 @@ function grow_cactus(x, y, width, height) {
     var yy = y + Math.floor(Math.random() * width);
 
     var newCactus = {
-      image: function () {
+      get image() {
         return IMAGES[this.type];
       },
       x: Math.floor(xx),
@@ -37,7 +37,7 @@ function grow_cactus(x, y, width, height) {
       isStatic: true,
       type: cactus_type,
       draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
+        ctx.drawImage(this.image, this.x, this.y);
       }
     };
     newCacti.push(newCactus);
@@ -56,13 +56,13 @@ function place_rocks(x, y, width, height) {
     var yy = y + Math.floor(Math.random() * height);
 
     var rock = {
-      image: function () {
+      get image() {
         return IMAGES["rock"];
       },
       x: xx,
       y: yy,
       draw: function (ctx) {
-        ctx.drawImage(this.image(), this.x, this.y);
+        ctx.drawImage(this.image, this.x, this.y);
       }
     };
 
@@ -74,14 +74,14 @@ function place_rocks(x, y, width, height) {
 
 function build_outhouse(ctx, a) {
   OUTHOUSE = {
-    image: function () {
+    get image() {
       return this.open ? IMAGES["outhouse_open"] : IMAGES["outhouse_closed"]; 
     },
     x: 85,
     y: 45,
     isStatic: true,
     open: false,
-    label: function() { return "outhouse"; },
+    get label() { return "outhouse"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
@@ -91,12 +91,12 @@ function build_outhouse(ctx, a) {
 
 function bones(ctx, a) {
   var bones = {
-    image: function () {
+    get image() {
       return IMAGES["bones"]; 
     },
     x: 600,
     y: 200,
-    label: function() { return "BONE WARS"; },
+    get label() { return "BONE WARS"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
@@ -107,13 +107,13 @@ function bones(ctx, a) {
 
 function place_tepee(ctx, a, x, y) {
   var tepee = {
-    image: function () {
+    get image() {
       return IMAGES["tepee"]; 
     },
     x: x,
     y: y,
     isStatic: true,
-    label: function() { return "tepee"; },
+    get label() { return "tepee"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
@@ -124,13 +124,13 @@ function place_tepee(ctx, a, x, y) {
 
 function place_totem(ctx, a, x, y) {
   var totem = {
-    image: function () {
+    get image() {
       return IMAGES["totem"]; 
     },
     x: x,
     y: y,
     isStatic: true,
-    label: function() { return "totem"; },
+    get label() { return "totem"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }
@@ -159,12 +159,12 @@ function birth_natives(ctx, a) {
 function birth_native_dude(ctx, a, x, y) {
   var nativedude = {
     alive: true,
-    image: function () {
+    get image() {
       return IMAGES["native"]; 
     },
     x: x,
     y: y,
-    label: function() { return "native"; },
+    get label() { return "native"; },
     draw: function (ctx) {
       if (nativedude.inTent) {
         return;
@@ -251,12 +251,12 @@ function birth_native_dude(ctx, a, x, y) {
 
 function birth_chief(ctx, a, x, y) {
   var chief = {
-    image: function () {
+    get image() {
       return IMAGES["native_chief"]; 
     },
     x: x,
     y: y,
-    label: function() { return "chief"; },
+    get label() { return "chief"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
     }

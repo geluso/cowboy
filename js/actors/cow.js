@@ -4,6 +4,11 @@ var COW_CENTER_X = -400;
 var COW_CENTER_Y = 100;
 var COW_RADIUS = 180;
 
+// the max flee distance for all cows.
+var COW_FLEE_BASE_DISTANCE = 180;
+// the maximum amount to be subtracted from base distance on a per-cow basis.
+var COW_FLEE_MAX_INDIVIDUAL_OFFSET = 80;
+
 var GATE = {
   x: -145,
   y: 370
@@ -92,6 +97,9 @@ function place_fence() {
 
 function birthCow(x, y) {
   var cow;
+
+  var flee = COW_FLEE_BASE_DISTANCE - Math.random() * COW_FLEE_MAX_INDIVIDUAL_OFFSET;
+
   cow = {
     get image() {
       if (this.alive) {
@@ -103,6 +111,7 @@ function birthCow(x, y) {
     },
     x: x,
     y: y,
+    individualFleeDistance: flee,
     target: undefined,
     actions: [],
 
@@ -110,7 +119,7 @@ function birthCow(x, y) {
 
     // steering
     mass: 50,
-    MaxSpeed: 15,
+    MaxSpeed: 28,
     MaxForce: 8,
     MaxTurnRate: undefined,
 
@@ -227,7 +236,7 @@ function birthCow(x, y) {
 
       // herders only run from the cowboy until they're in the pen.
       if (this.herd) {
-        if (vectorDistance(COWBOY, this) < 150) {
+        if (vectorDistance(COWBOY, this) < this.individualFleeDistance) {
           // cows will stop standing still once the cowboy finds them.
           this.herd = false;
           steer = this.flee();
@@ -236,7 +245,7 @@ function birthCow(x, y) {
         return {x: 0, y:0};
       }
 
-      if (vectorDistance(COWBOY, this) < 150) {
+      if (vectorDistance(COWBOY, this) < this.individualFleeDistance) {
         steer = this.flee();
       } else if (this.behavior === 'seek') {
         steer = this.seek();
@@ -321,7 +330,7 @@ function birthCow(x, y) {
     },
     get label() { return "cow"; },
     step: function() {
-      var step = .6;
+      var step = 1;
       return step;
     },
     stop: function () {

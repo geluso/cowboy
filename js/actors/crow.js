@@ -6,7 +6,6 @@ function birthCrows(ctx, a) {
     if (choice < .2) {
       var x = Math.random() * (COWBOY.x - WIDTH / 2);
       var y = COWBOY.y + HEIGHT / 2;
-      console.log("crow", x, y);
       var angle = Math.random();
       if (Math.random() < .5) {
         angle = -angle;

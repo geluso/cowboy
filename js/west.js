@@ -196,6 +196,7 @@ function generateStart(ctx, a) {
   place_fence();
 
   birthCows(ctx, a);
+  birthCrows(ctx, a);
   birth_natives(ctx, a);
   bones(ctx, a);
 

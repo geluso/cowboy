@@ -15,6 +15,7 @@ var SRC = [
   "bullet_south",
   "bullet_west",
   "church",
+  "crow-with-shadow",
   "cow_north",
   "cow_east",
   "cow_south",

@@ -4,8 +4,8 @@ function birthCrows(ctx, a) {
   setInterval(function() {
     var choice = Math.random();
     if (choice < .2) {
-      var x = Math.random() * (COWBOY.x - WIDTH / 2);
-      var y = COWBOY.y + HEIGHT / 2;
+      x = COWBOY.x + (Math.random() * WIDTH - WIDTH / 2);
+      y = COWBOY.y + HEIGHT / 2;
       var angle = Math.random();
       if (Math.random() < .5) {
         angle = -angle;

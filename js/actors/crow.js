@@ -26,13 +26,27 @@ function birthCrow(ctx, a, x, y, speed, angle) {
   crow = {
     x: x * Math.random() * .85,
     y: y,
+    alive: true,
     get label() { return "crow"; },
     get image() {
+      if (!this.alive) {
+        return IMAGES["crow-dead"];
+      }
+
       return IMAGES["crow-with-shadow"];
     },
     frame_width: 7,
     frame_height: 16,
+    kill: function() {
+      console.log("crow killed");
+      if (this.alive) {
+        this.alive = false;
+      }
+    },
     update: function() {
+      if (!this.alive) {
+        return;
+      }
       this.x += 1 * speed + angle;
       this.y -= 1 + speed;
     },

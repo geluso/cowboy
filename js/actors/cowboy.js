@@ -127,6 +127,15 @@ function shoot(actor, drawables) {
           this.hit = true;
         }
       }
+      for (var i = 0; i < CROWS.length; i++) {
+        var crow = CROWS[i];
+        if (crow.alive &&
+            Math.abs(this.x - crow.x) < 3 &&
+            Math.abs(this.y - crow.y) < 3) {
+          crow.kill();
+          this.hit = true;
+        }
+      }
     },
     speed: actor.weapon == PISTOL ? 12 : 6,
     type: actor.weapon,

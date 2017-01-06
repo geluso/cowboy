@@ -9,6 +9,7 @@ $(document).ready(function() {
   $("#stack").mousemove(mousemove);
   $("#stack").mousedown(mousedown);
   $("#stack").mouseup(mouseup);
+  $(document).mouseout(mouseup);
   $("#stack").click(click);
 });
 

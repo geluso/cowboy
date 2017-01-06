@@ -46,11 +46,11 @@ function birth_cowboy(ctx, a) {
       }
     },
     horse: false,
-    label: function () {
+    get label() {
       if (this.horse) {
-        return "cowboy on horse";
+        return "cowbzeroy on horse";
       } else {
-        return "cowboy";
+        return "cowbzeroy";
       }
     },
     draw: function (ctx) {

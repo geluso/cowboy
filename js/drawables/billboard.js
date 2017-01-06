@@ -1,5 +1,5 @@
 function build_billboard() {
-  var billboard = new AnimatedDrawable("billboard");
+  var billboard = new AnimatedDrawable("\"buy cowboy killers\"");
   billboard.setPosition(50, -100);
 
   var frames = ["billboard_0",

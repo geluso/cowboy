@@ -38,7 +38,6 @@ function birthCrow(ctx, a, x, y, speed, angle) {
     frame_width: 7,
     frame_height: 16,
     kill: function() {
-      console.log("crow killed");
       if (this.alive) {
         this.alive = false;
       }
@@ -49,6 +48,14 @@ function birthCrow(ctx, a, x, y, speed, angle) {
       }
       this.x += 1 * speed + angle;
       this.y -= 1 + speed;
+
+      if (!isInVisibleRect(this.x, this.y, 20)) {
+        var index = CROWS.indexOf(this);
+        var outed = CROWS.splice(index, 1);
+
+        var index = DRAWABLES.indexOf(this);
+        var outed = DRAWABLES.splice(index, 1);
+      }
     },
     draw: function (ctx) {
       this.update();

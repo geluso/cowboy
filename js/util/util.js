@@ -86,3 +86,16 @@ function drawableContains(drawable, x1, y2) {
   }
   return false;
 }
+
+function isInVisibleRect(gameX, gameY, tolerance) {
+  var x0 = COWBOY.x - WIDTH / 2 - tolerance;
+  var x1 = COWBOY.x + WIDTH / 2 + tolerance;
+  var y0 = COWBOY.y - HEIGHT / 2 - tolerance;
+  var y1 = COWBOY.y + HEIGHT / 2 + tolerance;
+
+  if (gameX < x0 || gameX > x1 ||
+      gameY < y0 || gameY > y1) {
+    return false;
+  }
+  return true;
+}

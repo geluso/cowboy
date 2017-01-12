@@ -1,3 +1,9 @@
+$(document).on('touchstart', function(e) {
+    if (e.target.nodeName !== 'INPUT') {
+        e.preventDefault();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   var mc = new Hammer.Manager(document);
   mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));

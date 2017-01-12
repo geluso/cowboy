@@ -23,10 +23,16 @@ function mousedown(e) {
   DOWN_X = e.offsetX;
   DOWN_Y = e.offsetY;
 
+  // first click disables help screen
+  if (DRAW_HELP_TEXT) {
+    DRAW_HELP_TEXT = !DRAW_HELP_TEXT;
+    return;
+  }
+
   if (COWBOY.special_actions.length === 0) {
     COWBOY_DOWN_X = COWBOY.x;
     COWBOY_DOWN_Y = COWBOY.y;
-  } else { 
+  } else {
     COWBOY_DOWN_X = COWBOY.special_actions[COWBOY.special_actions.length - 1][0];
     COWBOY_DOWN_Y = COWBOY.special_actions[COWBOY.special_actions.length - 1][1];
   }
@@ -50,7 +56,7 @@ function traceCourse() {
   // Why do I have to push this twice??
   COWBOY.special_actions.push([xx, yy]);
 }
-  
+
 function mousemove(e) {
   REAL_MOUSE_X = e.offsetX;
   REAL_MOUSE_Y = e.offsetY;

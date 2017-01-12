@@ -56,3 +56,19 @@ img {
   margin: 0;
   z-index: 100;
 }
+
+#left-joystick {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+#right-joystick {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+}

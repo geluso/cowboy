@@ -3,9 +3,45 @@
     <!-- prevent mobile zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <ul id="console"></ul>
+
+    <div id="stack">
+      <canvas id="restworld"></canvas>
+      <canvas id="westworld"></canvas>
+      <canvas id="textworld"></canvas>
+    </div>
+    <div id="backstage">
+      <canvas id="sprite"></canvas>
+      <canvas id="scratch"></canvas>
+    </div>
+
+    <div id="left-joystick"></div>
+    <div id="right-joystick"></div>
+
+    <audio src="midi/bigiron.mp3" hidden="true" autostart="true" autoplay="true" loop="true" volume="100%"></audio>
+
+    <div>
+      <img src="img/alphabet.gif" />
+    </div>
+
+    <div id="image-container">
+    </div>
+
+    <div>
+      <img src="img/cowboy_4x.gif" />
+      <img src="img/bones.gif" />
+      <img src="img/pole_half.gif" />
+      <img src="img/totem_half.gif" />
+      <img src="img/logo.gif" />
+    </div>
+
     <script src="thirdjs/jquery.js" type="text/javascript"></script>
     <!-- <script src="thirdjs/hammer.min.js" type="text/javascript"></script> -->
     <script src="thirdjs/lodash.min.js" type="text/javascript"></script>
+    <script src="thirdjs/nipplejs.min.js" type="text/javascript"></script>
 
     <!-- IO and util -->
     <script src="js/util/seedrandom.js" type="text/javascript"></script>
@@ -19,6 +55,8 @@
     <script src="js/util/scale.js" type="text/javascript"></script>
     <script src="js/util/touch.js" type="text/javascript"></script>
     <script src="js/util/logger.js" type="text/javascript"></script>
+    <script src="js/util/left-joystick.js" type="text/javascript"></script>
+    <script src="js/util/right-joystick.js" type="text/javascript"></script>
 
     <!-- environment -->
     <script src="js/chunks.js" type="text/javascript"></script>
@@ -48,35 +86,5 @@
     <!-- game logic -->
     <script src="js/navigation.js" type="text/javascript"></script>
     <script src="js/west.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <ul id="console"></ul>
-
-    <div id="stack">
-      <canvas id="restworld"></canvas>
-      <canvas id="westworld"></canvas>
-      <canvas id="textworld"></canvas>
-    </div>
-    <div id="backstage">
-      <canvas id="sprite"></canvas>
-      <canvas id="scratch"></canvas>
-    </div>
-
-    <audio src="midi/bigiron.mp3" hidden="true" autostart="true" autoplay="true" loop="true" volume="100%"></audio>
-
-    <div>
-      <img src="img/alphabet.gif" />
-    </div>
-
-    <div id="image-container">
-    </div>
-
-    <div>
-      <img src="img/cowboy_4x.gif" />
-      <img src="img/bones.gif" />
-      <img src="img/pole_half.gif" />
-      <img src="img/totem_half.gif" />
-      <img src="img/logo.gif" />
-    </div>
+  </body>
 </html>

@@ -1,7 +1,7 @@
 $(document).on('touchstart', function(e) {
-    if (e.target.nodeName !== 'INPUT') {
-        e.preventDefault();
-    }
+  if (e.target.nodeName !== 'INPUT') {
+    e.preventDefault();
+  }
 });
 
 document.addEventListener('DOMContentLoaded', function() {

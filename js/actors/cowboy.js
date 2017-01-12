@@ -76,7 +76,7 @@ function birth_cowboy(ctx, a) {
   a.push(COWBOY);
 }
 
-function shoot(actor, drawables) {
+function shoot(actor, drawables, angle) {
   var ff;
   if (actor.weapon == PISTOL) {
     ff = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
@@ -87,8 +87,9 @@ function shoot(actor, drawables) {
   }
 
   var dx = MOUSE_X - actor.x;
-  var dy = MOUSE_Y - actor.y;
-  var angle = Math.atan2(dy, dx);
+  var dy = MOUSE_Y + actor.y;
+  var angle = angle || Math.atan2(dy, dx);
+  console.log("shot angle:", angle);
 
   var projectile = {
     x: actor.x,
@@ -109,7 +110,7 @@ function shoot(actor, drawables) {
       }
 
       this.x += this.speed * Math.cos(this.angle);
-      this.y += this.speed * Math.sin(this.angle);
+      this.y += -this.speed * Math.sin(this.angle);
       ctx.drawImage(this.image, this.x, this.y);
       if (HORSE.alive && HORSE.unbridled &&
             Math.abs(this.x - HORSE.x) < 7 &&
@@ -145,4 +146,3 @@ function shoot(actor, drawables) {
   }
   drawables.push(projectile);
 }
-

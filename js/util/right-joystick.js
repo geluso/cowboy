@@ -19,9 +19,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
   rightJoystick.on('end', function(ev, data) {
     if (LAST_DISTANCE >= SIZE / 2) {
-      console.log("BANG");
-    } else {
-      console.log("click");
+      var angle = LAST_DEGREE / 360 * 2*Math.PI;
+      if (angle > Math.PI) {
+        angle = -Math.PI + (angle - Math.PI);
+      }
+
+      shoot(COWBOY, PROJECTILES, angle);
     }
   });
 });

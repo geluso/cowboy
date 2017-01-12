@@ -42,3 +42,16 @@ canvas {
 img {
   display: none;
 }
+
+#console {
+  max-height: 150px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: left;
+  overflow: scroll;
+  background-color: rgba(0,0,0,.2);
+  margin: 0;
+  z-index: 100;
+}

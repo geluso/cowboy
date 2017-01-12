@@ -51,7 +51,6 @@ function press(e, actor) {
 
   if (KEYBOARD[H]) {
     // Send cowboy home.
-    console.log("go home");
     set_waypoint(COWBOY, COWBOY_START_X, COWBOY_START_Y);
   }
 
@@ -124,4 +123,3 @@ function press(e, actor) {
     }
   }
 }
-

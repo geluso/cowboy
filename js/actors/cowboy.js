@@ -89,7 +89,6 @@ function shoot(actor, drawables, angle) {
   var dx = MOUSE_X - actor.x;
   var dy = MOUSE_Y + actor.y;
   var angle = angle || Math.atan2(dy, dx);
-  console.log("shot angle:", angle);
 
   var projectile = {
     x: actor.x,

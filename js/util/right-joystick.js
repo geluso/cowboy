@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
   var SIZE = 100;
 
+  var LAST_TAP = undefined;
   var LAST_DISTANCE = undefined;
   var LAST_DEGREE = undefined;
 
@@ -10,6 +11,16 @@ document.addEventListener("DOMContentLoaded", function() {
     position: {top: '50%', left: '50%'},
     color: 'black',
     size: SIZE
+  });
+
+  rightJoystick.on("start", function() {
+    var dt = Date.now() - LAST_TAP;
+    if (dt < 300) {
+      // cycle through weapons
+      COWBOY.weapon = (COWBOY.weapon + 1) % WEAPONS.length;
+    }
+
+    LAST_TAP = Date.now();
   });
 
   rightJoystick.on('move', function(ev, data) {

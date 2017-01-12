@@ -53,6 +53,11 @@ function traceCourse() {
   var xx = (REAL_MOUSE_X - DOWN_X) + COWBOY_DOWN_X;
   var yy = (REAL_MOUSE_Y - DOWN_Y) + COWBOY_DOWN_Y;
 
+  if (COWBOY.special_actions.length === 0) {
+    xx = COWBOY.x;
+    yy = COWBOY.y;
+  }
+
   // Why do I have to push this twice??
   COWBOY.special_actions.push([xx, yy]);
 }

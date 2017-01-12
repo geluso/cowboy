@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
-  document.addEventListener("touchstart", function(ev) {
+  var stack = document.getElementById("stack");
+  stack.addEventListener("touchstart", function(ev) {
+    console.log(ev.target);
     var xy = firstTouchToMouseEvent(ev);
     mousedown(xy);
   })
-  document.addEventListener("touchmove", function(ev) {
+  stack.addEventListener("touchmove", function(ev) {
     var xy = firstTouchToMouseEvent(ev);
     mousemove(xy);
   })
-  document.addEventListener("touchend", function(ev) {
+  stack.addEventListener("touchend", function(ev) {
     var xy = firstTouchToMouseEvent(ev);
     mouseup(xy);
   })

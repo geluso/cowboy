@@ -57,18 +57,17 @@ img {
   z-index: 100;
 }
 
-#left-joystick {
+.joystick {
   position: fixed;
   bottom: 20px;
-  left: 20px;
   width: 100px;
   height: 100px;
 }
 
-#right-joystick {
-  position: fixed;
-  bottom: 20px;
+#joystick-left {
+  left: 20px;
+}
+
+#joystick-right {
   right: 20px;
-  width: 100px;
-  height: 100px;
 }

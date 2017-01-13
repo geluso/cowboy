@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var LAST_DEGREE = undefined;
 
   var rightJoystick = nipplejs.create({
-    zone: document.getElementById('right-joystick'),
+    zone: document.getElementById('joystick-right'),
     mode: 'static',
     position: {top: '50%', left: '50%'},
     color: 'black',

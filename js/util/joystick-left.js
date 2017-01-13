@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var LAST_WHISTLE = undefined;
   var SIZE = 100;
 
-  var zone = document.getElementById('left-joystick');
+  var zone = document.getElementById('joystick-left');
 
   var leftJoystick = nipplejs.create({
     zone: zone,

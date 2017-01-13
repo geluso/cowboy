@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   var stack = document.getElementById("stack");
   stack.addEventListener("touchstart", function(ev) {
-    console.log(ev.target);
     var xy = firstTouchToMouseEvent(ev);
     mousedown(xy);
   })

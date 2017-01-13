@@ -75,6 +75,29 @@ function notification(str, x, y) {
 }
 
 function draw_help_text() {
+  var isMobile = "ontouchstart" in window;
+  if (isMobile) {
+    drawMobileHelpText();
+  } else {
+    drawDesktopHelpText();
+  }
+}
+
+function drawMobileHelpText() {
+  var messages = [
+    "welcome to cowboy",
+    "use left joystick to move",
+    "use right joystick to shoot",
+    "double tap left to call your horse",
+    "double tap right to change weapons",
+    "tap somewhere to go there",
+    "drag somewhere to walk along a path",
+    "tap this menu to disable this menu"
+  ];
+  drawHelpText(messages);
+}
+
+function drawDesktopHelpText() {
   var messages = [
     "Welcome to Cowboy",
     "use WASD or arrow keys to move around",
@@ -92,6 +115,10 @@ function draw_help_text() {
     "press o to zoom out",
   ];
 
+  drawHelpText(messages);
+}
+
+function drawHelpText(messages) {
   var width = 500;
   var height = 400;
 

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
   var LAST_WHISTLE = undefined;
   var SIZE = 100;
 
@@ -33,13 +33,34 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-    var xDirection = data.direction.x;
-    var yDirection = data.direction.y;
+    // reset keyboard interactions so they're recomputed each time.
+    KEYBOARD[UP] = false;
+    KEYBOARD[DOWN] = false;
+    KEYBOARD[LEFT] = false;
+    KEYBOARD[RIGHT] = false;
 
-    KEYBOARD[UP] = yDirection === "up";
-    KEYBOARD[DOWN] = yDirection === "down";
-    KEYBOARD[LEFT] = xDirection === "left";
-    KEYBOARD[RIGHT] = xDirection === "right";
+    var angle = data.angle.degree;
+    if (angle > 330 || angle < 30) {
+      KEYBOARD[RIGHT] = true;
+    } else if (angle < 60) {
+      KEYBOARD[UP] = true;
+      KEYBOARD[RIGHT] = true;
+    } else if (angle < 120) {
+      KEYBOARD[UP] = true;
+    } else if (angle < 150) {
+      KEYBOARD[UP] = true;
+      KEYBOARD[LEFT] = true;
+    } else if (angle < 210) {
+      KEYBOARD[LEFT] = true;
+    } else if (angle < 240) {
+      KEYBOARD[LEFT] = true;
+      KEYBOARD[DOWN] = true;
+    } else if (angle < 300) {
+      KEYBOARD[DOWN] = true;
+    } else {
+      KEYBOARD[RIGHT] = true;
+      KEYBOARD[DOWN] = true;
+    }
   });
 
   leftJoystick.on('end', function(ev, data) {

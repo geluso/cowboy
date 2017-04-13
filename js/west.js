@@ -36,29 +36,35 @@ function resize() {
   HEIGHT = window.innerHeight;
   ORIGINAL_HEIGHT = HEIGHT;
   ORIGINAL_WIDTH = WIDTH;
+  
+  function configureCtx(ctx) {
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
+    ctx.width = WIDTH;
+    ctx.height = HEIGHT;
+  }
 
   var background = document.getElementById("restworld");
   var back_ctx = background.getContext("2d");
+  configureCtx(back_ctx);
   background.width = WIDTH;
   background.height = HEIGHT;
-  back_ctx.width = WIDTH;
-  back_ctx.height = HEIGHT;
   back_ctx.fillRect(0,0,WIDTH, HEIGHT);
 
   var foreground = document.getElementById("westworld");
   var fore_ctx = foreground.getContext("2d");
+  configureCtx(fore_ctx);
   foreground.width = WIDTH;
   foreground.height = HEIGHT;
-  fore_ctx.width = WIDTH;
-  fore_ctx.height = HEIGHT;
 
   var text = document.getElementById("textworld");
   var text_ctx = text.getContext("2d");
+  configureCtx(text_ctx);
   TEXT_CTX = text_ctx;
   text.width = WIDTH;
   text.height = HEIGHT;
-  TEXT_CTX.width = WIDTH;
-  TEXT_CTX.height = HEIGHT;
 
   SPRITE = document.getElementById("sprite");
   SPRITE.width = WIDTH;

@@ -4,5 +4,6 @@ function init(layers) {
     background.width = WIDTH;
     background.height = HEIGHT;
     var ctx = background.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
   }
 }

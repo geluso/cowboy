@@ -85,7 +85,7 @@ function draw_help_text() {
 
 function drawMobileHelpText() {
   var messages = [
-    "welcome to cowboy",
+    "welcome to (NEW) cowboy",
     "use left joystick to move",
     "use right joystick to shoot",
     "double tap left to call your horse",
@@ -99,7 +99,7 @@ function drawMobileHelpText() {
 
 function drawDesktopHelpText() {
   var messages = [
-    "Welcome to Cowboy",
+    "Welcome to (NEW) Cowboy",
     "use WASD or arrow keys to move around",
     "press X to toggle this screen",
     "press SPACE to shoot",

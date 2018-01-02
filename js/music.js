@@ -2,14 +2,24 @@
   var SOUND_ON = true;
 
   var SONGS = ["bigiron", "coolranch"];
-  var SONG_INDEX = 0;
+  var SONG_INDEX = Math.floor(Math.random() * SONGS.length);
 
   var STEREO = document.getElementById("stereo");
+  var soundToggle = document.getElementById("sound-toggle");
   var soundOn = document.getElementById("sound-on");
   var soundOff = document.getElementById("sound-off");
+  var nextSong = document.getElementById("sound-next");
+
+  // play the next song whenever one finishes
+  STEREO.addEventListener("ended", handleNextSong);
+
+  // users can skip to the next song
+  nextSong.addEventListener("click", handleNextSong);
 
   // users can mute / unmute song
-  document.getElementById("sound-controls").addEventListener("click", () => {
+  soundToggle.addEventListener("click", toggleVolume);
+  
+  function toggleVolume() {
     SOUND_ON = !SOUND_ON;
     if(SOUND_ON) {
       STEREO.volume = 1;
@@ -20,16 +30,14 @@
       soundOff.classList.remove("hidden");
       soundOn.classList.add("hidden");
     }
-  });
+  };
 
-  // play the next song whenever one finishes
-  STEREO.addEventListener("ended", nextSong);
-  function nextSong() {
+  function handleNextSong() {
     SONG_INDEX++;
     SONG_INDEX %= SONGS.length;
     STEREO.src = "midi/" + SONGS[SONG_INDEX] + ".mp3";
   };
 
   // start it playing!
-  nextSong();
+  handleNextSong();
 })()

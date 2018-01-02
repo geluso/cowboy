@@ -77,14 +77,17 @@ img {
   top: 0;
   right: 0;
   z-index: 99;
-  cursor: pointer;
 }
 
 #sound-controls img {
-  display: block;
+  display: inline-block;
   margin: .5em;
 }
 
 #sound-off.hidden, #sound-on.hidden {
   display: none;
+}
+
+#sound-off, #sound-on, #sound-next {
+  cursor: pointer;
 }

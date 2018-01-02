@@ -54,6 +54,11 @@ function press(e, actor) {
     set_waypoint(COWBOY, COWBOY_START_X, COWBOY_START_Y);
   }
 
+  if (KEYBOARD[G]) {
+    // warp cowboy away
+    set_waypoint(COWBOY, 10000, 10000);
+  }
+
   if (KEYBOARD[I] || KEYBOARD[O]) {
     if (KEYBOARD[O]) {
       zoomout();

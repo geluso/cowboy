@@ -68,6 +68,10 @@ var SRC = [
   "signpost",
   "signpost_tall",
   "watertower",
+  "oasis-tiny",
+  "oasis-large",
+  "fish-array",
+  "fish-giant",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

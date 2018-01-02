@@ -104,6 +104,33 @@ function bones(ctx, a) {
   a.push(bones);
 }
 
+function oasis(ctx, a) {
+  var oasis = {
+    get image() {
+      return IMAGES["oasis-large"]; 
+    },
+    x: 10000,
+    y: 10000,
+    get label() { return "OASIS"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  var oasis2 = {
+    get image() {
+      return IMAGES["oasis-tiny"]; 
+    },
+    x: 9500,
+    y: 9500,
+    get label() { return "TINY OASIS"; },
+    draw: function (ctx) {
+      draw_actor(ctx, this);
+    }
+  };
+  a.push(oasis);
+  a.push(oasis2);
+}
+
 
 function place_tepee(ctx, a, x, y) {
   var tepee = {

@@ -71,3 +71,20 @@ img {
 #joystick-right {
   right: 20px;
 }
+
+#sound-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  cursor: pointer;
+}
+
+#sound-controls img {
+  display: block;
+  margin: .5em;
+}
+
+#sound-off.hidden, #sound-on.hidden {
+  display: none;
+}

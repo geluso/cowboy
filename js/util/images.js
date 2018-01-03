@@ -72,6 +72,8 @@ var SRC = [
   "oasis-large",
   "fish-array",
   "fish-giant",
+  "dog-east",
+  "dog-west",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

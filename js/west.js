@@ -110,6 +110,7 @@ function buildWorld() {
 
   // super important that cowboy is born before anything is drawn.
   birth_cowboy(ctx, DRAWABLES);
+  DRAWABLES.push(new Dog());
   generateBackground(back_ctx);
   generateStart(fore_ctx, DRAWABLES);
 

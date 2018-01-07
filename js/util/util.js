@@ -99,3 +99,8 @@ function isInVisibleRect(gameX, gameY, tolerance) {
   }
   return true;
 }
+
+function choose(choices) {
+  let choice = Math.floor(Math.random() * choices.length)
+  return choices[choice]
+}

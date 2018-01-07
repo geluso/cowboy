@@ -28,7 +28,6 @@ class Item {
 }
 
 Item.randomItem = (x, y) => {
-  let choices = [Bullet, Arrow, Tomahawk]
-  let choice = Math.floor(Math.random() * choices.length)
-  return new choices[choice](x,y)
+  let choice = choose([Bullet, Arrow, Tomahawk])
+  return new choice(x, y)
 }

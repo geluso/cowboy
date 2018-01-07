@@ -406,13 +406,13 @@ function birthCow(x, y) {
         this.alive = false;
         this.decay(this);
 
-        let numBullets = Math.floor(10 * Math.random())
-        for (let i = 0; i < numBullets; i++) {
+        let numItems = Math.floor(10 * Math.random())
+        for (let i = 0; i < numItems; i++) {
           let x = this.x + 12 * Math.random()
           let y = this.y + 12 * Math.random()
           x = Math.floor(x)
           y = Math.floor(y)
-          let bullet = new Bullet(x, y)
+          let bullet = Item.randomItem(x, y)
           DRAWABLES.push(bullet)
         }
       }

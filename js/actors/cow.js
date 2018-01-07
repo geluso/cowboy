@@ -405,6 +405,16 @@ function birthCow(x, y) {
       if (this.alive) {
         this.alive = false;
         this.decay(this);
+
+        let numBullets = Math.floor(10 * Math.random())
+        for (let i = 0; i < numBullets; i++) {
+          let x = this.x + 12 * Math.random()
+          let y = this.y + 12 * Math.random()
+          x = Math.floor(x)
+          y = Math.floor(y)
+          let bullet = new Bullet(x, y)
+          DRAWABLES.push(bullet)
+        }
       }
     },
     decay: function (actor) {

@@ -235,6 +235,9 @@ function draw(ctx, drawables) {
       drawables.splice(i, 1);
       i--;
     } else {
+      if (d.collide) {
+        d.collide(COWBOY.x, COWBOY.y)
+      }
       d.draw(ctx);
     }
   }

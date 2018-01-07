@@ -16,6 +16,7 @@ function birth_cowboy(ctx, a) {
     y: COWBOY_START_Y,
     way_x: undefined,
     way_y: undefined,
+    items: [],
     actions: [],
     special_actions: [],
     isFollowingPath: false,

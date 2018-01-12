@@ -9,7 +9,8 @@ var ZOOMIN = {
 };
 
 var ZOOMOUT = {
-  1: 1,
+  2: 4,
+  1: 2,
   .5: 1,
   .2: .5,
   .1: .2
@@ -24,7 +25,7 @@ function zoomout() {
 }
 
 function setScale(scale) {
-  scale = Math.min(scale, 1);
+  scale = Math.min(scale, 4);
   scale = Math.max(scale, .1);
 
   SCALE = Number(scale.toFixed(2));

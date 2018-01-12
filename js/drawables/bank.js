@@ -1,6 +1,5 @@
 function build_bank() {
-  var bank = new Drawable("bank");
-  bank.setPosition(320, 70);
+  var bank = new Drawable(320, 70, "bank");
   bank.image = "bank";
   bank.build();
 }

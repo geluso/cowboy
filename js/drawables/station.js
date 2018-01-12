@@ -1,6 +1,5 @@
 function build_station() {
-  var station = new Drawable("station");
-  station.setPosition(200, -100);
+  var station = new Drawable(200, -100, "station");
   station.image = "station";
   station.build();
 }

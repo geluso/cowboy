@@ -3,8 +3,7 @@ var CABIN_TOWN_X = -500;
 var CABIN_TOWN_Y = -500;
 
 function newCabin(x, y) {
-  var cabin = new Drawable("cabin");
-  cabin.setPosition(x, y);
+  var cabin = new Drawable(x, y, "cabin");
   cabin.image = "cabin";
   cabin.build();
 }

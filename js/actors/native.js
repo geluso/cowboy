@@ -3,17 +3,33 @@ class Native extends Person {
     super(x, y, "native")
     this.image = "native"
     this.inTent = false
+    this.isAwake = false
 
     // make sure stop can be called from callbacks
     this.stop = this.stop.bind(this)
 
-    // stop activates their movement
-    this.stop()
+    this.wake()
   }
 
   draw(ctx) {
     if (!this.inTent) {
       super.draw(ctx)
+    }
+  }
+
+  wake() {
+    if (!this.isAwake) {
+      this.isAwake = true
+      console.log("wake up!")
+      this.chooseAction()
+    }
+  }
+
+  sleep() {
+    if (this.isAwake) {
+      this.isAwake = false
+      console.log("sleeping")
+      this.stop()
     }
   }
 
@@ -31,6 +47,10 @@ class Native extends Person {
 
   stop() {
     super.stop()
+    this.chooseAction()
+  }
+
+  chooseAction() {
     var delay = Math.random() * 10;
     var move = Math.random() * 10;
 

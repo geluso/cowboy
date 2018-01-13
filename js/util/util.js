@@ -88,6 +88,7 @@ function drawableContains(drawable, x1, y2) {
 }
 
 function isInVisibleRect(gameX, gameY, tolerance) {
+  tolerance = tolerance || 0
   var x0 = COWBOY.x - WIDTH / 2 - tolerance;
   var x1 = COWBOY.x + WIDTH / 2 + tolerance;
   var y0 = COWBOY.y - HEIGHT / 2 - tolerance;

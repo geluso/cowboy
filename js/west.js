@@ -385,6 +385,16 @@ function walk(actor, route) {
     return;
   }
 
+  if (isInVisibleRect(actor.x, actor.y)) {
+    if (actor.wake) {
+      actor.wake()
+    }
+  } else {
+    if (actor.sleep) {
+      actor.sleep()
+    }
+  }
+
   if (Math.abs(actor.x - actor.way_x) <= actor.step() &&
       Math.abs(actor.y - actor.way_y) <= actor.step()) {
     actor.stop(route);

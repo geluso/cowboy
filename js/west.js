@@ -411,6 +411,7 @@ function walk(actor, route) {
       var moved = stepActor(actor, dx, dy);
       if (!moved) {
         actor.stop(route);
+      } else {
       }
     }
   }

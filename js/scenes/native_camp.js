@@ -5,7 +5,7 @@ function place_tepee(ctx, a, x, y) {
     },
     x: x,
     y: y,
-    isStatic: true,
+    isStatic: false,
     get label() { return "tepee"; },
     draw: function (ctx) {
       draw_actor(ctx, this);
@@ -30,21 +30,19 @@ function place_totem(ctx, a, x, y) {
   };
   a.push(totem);
 }
-var NATIVE1;
-var NATIVE2;
-var NATIVE3;
-var NATIVES = [NATIVE1, NATIVE2, NATIVE3];
 
 var TEPEE1, TEPEE1;
 
+var NATIVE;
 function birth_natives(ctx, a) {
   TEPEE1 = place_tepee(ctx, a, 375, 280);
   TEPEE2 = place_tepee(ctx, a, 400, 300);
   light_fire(ctx, a, 360, 310);
   place_totem(ctx, a, 330, 290);
 
-  NATIVE1 = birth_native_dude(ctx, a, 380, 370);
-  NATIVE2 = birth_native_dude(ctx, a, 300, 300);
-  NATIVE3 = birth_native_dude(ctx, a, 320, 380);
-  birth_chief(ctx, a, 350, 360);
+  NATIVE = new Native(380, 370)
+  a.push(NATIVE)
+  a.push(new Native(300, 300));
+  a.push(new Native(320, 380));
+  a.push(new NativeChief(350, 360));
 }

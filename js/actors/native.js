@@ -20,7 +20,6 @@ class Native extends Person {
   wake() {
     if (!this.isAwake) {
       this.isAwake = true
-      console.log("wake up!")
       this.chooseAction()
     }
   }
@@ -28,7 +27,6 @@ class Native extends Person {
   sleep() {
     if (this.isAwake) {
       this.isAwake = false
-      console.log("sleeping")
       this.stop()
     }
   }

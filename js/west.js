@@ -203,6 +203,8 @@ function generateStart(ctx, a) {
   build_watertower();
   place_fence();
 
+  (new Sign()).build()
+
   a.push(new Prospector())
   birthCows(ctx, a);
   birthCrows(ctx, a);

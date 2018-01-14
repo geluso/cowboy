@@ -316,6 +316,10 @@ function tick(actor) {
     shoot(actor, PROJECTILES);
   }
 
+  if (actor.health !== undefined && actor.health <= 0) {
+    return
+  }
+
   var dx = 0;
   var dy = 0;
 
@@ -334,6 +338,25 @@ function tick(actor) {
   if (KEYBOARD[RIGHT] || KEYBOARD[39]) {
     dx = 1;
     actor.direction = EAST;
+  }
+  if(actor.health) {
+    let chunk = getCurrentChunk()
+    for (var i = 0; i < chunk.length; i++) {
+      var asset = chunk[i];
+      if (asset.type && asset.type.includes("cactus")) {
+        if (distance(COWBOY.x, COWBOY.y, asset.x, asset.y) < 20) {
+          if (!asset.isRecentlyHit) {
+            asset.isRecentlyHit = true
+            COWBOY.health -= 1
+            if (COWBOY.health <= 0) {
+              (new Gravestone(COWBOY.x, COWBOY.y, "here lies cowboy R.I.P.")).build()
+            }
+            console.log(COWBOY.health)
+            setTimeout(() => { asset.isRecentlyHit = false }, 5000)
+          }
+        }
+      }
+    }
   }
 
   if (dx || dy) {
@@ -368,6 +391,16 @@ function stepActor(actor, dx, dy) {
   } else if (validPosition(actor.x, newY)) {
     actor.y = newY;
     moved = true;
+  }
+
+  if(actor.health) {
+    for (var i = 0; i < BACKGROUND.length; i++) {
+      var asset = BACKGROUND[i];
+      if (asset.image.src.includes("cactus")) {
+        COWBOY.health -= 1
+        console.log(COWBOY.health)
+      }
+    }
   }
 
   return moved;

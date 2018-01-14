@@ -62,6 +62,11 @@ function registerActorInChunk(actor) {
   CHUNKS[pos].push(actor);
 }
 
+function getCurrentChunk() {
+  let key = positionToChunkKey(COWBOY.x, COWBOY.y)
+  return CHUNKS[key]
+}
+
 function generateChunk(pos) {
   var x = Number(pos.split(",")[0]);
   var y = Number(pos.split(",")[1]);

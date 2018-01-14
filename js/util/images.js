@@ -75,6 +75,13 @@ var SRC = [
   "dog-east",
   "dog-west",
   "prospector",
+  "grave1",
+  "grave2",
+  "grave3",
+  "grave4",
+  "grave5",
+  "grave6",
+  "grave7",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

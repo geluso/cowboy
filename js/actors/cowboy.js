@@ -12,6 +12,7 @@ function birth_cowboy(ctx, a) {
         return IMAGES[["cowboy_north", "cowboy_east", "cowboy_south", "cowboy_west"][this.direction]];
       }
     },
+    health: 10,
     x: COWBOY_START_X,
     y: COWBOY_START_Y,
     way_x: undefined,
@@ -55,6 +56,9 @@ function birth_cowboy(ctx, a) {
       }
     },
     draw: function (ctx) {
+      if (this.health <= 0) {
+        return
+      }
       if (this.special_actions.length > 0) {
         var p0 = this.special_actions[0];
 

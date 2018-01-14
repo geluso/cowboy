@@ -15,7 +15,7 @@ function birth_horse(ctx, a) {
     way_y: undefined,
     actions: [],
     get label() { return "horse"; },
-    step: function() { return 2; },
+    step: function() { return 3; },
     stop: function () {
       clear_intervals(this.actions);
       this.actions = [];

@@ -1,5 +1,5 @@
-var COWBOY_START_X = -3 + 50;
-var COWBOY_START_Y = 110;
+var COWBOY_START_X = 188
+var COWBOY_START_Y = 4
 
 var COWBOY;
 
@@ -32,7 +32,7 @@ function birth_cowboy(ctx, a) {
     },
     step: function () {
       if (this.horse) {
-        return 2
+        return HORSE.step()
       } else {
         return 1;
       }

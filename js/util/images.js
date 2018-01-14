@@ -74,6 +74,7 @@ var SRC = [
   "fish-giant",
   "dog-east",
   "dog-west",
+  "prospector",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

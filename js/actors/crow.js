@@ -1,7 +1,8 @@
 var CROWS = [];
 
 function birthCrows(ctx, a) {
-  setInterval(function() {
+  let delay = 250;
+  let hatch = () => {
     var choice = Math.random();
     if (choice < .2) {
       x = COWBOY.x + (Math.random() * WIDTH - WIDTH / 2);
@@ -17,7 +18,9 @@ function birthCrows(ctx, a) {
         birthCrow(ctx, a, x, y, speed * .2 * Math.random() * .85, angle);
       }
     }
-  }, 250);
+  }
+
+  setInterval(hatch, delay)
 }
 
 function birthCrow(ctx, a, x, y, speed, angle) {

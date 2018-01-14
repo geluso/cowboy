@@ -87,8 +87,8 @@ function shoot(actor, drawables, angle) {
     ff = ["arrow_north", "arrow_east", "arrow_south", "arrow_west"];
   }
 
-  var dx = MOUSE_X - actor.x;
-  var dy = MOUSE_Y + actor.y;
+  var dx = REAL_MOUSE_X - window.innerWidth / 2
+  var dy = REAL_MOUSE_Y - window.innerHeight / 2
   var angle = angle || Math.atan2(-dy, dx);
 
   var projectile = {

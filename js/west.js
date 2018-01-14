@@ -4,7 +4,7 @@ var TRANSLATE_X = 0;
 var TRANSLATE_Y = 0;
 
 // canvases
-var TEXT_CTX, SPRITE, SCRATCH;
+var BACK_CTX, FORE_CTX, TEXT_CTX, SPRITE, SCRATCH;
 var IMAGES_LOADED = 0;
 
 var TICKER = 0;
@@ -94,6 +94,9 @@ function buildWorld() {
   var back_ctx = document.getElementById("restworld").getContext("2d");
   var fore_ctx = document.getElementById("westworld").getContext("2d");
   var text_ctx = document.getElementById("textworld").getContext("2d");
+
+  BACK_CTX = back_ctx
+  FORE_CTX = fore_ctx
 
   SPRITE = document.getElementById("sprite").getContext("2d");
   SCRATCH = document.getElementById("scratch").getContext("2d");
@@ -348,10 +351,13 @@ function tick(actor) {
           if (!asset.isRecentlyHit) {
             asset.isRecentlyHit = true
             COWBOY.health -= 1
+            setTimeout(() => {
+              TEXT_CTX.fillStyle = 'red'
+              TEXT_CTX.fillRect(0, 0, WIDTH, HEIGHT)
+            }, 0)
             if (COWBOY.health <= 0) {
               (new Gravestone(COWBOY.x, COWBOY.y, "here lies cowboy R.I.P.")).build()
             }
-            console.log(COWBOY.health)
             setTimeout(() => { asset.isRecentlyHit = false }, 5000)
           }
         }

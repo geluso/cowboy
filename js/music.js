@@ -1,5 +1,5 @@
+var SONGS = ["bigiron", "coolranch", "Cowboy_Theme-Pavak-1711860633"];
 (() => {
-  var SONGS = ["bigiron", "coolranch"];
   var SONG_INDEX = Math.floor(Math.random() * SONGS.length);
 
   var STEREO = document.getElementById("stereo");
@@ -45,6 +45,6 @@
   function handleNextSong() {
     SONG_INDEX++;
     SONG_INDEX %= SONGS.length;
-    STEREO.src = "midi/" + SONGS[SONG_INDEX] + ".mp3";
+    STEREO.src = "songs/" + SONGS[SONG_INDEX] + ".mp3";
   };
 })()

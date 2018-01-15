@@ -12,6 +12,7 @@ function birth_cowboy(ctx, a) {
         return IMAGES[["cowboy_north", "cowboy_east", "cowboy_south", "cowboy_west"][this.direction]];
       }
     },
+    shots: 0,
     health: 10,
     x: COWBOY_START_X,
     y: COWBOY_START_Y,
@@ -85,6 +86,26 @@ function shoot(actor, drawables, angle) {
   var ff;
   if (actor.weapon == PISTOL) {
     ff = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
+    if (COWBOY.isReloading) {
+      return
+    }
+
+    COWBOY.shots++
+    let noise = document.createElement('audio')
+    if (COWBOY.shots % 7 === 0) {
+      noise.src = reload.src
+      COWBOY.isReloading = true
+      noise.addEventListener('ended', () => {
+        COWBOY.isReloading = false
+      })
+    } else {
+      noise.src = gunshot.src
+    }
+    noise.play()
+    if (noise.src === reload.src) {
+      // no bullet!
+      return
+    }
   } else if (actor.weapon == TOMAHAWK) {
     ff = ["tomahawk_north", "tomahawk_east", "tomahawk_south", "tomahawk_west"];
   } else if (actor.weapon == ARROW) {

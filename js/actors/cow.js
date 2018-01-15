@@ -403,6 +403,10 @@ function birthCow(x, y) {
     delay: 2000,
     kill: function() {
       if (this.alive) {
+        let noise = document.createElement('audio')
+        noise.src = moo.src
+        noise.play()
+
         this.alive = false;
         this.decay(this);
 

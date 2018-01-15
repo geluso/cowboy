@@ -83,6 +83,8 @@ function resize() {
   setScale(SCALE);
 }
 
+var lastX = undefined;
+var lastY = undefined;
 function buildWorld() {
   resize();
 
@@ -124,59 +126,65 @@ function buildWorld() {
   setScale(START_SCALE);
 
   var lastFrame = Date.now();
-  var lastX = undefined;
-  var lastY = undefined;
-  TICKER = setInterval(function() {
-    tick(COWBOY);
+  TICKER = setInterval(tickAndDraw, FRAMERATE)
+}
 
-    draw_clear(fore_ctx);
-    draw_clear(back_ctx);
-    drawRouteEast(fore_ctx)
+function tickAndDraw() {
+  tick(COWBOY);
+  prepDrawBackground();
+  draw_labels();
+  utilDraw();
+}
 
-    back_ctx.fillStyle = "#cccc66";
-    back_ctx.fillRect(0, 0, SCALE_WIDTH, SCALE_HEIGHT);
+function prepDrawBackground() {
+  draw_clear(FORE_CTX);
+  draw_clear(BACK_CTX);
+  drawRouteEast(FORE_CTX)
 
-    draw(fore_ctx, DRAWABLES);
-    draw(fore_ctx, PROJECTILES);
+  BACK_CTX.fillStyle = "#cccc66";
+  BACK_CTX.fillRect(0, 0, SCALE_WIDTH, SCALE_HEIGHT);
 
-    // no need to update background if cowboy hasn't moved.
-    if (COWBOY.x !== lastX || COWBOY.y !== lastY) {
-      drawBackground(back_ctx);
+  draw(FORE_CTX, DRAWABLES);
+  draw(FORE_CTX, PROJECTILES);
 
-      if (DRAW_CHUNK_BORDERS) {
-        drawChunkBorders(back_ctx);
+  // no need to update background if cowboy hasn't moved.
+  if (COWBOY.x !== lastX || COWBOY.y !== lastY) {
+    drawBackground(BACK_CTX);
+  }
+}
+
+function utilDraw() {
+  if (COWBOY.x !== lastX || COWBOY.y !== lastY) {
+    if (DRAW_CHUNK_BORDERS) {
+      drawChunkBorders(BACK_CTX);
+    }
+
+    if (DRAW_NAV_GRID) {
+      drawNavGrid(BACK_CTX);
+    }
+  }
+  if (DRAW_COORDS) {
+    var step = 75;
+    for (var x = 0; x < WIDTH; x += step) {
+      for (var y = 0; y < HEIGHT; y += step) {
+        FORE_CTX.fillText("x:" + x +", y: " + y, x, y);
       }
-
-      if (DRAW_NAV_GRID) {
-        drawNavGrid(back_ctx);
-      }
     }
+  }
 
-    draw_labels();
+  if (SPECIAL_CACTUS_DRAW) {
+    specialCactusDraw();
+  }
 
-    if (DRAW_COORDS) {
-      var step = 75;
-      for (var x = 0; x < WIDTH; x += step) {
-        for (var y = 0; y < HEIGHT; y += step) {
-          fore_ctx.fillText("x:" + x +", y: " + y, x, y);
-        }
-      }
-    }
+  if (DRAW_FRAMERATE) {
+    var now = Date.now();
+    var dt = Date.now() - lastFrame;
+    lastFrame = now;
 
-    if (SPECIAL_CACTUS_DRAW) {
-      specialCactusDraw();
-    }
-
-    if (DRAW_FRAMERATE) {
-      var now = Date.now();
-      var dt = Date.now() - lastFrame;
-      lastFrame = now;
-
-      var framerate = Math.round(1000 / dt);
-      var text = framerate + " fps";
-      fore_ctx.strokeText(text, 50, 50);
-    }
-  }, FRAMERATE);
+    var framerate = Math.round(1000 / dt);
+    var text = framerate + " fps";
+    fore_ctx.strokeText(text, 50, 50);
+  }
 }
 
 function generateBackground(ctx, a) {

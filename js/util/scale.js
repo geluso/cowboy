@@ -40,6 +40,7 @@ function lerpZoom(current, target, duration=500) {
     let progress = (performance.now() - start) / duration
     let newScale = current + (target - current) * progress
     setScale(newScale)
+    prepDrawBackground()
   }, 1 / 30)
   setTimeout(() => {
     clearInterval(interval)

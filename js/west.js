@@ -134,7 +134,7 @@ function buildWorld() {
     drawRouteEast(fore_ctx)
 
     back_ctx.fillStyle = "#cccc66";
-    back_ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    back_ctx.fillRect(0, 0, SCALE_WIDTH, SCALE_HEIGHT);
 
     draw(fore_ctx, DRAWABLES);
     draw(fore_ctx, PROJECTILES);

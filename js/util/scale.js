@@ -1,7 +1,12 @@
 var SCALE_WIDTH;
 var SCALE_HEIGHT;
+// "max" is actually zoomed the most "out"
+var MAX_ZOOM = 2;
+// "min" is actually zoomed the most "in"
+var MIN_ZOOM = .1;
 
 var ZOOMIN = {
+  2: 1,
   1: .5,
   .5: .2,
   .2: .1,
@@ -9,7 +14,6 @@ var ZOOMIN = {
 };
 
 var ZOOMOUT = {
-  2: 4,
   1: 2,
   .5: 1,
   .2: .5,
@@ -17,11 +21,31 @@ var ZOOMOUT = {
 };
 
 function zoomin() {
-  setScale(ZOOMIN[SCALE]);
+  let current = SCALE
+  let target = ZOOMIN[SCALE]
+  lerpZoom(current, target)
 }
 
 function zoomout() {
-  setScale(ZOOMOUT[SCALE]);
+  let current = SCALE
+  let target = ZOOMOUT[SCALE]
+  lerpZoom(current, target)
+}
+function lerpZoom(current, target) {
+  target = Math.min(target || MAX_ZOOM, MAX_ZOOM)
+  target = Math.max(target || MIN_ZOOM, MIN_ZOOM)
+
+  let duration = 500
+  let start = performance.now()
+  let interval = setInterval(() => {
+    let progress = (performance.now() - start) / duration
+    let newScale = current + (target - current) * progress
+    setScale(newScale)
+  }, 1 / 30)
+  setTimeout(() => {
+    clearInterval(interval)
+    setScale(target)
+  }, duration)
 }
 
 function setScale(scale) {

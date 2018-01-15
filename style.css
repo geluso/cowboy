@@ -1,6 +1,6 @@
 body {
  text-align: center;
- background-color: goldenrod;
+ background-color: rgb(193, 196, 83);
  margin: 0;
  overflow-y: hidden;
 }
@@ -107,19 +107,23 @@ img {
 @keyframes fadetogray {
   from {
     filter: grayscale(0%);
+    background-color: rgb(193, 196, 83);
   }
 
   to {
     filter: grayscale(100%);
+    background-color: rgb(183, 183, 183);
   }
 }
 
 @keyframes backfromgray {
   from {
     filter: grayscale(100%);
+    background-color: rgb(183, 183, 183);
   }
 
   to {
     filter: grayscale(0%);
+    background-color: rgb(193, 196, 83);
   }
 }

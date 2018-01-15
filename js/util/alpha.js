@@ -146,7 +146,7 @@ function label(str, x, y) {
     draw_help_text();
   }
 
-  write(TEXT_CTX, str, x, y);
+  write(TEXT_CTX, str, x + 10, y);
 }
 
 // Writes the given string vertically centered at the given point.

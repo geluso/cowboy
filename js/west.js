@@ -354,14 +354,13 @@ function tick(actor) {
             setTimeout(() => {
               TEXT_CTX.fillStyle = 'red'
               TEXT_CTX.fillRect(0, 0, WIDTH, HEIGHT)
-
-              document.body.classList.remove('brighten')
-              document.body.classList.add('gogray')
             }, 0)
             if (COWBOY.health <= 0) {
               (new Gravestone(COWBOY.x, COWBOY.y, "here lies cowboy R.I.P.")).build()
+              document.body.classList.remove('brighten')
+              document.body.classList.add('gogray')
             }
-            setTimeout(() => { asset.isRecentlyHit = false }, 5000)
+            setTimeout(() => { asset.isRecentlyHit = false }, 1000)
           }
         }
       }

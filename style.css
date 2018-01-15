@@ -93,7 +93,7 @@ img {
 }
 
 .gogray {
-  animation-duration: 1s;
+  animation-duration: 3s;
   animation-name: fadetogray;
   animation-fill-mode: forwards;
 }

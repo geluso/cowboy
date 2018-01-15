@@ -31,11 +31,10 @@ function zoomout() {
   let target = ZOOMOUT[SCALE]
   lerpZoom(current, target)
 }
-function lerpZoom(current, target) {
+function lerpZoom(current, target, duration=500) {
   target = Math.min(target || MAX_ZOOM, MAX_ZOOM)
   target = Math.max(target || MIN_ZOOM, MIN_ZOOM)
 
-  let duration = 500
   let start = performance.now()
   let interval = setInterval(() => {
     let progress = (performance.now() - start) / duration

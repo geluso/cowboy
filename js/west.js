@@ -359,6 +359,7 @@ function tick(actor) {
               (new Gravestone(COWBOY.x, COWBOY.y, "here lies cowboy R.I.P.")).build()
               document.body.classList.remove('brighten')
               document.body.classList.add('gogray')
+              lerpZoom(SCALE, .2, 5000)
             }
             setTimeout(() => { asset.isRecentlyHit = false }, 1000)
           }

@@ -91,3 +91,35 @@ img {
 #sound-off, #sound-on, #sound-next {
   cursor: pointer;
 }
+
+.gogray {
+  animation-duration: 1s;
+  animation-name: fadetogray;
+  animation-fill-mode: forwards;
+}
+
+.brighten {
+  animation-duration: 1s;
+  animation-name: bacfromgray;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadetogray {
+  from {
+    filter: grayscale(0%);
+  }
+
+  to {
+    filter: grayscale(100%);
+  }
+}
+
+@keyframes backfromgray {
+  from {
+    filter: grayscale(100%);
+  }
+
+  to {
+    filter: grayscale(0%);
+  }
+}

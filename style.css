@@ -132,11 +132,23 @@ img {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #8c000b;
+  background-color: black;
   border: solid black 1px;
   width: 200px;
   height: 20px;
   margin: 10px;
   z-index: 10;
   color: white;
+}
+
+#health-bar span {
+  z-index: 20;
+}
+
+#health-level {
+  position: absolute;
+  top: 0;
+  background-color: #8c000b;
+  height: 20px;
+  z-index: -1;
 }

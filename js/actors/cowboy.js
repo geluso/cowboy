@@ -70,7 +70,7 @@ function birth_cowboy(ctx, a) {
       current.textContent = COWBOY.health
       max.textContent = COWBOY.maxHealth
 
-      let percentage = (max - current) / max
+      let percentage = 1 - (COWBOY.maxHealth - COWBOY.health) / COWBOY.maxHealth
       level.style.width = (200 * percentage) + 'px'
     },
     die: function() {

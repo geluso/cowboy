@@ -59,6 +59,11 @@ function birth_cowboy(ctx, a) {
     },
     takeDamage: (str) => {
       COWBOY.health -= 1
+
+      let noise = document.createElement('audio')
+      noise.src = beer.src
+      noise.play()
+
       COWBOY.updateHealthUI()
       COWBOY.die()
     },

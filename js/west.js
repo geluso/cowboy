@@ -17,9 +17,9 @@ var WEST = 3;
 
 // weapons
 var PISTOL = 0,
-    TOMAHAWK = 1,
-    ARROW = 2,
-    SHOTGUN = 3,
+    SHOTGUN = 1,
+    TOMAHAWK = 2,
+    ARROW = 3,
     WEAPONS = [PISTOL, SHOTGUN, TOMAHAWK, ARROW];
 
 var canvas, ctx;

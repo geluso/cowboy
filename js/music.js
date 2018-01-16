@@ -32,10 +32,12 @@ var SONGS = ["bigiron", "coolranch", "Cowboy_Theme-Pavak-1711860633"];
     SOUND_ON = !SOUND_ON;
     if(SOUND_ON) {
       STEREO.volume = 1;
+      STEREO.play()
       soundOn.classList.remove("hidden");
       soundOff.classList.add("hidden");
     } else {
       STEREO.volume = 0;
+      STEREO.pause()
       soundOff.classList.remove("hidden");
       soundOn.classList.add("hidden");
     }

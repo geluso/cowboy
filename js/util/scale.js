@@ -1,3 +1,4 @@
+var IS_ZOOMING = false;
 var SCALE_WIDTH;
 var SCALE_HEIGHT;
 // "max" is actually zoomed the most "out"
@@ -32,6 +33,11 @@ function zoomout() {
   lerpZoom(current, target)
 }
 function lerpZoom(current, target, duration=500) {
+  if (IS_ZOOMING) {
+    return
+  }
+  IS_ZOOMING = true
+
   target = Math.min(target || MAX_ZOOM, MAX_ZOOM)
   target = Math.max(target || MIN_ZOOM, MIN_ZOOM)
 
@@ -45,6 +51,7 @@ function lerpZoom(current, target, duration=500) {
   setTimeout(() => {
     clearInterval(interval)
     setScale(target)
+    IS_ZOOMING = false
   }, duration)
 }
 

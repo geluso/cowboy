@@ -220,7 +220,7 @@ function generateStart(ctx, a) {
 
   a.push(new Prospector())
   birthCows(ctx, a);
-  birthCrows(ctx, a);
+  //birthCrows(ctx, a);
   birth_natives(ctx, a);
   bones(ctx, a);
   oasis(ctx, a);

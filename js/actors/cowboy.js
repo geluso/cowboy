@@ -115,6 +115,10 @@ function doneReloading() {
 }
 
 function shoot(actor, drawables, angle) {
+  var dx = REAL_MOUSE_X - window.innerWidth / 2
+  var dy = REAL_MOUSE_Y - window.innerHeight / 2
+  var angle = angle || Math.atan2(-dy, dx);
+
   var ff;
   if (actor.weapon == PISTOL) {
     ff = ["bullet_north", "bullet_east", "bullet_south", "bullet_west"];
@@ -135,6 +139,7 @@ function shoot(actor, drawables, angle) {
       return
     }
     COWBOY.isReloading = true
+    new ShotgunBlast(actor.x, actor.y, angle, dx, dy)
     playAudio('shotgun', doneReloading)
     return
   } else if (actor.weapon == TOMAHAWK) {
@@ -142,10 +147,6 @@ function shoot(actor, drawables, angle) {
   } else if (actor.weapon == ARROW) {
     ff = ["arrow_north", "arrow_east", "arrow_south", "arrow_west"];
   }
-
-  var dx = REAL_MOUSE_X - window.innerWidth / 2
-  var dy = REAL_MOUSE_Y - window.innerHeight / 2
-  var angle = angle || Math.atan2(-dy, dx);
 
   var projectile = {
     x: actor.x,

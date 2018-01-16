@@ -14,6 +14,7 @@ function birth_cowboy(ctx, a) {
     },
     shots: 0,
     health: 10,
+    maxHealth: 10,
     x: COWBOY_START_X,
     y: COWBOY_START_Y,
     way_x: undefined,
@@ -54,6 +55,31 @@ function birth_cowboy(ctx, a) {
         return "cowbzeroy on horse";
       } else {
         return "cowbzeroy";
+      }
+    },
+    takeDamage: (str) => {
+      COWBOY.health -= 1
+      COWBOY.updateHealthUI()
+      COWBOY.die()
+    },
+    updateHealthUI: () => {
+      let bar = document.getElementById('health-bar')
+      let level = document.getElementById('health-level')
+      let current = document.getElementById('current-health')
+      let max = document.getElementById('max-health')
+      current.textContent = COWBOY.health
+      max.textContent = COWBOY.maxHealth
+
+      let percentage = (max - current) / max
+      level.style.width = (200 * percentage) + 'px'
+    },
+    die: function() {
+      if (COWBOY.health <= 0) {
+        COWBOY.stop();
+        (new Gravestone(COWBOY.x, COWBOY.y, "here lies cowboy R.I.P.")).build()
+        document.body.classList.remove('brighten')
+        document.body.classList.add('gogray')
+        lerpZoom(SCALE, .2, 3000)
       }
     },
     draw: function (ctx) {

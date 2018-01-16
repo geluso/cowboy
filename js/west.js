@@ -115,6 +115,7 @@ function buildWorld() {
 
   // super important that cowboy is born before anything is drawn.
   birth_cowboy(ctx, DRAWABLES);
+  COWBOY.updateHealthUI()
   DRAWABLES.push(new Dog());
   generateBackground(back_ctx);
   generateStart(fore_ctx, DRAWABLES);
@@ -357,19 +358,10 @@ function tick(actor) {
       if (asset.type && asset.type.includes("cactus")) {
         if (distance(COWBOY.x, COWBOY.y, asset.x, asset.y) < 20) {
           if (!asset.isRecentlyHit) {
+            flashRed()
             asset.isRecentlyHit = true
-            COWBOY.health -= 1
-            setTimeout(() => {
-              TEXT_CTX.fillStyle = 'red'
-              TEXT_CTX.fillRect(0, 0, WIDTH, HEIGHT)
-            }, 0)
-            if (COWBOY.health <= 0) {
-              (new Gravestone(COWBOY.x, COWBOY.y, "here lies cowboy R.I.P.")).build()
-              document.body.classList.remove('brighten')
-              document.body.classList.add('gogray')
-              lerpZoom(SCALE, .2, 5000)
-            }
             setTimeout(() => { asset.isRecentlyHit = false }, 1000)
+            COWBOY.takeDamage(asset)
           }
         }
       }
@@ -380,6 +372,15 @@ function tick(actor) {
     actor.stop();
     stepActor(actor, dx, dy);
   }
+}
+
+function flashRed() {
+  // setTimeout to zero to bring the flash outside the
+  // normal draw cycle
+  setTimeout(() => {
+    TEXT_CTX.fillStyle = 'red'
+    TEXT_CTX.fillRect(0, 0, WIDTH, HEIGHT)
+  }, 0)
 }
 
 // dx and dy are either -1,0,1

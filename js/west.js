@@ -115,8 +115,8 @@ function buildWorld() {
   }
 
   // super important that cowboy is born before anything is drawn.
-  birth_cowboy(ctx, DRAWABLES);
-  COWBOY.updateHealthUI()
+  COWBOY = new Cowboy()
+  DRAWABLES.push(COWBOY);
   DRAWABLES.push(new Dog());
   generateBackground(back_ctx);
   generateStart(fore_ctx, DRAWABLES);

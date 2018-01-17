@@ -1,4 +1,4 @@
-class Prospector extends Person {
+class Prospector extends NPC {
   constructor(x, y, label) {
     super(x, y, "prospector");
     this.image = "prospector";

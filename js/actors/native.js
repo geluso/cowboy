@@ -1,4 +1,4 @@
-class Native extends Person {
+class Native extends NPC {
   constructor(x, y, label) {
     super(x, y, "native")
     this.image = "native"

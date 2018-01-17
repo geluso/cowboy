@@ -32,4 +32,18 @@ class Person extends Drawable {
     }
     this.chooseAction()
   }
+
+  die() {
+    if (this.health <= 0) {
+      this.stop();
+      let epitath = `here lies ${this.label()} R.I.P.`
+      (new Gravestone(this.x, this.y, epitath)).build()
+
+      if (this === COWBOY) {
+        document.body.classList.remove('brighten')
+        document.body.classList.add('gogray')
+        lerpZoom(SCALE, .2, 3000)
+      }
+    }
+  }
 }

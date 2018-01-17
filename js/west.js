@@ -25,7 +25,8 @@ var PISTOL = 0,
 var canvas, ctx;
 
 var DRAWABLES = [],
-    PROJECTILES = [];
+    PROJECTILES = [],
+    KILLABLE = []
 var INTERVALS = [];
 
 window.onload = buildWorld;
@@ -116,13 +117,12 @@ function buildWorld() {
 
   // super important that cowboy is born before anything is drawn.
   COWBOY = new Cowboy()
-  DRAWABLES.push(COWBOY);
-  DRAWABLES.push(new Dog());
+  KILLABLE.push(new Dog());
   generateBackground(back_ctx);
   generateStart(fore_ctx, DRAWABLES);
 
-  // shift the cowboy from the front to the back so he is always drawn last.
-  DRAWABLES.push(DRAWABLES.shift());
+  // add the COWBOY to the list of characters last so he's always drawn on top
+  KILLABLE.push(COWBOY);
 
   // start super zoomed in.
   setScale(START_SCALE);
@@ -148,6 +148,7 @@ function prepDrawBackground() {
 
   draw(FORE_CTX, DRAWABLES);
   draw(FORE_CTX, PROJECTILES);
+  draw(FORE_CTX, KILLABLE);
 
   // no need to update background if cowboy hasn't moved.
   if (COWBOY.x !== lastX || COWBOY.y !== lastY) {
@@ -202,7 +203,7 @@ function generateBackground(ctx, a) {
 function generateStart(ctx, a) {
   light_fire(ctx, a, 50, 50);
   build_outhouse(ctx, a);
-  birth_horse(ctx, a);
+  birth_horse(ctx, KILLABLE);
 
   // reducing dependencies on ctx and a when creating new structures.
   buildCabin();
@@ -219,9 +220,9 @@ function generateStart(ctx, a) {
   (new Sign()).build()
 
   a.push(new Prospector())
-  birthCows(ctx, a);
+  birthCows(ctx, KILLABLE);
   //birthCrows(ctx, a);
-  birth_natives(ctx, a);
+  birth_natives(ctx, KILLABLE);
   bones(ctx, a);
   oasis(ctx, a);
 
@@ -268,20 +269,23 @@ function draw_labels() {
   var x = Math.round((REAL_MOUSE_X / ORIGINAL_WIDTH) * WIDTH);
   var y = Math.round((REAL_MOUSE_Y / ORIGINAL_HEIGHT) * HEIGHT);
 
-  for (var i = 0; i < DRAWABLES.length; i++) {
+  for (var i = 0; i < (DRAWABLES.length + KILLABLE.length); i++) {
     var drawable = DRAWABLES[i];
+    if (i >= DRAWABLES.length) {
+      drawable = KILLABLE[i - DRAWABLES.length]
+    }
     if (drawableContains(drawable, MOUSE_X, MOUSE_Y)) {
     //if (distance(drawable.x, drawable.y, MOUSE_X, MOUSE_Y) < 20) {
       label(drawable.label, x, y + labels * 18);
-      labels++
+      return
     }
   }
-  if (labels == 0) {
-    if (SHOW_HOVER_COORDS) {
-      drawScreenCoordinates(x, y);
-    } else {
-      label("go", x, y);
-    }
+  // if it didn't return in the for loop then draw
+  // coords or GO
+  if (SHOW_HOVER_COORDS) {
+    drawScreenCoordinates(x, y);
+  } else {
+    label("go", x, y);
   }
 }
 

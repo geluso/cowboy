@@ -56,8 +56,8 @@ function birthCrow(ctx, a, x, y, speed, angle) {
         var index = CROWS.indexOf(this);
         var outed = CROWS.splice(index, 1);
 
-        var index = DRAWABLES.indexOf(this);
-        var outed = DRAWABLES.splice(index, 1);
+        var index = KILLABLE.indexOf(this);
+        var outed = KILLABLE.splice(index, 1);
       }
     },
     draw: function (ctx) {

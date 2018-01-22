@@ -21,15 +21,15 @@ class ShotgunBlast {
     this.x = x
     this.y = y
     this.angle = angle
-    this.speed = 12
+    this.speed = 24
 
     this.buckshots = []
 
-    let maxBuckshots = 30
+    let maxBuckshots = 90
     for (let i = 0; i < maxBuckshots; i++) {
       let buck = new Buckshot()
-      buck.x += Math.random() * 32
-      buck.y += Math.random() * 8
+      buck.x += Math.random() * 60
+      buck.y += Math.random() * 14
       this.buckshots.push(buck)
     }
 

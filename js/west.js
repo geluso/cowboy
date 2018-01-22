@@ -89,7 +89,7 @@ var lastY = undefined;
 function buildWorld() {
   resize();
 
-  Math.seedrandom("COWBOY!!");
+  Math.seedrandom("hello!!");
 
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };

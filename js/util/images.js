@@ -81,7 +81,6 @@ var SRC = [
   "grave4",
   "grave5",
   "grave6",
-  "grave7",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

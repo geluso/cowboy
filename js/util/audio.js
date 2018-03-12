@@ -3,5 +3,6 @@ function playAudio(id, cb) {
   noise.src = document.getElementById(id).src
   noise.play()
 
-  noise.addEventListener('ended', cb)
+  // TODO: 'ended' event on audio elements doesn't fire
+  // let listener = noise.addEventListener('ended', cb)
 }

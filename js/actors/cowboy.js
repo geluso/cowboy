@@ -111,6 +111,7 @@ class Cowboy extends Person {
 }
 
 function doneReloading() {
+  console.log('done reloading')
   COWBOY.isReloading = false
 }
 
@@ -129,7 +130,8 @@ function shoot(actor, drawables, angle) {
     COWBOY.shots++
     if (COWBOY.shots % 7 === 0) {
       COWBOY.isReloading = true
-      playAudio('reload', doneReloading)
+      playAudio('reload');
+      setTimeout(doneReloading, 900)
       return
     } else {
       playAudio('gunshot')
@@ -140,7 +142,8 @@ function shoot(actor, drawables, angle) {
     }
     COWBOY.isReloading = true
     new ShotgunBlast(actor.x, actor.y, angle, dx, dy)
-    playAudio('shotgun', doneReloading)
+    playAudio('shotgun');
+    setTimeout(doneReloading, 1200)
     return
   } else if (actor.weapon == TOMAHAWK) {
     ff = ["tomahawk_north", "tomahawk_east", "tomahawk_south", "tomahawk_west"];

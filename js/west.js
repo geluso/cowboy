@@ -217,7 +217,9 @@ function generateStart(ctx, a) {
   build_watertower();
   place_fence();
 
-  (new Sign()).build()
+  (new Sign(430, 170, "this road goes east")).build();
+
+  (new GeneralStore(460, 50)).build();
 
   a.push(new Prospector())
   birthCows(ctx, KILLABLE);

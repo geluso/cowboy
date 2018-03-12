@@ -43,6 +43,10 @@ function place_fence() {
     });
   }
 
+  (new Haystack(-190, topmost + 25)).build();
+  (new Haystack(-190 + 20, topmost + 25)).build();
+  (new Haystack(-190 + 40, topmost + 25)).build();
+
   // west side
   for (var i = 0; i < 13; i++) {
     DRAWABLES.push({

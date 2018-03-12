@@ -1,8 +1,8 @@
 class SmallOasis extends Drawable {
   constructor(x, y, label) {
     super(x, y, "tiny oasis")
-    this.x = x || 9500
-    this.y = y || 9500
+    this.x = x
+    this.y = y
     this.image = "oasis-tiny"
   }
 }
@@ -10,8 +10,8 @@ class SmallOasis extends Drawable {
 class LargeOasis extends Drawable {
   constructor(x, y, label) {
     super(x, y, "oasis")
-    this.x = x || 10000
-    this.y = y || 10000
+    this.x = x
+    this.y = y
     this.image = "oasis-large"
   }
 }

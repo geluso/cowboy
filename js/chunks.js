@@ -79,21 +79,30 @@ function generateChunk(pos) {
     var cacti = grow_cactus(x, y, CHUNK_SIZE, CHUNK_SIZE);
     var rocks = place_rocks(x, y, CHUNK_SIZE, CHUNK_SIZE);
     chunkContents = _.union(cacti, rocks);
+    CHUNKS[pos] = chunkContents;
+
+    // prevent fancy things from being generated too near the center of town
+    let minXFromStart = 1000;
+    let minYFromStart = 1000;
+    if (Math.abs(x) < minXFromStart && Math.abs(y) < minYFromStart) {
+      return
+    }
 
     let dx = Math.random() * CHUNK_SIZE;
     let dy = Math.random() * CHUNK_SIZE;
     // random chance that the chunk will have a heart of cows.
     if (Math.random() < .3) {
       createCowHerd(x + dx, y + dy);
-    } else if (Math.random() < .3) {
-      let minXFromStart = 1000;
-      let minYFromStart = 1000;
-      if (Math.abs(x) > minXFromStart || Math.abs(y) > minYFromStart) {
-        var houses = MesaTown.createMesaTown(x + dx, y + dy);  
-      }
     }
 
-    CHUNKS[pos] = chunkContents;
-    return chunkContents;
+    if (Math.random() < .3) {
+      MesaTown.createMesaTown(x + dx, y + dy);  
+      return;
+    }
+
+    if (Math.random() < .3) {
+      (new LargeOasis(x + dx, y + dy)).build();
+      return;
+    }
   }
 }

@@ -22,6 +22,7 @@ class Drawable {
     }
 
     DRAWABLES.push(this);
+    return this;
   }
 
   // Returns true if an image has been specified.

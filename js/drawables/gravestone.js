@@ -8,7 +8,6 @@ class Gravestone extends Drawable {
       "grave4",
       "grave5",
       "grave6",
-      "grave7",
     ]
     this.image = choose(gravestones)
   }

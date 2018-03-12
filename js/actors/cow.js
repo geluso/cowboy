@@ -446,7 +446,7 @@ function createCowHerd(x, y) {
     var cow = birthCow(xx, yy);
     cow.herd = true;
 
-    DRAWABLES.push(cow);
+    KILLABLE.push(cow);
     COWS.push(cow);
   }
 }

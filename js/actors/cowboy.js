@@ -88,16 +88,6 @@ class Cowboy extends Person {
     level.style.width = (200 * percentage) + 'px'
   }
 
-  die() {
-    if (this.health <= 0) {
-      this.stop();
-      (new Gravestone(this.x, this.y, "here lies cowboy R.I.P.")).build()
-      document.body.classList.remove('brighten')
-      document.body.classList.add('gogray')
-      lerpZoom(SCALE, .2, 3000)
-    }
-  }
-
   draw(ctx) {
     if (this.health <= 0) {
       return
@@ -186,22 +176,20 @@ function shoot(actor, drawables, angle) {
         this.hit = true;
       }
 
-      for (var i = 0; i < COWS.length; i++) {
-        var cow = COWS[i];
-        if (cow.alive &&
-            Math.abs(this.x - cow.x) < 7 &&
-            Math.abs(this.y - cow.y) < 7) {
-          cow.kill();
-          this.hit = true;
-        }
-      }
-      for (var i = 0; i < CROWS.length; i++) {
-        var crow = CROWS[i];
-        if (crow.alive &&
-            Math.abs(this.x - crow.x) < 3 &&
-            Math.abs(this.y - crow.y) < 3) {
-          crow.kill();
-          this.hit = true;
+      for (var i = 0; i < KILLABLE.length; i++) {
+        var thing = KILLABLE[i];
+        if (thing.alive) {
+          var dist = 5
+          if (thing !== COWBOY &&
+              Math.abs(this.x - thing.x) < 7 &&
+              Math.abs(this.y - thing.y) < 7) {
+            if (thing.die) {
+              thing.die();
+            } else if (thing.alive !== undefined) {
+              thing.alive = false
+            }
+            this.hit = true;
+          }
         }
       }
     },

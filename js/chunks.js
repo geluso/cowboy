@@ -82,8 +82,8 @@ function generateChunk(pos) {
     CHUNKS[pos] = chunkContents;
 
     // prevent fancy things from being generated too near the center of town
-    let minXFromStart = 1000;
-    let minYFromStart = 1000;
+    let minXFromStart = 2000;
+    let minYFromStart = 2000;
     if (Math.abs(x) < minXFromStart && Math.abs(y) < minYFromStart) {
       return
     }

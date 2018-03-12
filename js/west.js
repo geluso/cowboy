@@ -90,7 +90,7 @@ var lastY = undefined;
 function buildWorld() {
   resize();
 
-  Math.seedrandom("COWBOY!!");
+  //Math.seedrandom("COWBOY!!");
 
   // Prevent highlighting things on the page.
   document.onselectstart = function () { return false; };

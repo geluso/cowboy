@@ -1,3 +1,5 @@
+.cache/
+dist/
 .DS_Store
 ._.DS_Store
 img/.DS_Store

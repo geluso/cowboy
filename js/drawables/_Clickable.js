@@ -11,7 +11,6 @@ class Clickable extends Drawable {
     let isClicked = false;
     CLICKABLES.forEach(clickable => {
       if (clickable.contains(x, y)) {
-        debugger
         isClicked = true;
         clickable.onClick(x, y);
       }

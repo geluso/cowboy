@@ -1,5 +1,4 @@
 const CLICKABLES = [];
-console.log('CLICKABLES');
 
 class Clickable extends Drawable {
   constructor(x, y, label) {

@@ -8,9 +8,14 @@ var MOUSE_X = 0,
 $(document).ready(function() {
   $("#stack").mousemove(mousemove);
   $("#stack").mousedown(mousedown);
-  $("#stack").mouseup(mouseup);
+  $("#stack").mouseup(ev => {
+    // only do click if mouseup didn't resolve on a clickable target
+    if (!mouseup(ev)) {
+      click(ev);
+    }
+  });
   $(document).mouseout(mouseup);
-  $("#stack").click(click);
+  //$("#stack").click(click);
 });
 
 var MOUSEDOWN = false;
@@ -77,7 +82,7 @@ function mousemove(e) {
 
 function mouseup(e) {
   UP_X = e.offsetX;
-  UP_Y = e.offsetX;
+  UP_Y = e.offsetY;
 
   MOUSEDOWN = false;
 
@@ -86,7 +91,8 @@ function mouseup(e) {
   let xx = screenXToGameX(UP_X);
   let yy = screenYToGameY(UP_Y);
   if (Clickable.processClicks(xx, yy)) {
-    return;
+    TRACE_COURSE = false;
+    return true;
   }
 
   if (TRACE_COURSE) {

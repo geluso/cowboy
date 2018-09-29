@@ -105,6 +105,6 @@ function bones(ctx, a) {
 }
 
 function oasis(ctx, a) {
-  a.push(new SmallOasis());
+  a.push(new LargeOasis(300, -300));
   a.push(new LargeOasis());
 }

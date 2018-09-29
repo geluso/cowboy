@@ -80,6 +80,15 @@ function mouseup(e) {
   UP_Y = e.offsetX;
 
   MOUSEDOWN = false;
+
+  // don't set a course if someone reacted
+  // to a click.
+  let xx = screenXToGameX(UP_X);
+  let yy = screenYToGameY(UP_Y);
+  if (Clickable.processClicks(xx, yy)) {
+    return;
+  }
+
   if (TRACE_COURSE) {
     LAST_MOUSEUP = (new Date()).getTime();
 

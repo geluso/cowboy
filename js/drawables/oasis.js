@@ -1,17 +1,17 @@
-class SmallOasis extends Drawable {
-  constructor(x, y, label) {
-    super(x, y, "tiny oasis")
-    this.x = x
-    this.y = y
+class SmallOasis extends Clickable {
+  constructor(xx, yy, label) {
+    super(xx, yy, "tiny oasis")
     this.image = "oasis-tiny"
   }
 }
 
-class LargeOasis extends Drawable {
-  constructor(x, y, label) {
-    super(x, y, "oasis")
-    this.x = x
-    this.y = y
+class LargeOasis extends Clickable {
+  constructor(xx, yy, label) {
+    super(xx, yy, "oasis")
     this.image = "oasis-large"
+  }
+
+  onClick(xx, yy) {
+    console.log('large oasis', this);
   }
 }

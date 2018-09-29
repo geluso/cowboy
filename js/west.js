@@ -4,7 +4,7 @@ var TRANSLATE_X = 0;
 var TRANSLATE_Y = 0;
 
 // canvases
-var BACK_CTX, FORE_CTX, TEXT_CTX, SPRITE, SCRATCH;
+var BACK_CTX, FORE_CTX, TEXT_CTX, SPRITE, SCRATCH, MENU_CTX;
 var IMAGES_LOADED = 0;
 
 var TICKER = 0;
@@ -68,6 +68,13 @@ function resize() {
   text.width = WIDTH;
   text.height = HEIGHT;
 
+  var menu = document.getElementById("menuworld");
+  var menu_ctx = menu.getContext("2d");
+  configureCtx(menu_ctx);
+  MENU_CTX = menu_ctx;
+  menu.width = WIDTH;
+  menu.height = HEIGHT;
+
   SPRITE = document.getElementById("sprite");
   SPRITE.width = WIDTH;
   SPRITE.height = HEIGHT;
@@ -128,7 +135,9 @@ function buildWorld() {
   setScale(START_SCALE);
 
   var lastFrame = Date.now();
-  TICKER = setInterval(tickAndDraw, FRAMERATE)
+  TICKER = setInterval(tickAndDraw, FRAMERATE);
+
+  initMenu();
 }
 
 function tickAndDraw() {

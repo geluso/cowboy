@@ -277,8 +277,8 @@ function draw(ctx, drawables) {
 function draw_labels() {
   var labels = 0;
 
-  var x = Math.round((REAL_MOUSE_X / ORIGINAL_WIDTH) * WIDTH);
-  var y = Math.round((REAL_MOUSE_Y / ORIGINAL_HEIGHT) * HEIGHT);
+  const x = Math.round((REAL_MOUSE_X / ORIGINAL_WIDTH) * WIDTH);
+  const y = Math.round((REAL_MOUSE_Y / ORIGINAL_HEIGHT) * HEIGHT);
 
   for (var i = 0; i < (DRAWABLES.length + KILLABLE.length); i++) {
     var drawable = DRAWABLES[i];
@@ -301,13 +301,7 @@ function draw_labels() {
 }
 
 function drawScreenCoordinates(x, y) {
-  var coords = "(x,y)";
-  var xg = screenXToGameX(x);
-  var yg = screenYToGameY(y);
-
-  coords = coords.replace(/x/, xg);
-  coords = coords.replace(/y/, yg);
-
+  let coords = `(${MOUSE_X},${MOUSE_Y})`;
   label(coords, x, y);
 }
 

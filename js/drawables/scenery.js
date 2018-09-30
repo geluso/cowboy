@@ -104,6 +104,6 @@ function bones(ctx, a) {
   a.push(bones);
 }
 
-function oasis(ctx, a) {
-  a.push(new LargeOasis(300, -300));
+function fishingHole(ctx, a) {
+  a.push(new FishingHole(300, -300));
 }

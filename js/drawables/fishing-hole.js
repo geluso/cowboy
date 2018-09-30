@@ -1,14 +1,14 @@
-class SmallOasis extends Clickable {
+class TinyFishingHole extends Clickable {
   constructor(xx, yy, label) {
-    super(xx, yy, "tiny oasis")
-    this.image = "oasis-tiny"
+    super(xx, yy, "tiny fishing hole")
+    this.image = "fishing-hole-tiny"
   }
 }
 
-class LargeOasis extends Clickable {
+class FishingHole extends Clickable {
   constructor(xx, yy, label) {
-    super(xx, yy, "oasis")
-    this.image = "oasis-large"
+    super(xx, yy, "fishing hole")
+    this.image = "fishing-hole-large"
   }
 
   onClick(xx, yy) {

@@ -101,7 +101,7 @@ function generateChunk(pos) {
     }
 
     if (Math.random() < .3) {
-      (new LargeOasis(x + dx, y + dy)).build();
+      (new FishingHole(x + dx, y + dy)).build();
       return;
     }
   }

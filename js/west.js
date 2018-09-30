@@ -235,7 +235,7 @@ function generateStart(ctx, a) {
   //birthCrows(ctx, a);
   birth_natives(ctx, KILLABLE);
   bones(ctx, a);
-  oasis(ctx, a);
+  fishingHole(ctx, a);
 
   // create a guaranteed herd of cows near the start.
   createCowHerd(-200, -200);

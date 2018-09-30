@@ -21,8 +21,8 @@ class Clickable extends Drawable {
     return (
       x >= this.x &&
       y >= this.y &&
-      x <= (this.x + this.image.width * SCALE) &&
-      y <= (this.y + this.image.height * SCALE)
+      x <= (this.x + this.image.width) &&
+      y <= (this.y + this.image.height)
     );
   }
 

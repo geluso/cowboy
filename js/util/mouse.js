@@ -86,11 +86,8 @@ function mouseup(e) {
 
   MOUSEDOWN = false;
 
-  // don't set a course if someone reacted
-  // to a click.
-  let xx = screenXToGameX(UP_X);
-  let yy = screenYToGameY(UP_Y);
-  if (Clickable.processClicks(xx, yy)) {
+  // don't set a course if someone reacted to a click.
+  if (Clickable.processClicks(MOUSE_X, MOUSE_Y)) {
     TRACE_COURSE = false;
     return true;
   }

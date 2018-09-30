@@ -1,13 +1,12 @@
 class Drawable {
-  constructor(x, y, label) {
-    this.x = x
-    this.y = y
-    this.label = label
+  constructor(xx, yy, label) {
+    this.setPosition(xx, yy);
+    this.label = label;
   }
 
-  setPosition(x, y) {
-    this.x = x || 0;
-    this.y = y || 0;
+  setPosition(xx, yy) {
+    this.x = xx || 0;
+    this.y = yy || 0;
   }
 
   draw(ctx) {

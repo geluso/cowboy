@@ -85,6 +85,8 @@ var SRC = [
   "haystack1",
   "haystack2",
   "generalstore",
+  "fish-array",
+  "fish-giant",
 ];
 
 document.addEventListener("DOMContentLoaded", function() {

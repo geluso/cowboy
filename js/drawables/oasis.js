@@ -12,6 +12,8 @@ class LargeOasis extends Clickable {
   }
 
   onClick(xx, yy) {
-    console.log('large oasis', this);
+    const fishX = COWBOY.x + Math.random() * 60;
+    const fishY = COWBOY.y + Math.random() * 60;
+    DRAWABLES.push(new Fish(fishX, fishY));
   }
 }

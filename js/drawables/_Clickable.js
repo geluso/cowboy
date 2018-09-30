@@ -1,4 +1,5 @@
 const CLICKABLES = [];
+let CLICK_FOCUS = null;
 
 class Clickable extends Drawable {
   constructor(x, y, label) {
@@ -6,15 +7,50 @@ class Clickable extends Drawable {
     CLICKABLES.push(this);
   }
 
-  static processClicks(x, y) {
-    let isClicked = false;
-    CLICKABLES.forEach(clickable => {
+  static down() {
+    let clicked = Clickable.getClickable();
+    if (clicked) { 
+      CLICK_FOCUS = clicked;
+      CLICK_FOCUS.onDown();
+    }
+    return !!clicked;
+  }
+
+  static move() {
+    if (CLICK_FOCUS) {
+      CLICK_FOCUS.onMove();
+      return true;
+    }
+  }
+
+  static up(x, y) {
+    let clicked = Clickable.getClickable();
+
+    // only trigger once if they're the same thing
+    if (clicked && clicked !== CLICK_FOCUS) {
+      clicked.onUp();
+      CLICK_FOCUS = null;
+      return true;
+    } else if (CLICK_FOCUS) {
+      CLICK_FOCUS.onUp();
+      CLICK_FOCUS = null;
+      return true;
+    }
+
+    return false;
+  }
+
+  static getClickable(x, y) {
+    x = x || MOUSE_X;
+    y = y || MOUSE_Y;
+
+    for (let i = 0; i < CLICKABLES.length; i++) {
+      let clickable = CLICKABLES[i];
       if (clickable.contains(x, y)) {
-        isClicked = true;
-        clickable.onClick(x, y);
+        return clickable;
       }
-    });
-    return isClicked;
+    }
+    return null;
   }
 
   contains(x, y) {
@@ -26,7 +62,13 @@ class Clickable extends Drawable {
     );
   }
 
-  onClick(xx, yy) {
-    console.log('clicked noop', this);
+  onDown(xx, yy) {
+    console.log('down click noop', this);
+  }
+  onMove(xx, yy) {
+    console.log('move click noop', this);
+  }
+  onUp(xx, yy) {
+    console.log('up click noop', this);
   }
 }

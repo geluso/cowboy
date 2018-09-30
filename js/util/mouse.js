@@ -42,6 +42,10 @@ function mousedown(e) {
     COWBOY_DOWN_Y = COWBOY.special_actions[COWBOY.special_actions.length - 1][1];
   }
 
+  if(Clickable.down()) {
+    return;
+  }
+
   MOUSEDOWN = true;
   var random = Math.random();
   RANDOM = random;
@@ -77,6 +81,8 @@ function mousemove(e) {
   if (TRACE_COURSE) {
     traceCourse();
   }
+
+  Clickable.move();
 };
 
 
@@ -87,7 +93,7 @@ function mouseup(e) {
   MOUSEDOWN = false;
 
   // don't set a course if someone reacted to a click.
-  if (Clickable.processClicks(MOUSE_X, MOUSE_Y)) {
+  if (Clickable.up(MOUSE_X, MOUSE_Y)) {
     TRACE_COURSE = false;
     return true;
   }

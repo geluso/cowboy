@@ -11,7 +11,7 @@ class FishingHole extends Clickable {
     this.image = "fishing-hole-large"
   }
 
-  onClick(xx, yy) {
+  onUp(xx, yy) {
     const fishX = COWBOY.x + Math.random() * 60;
     const fishY = COWBOY.y + Math.random() * 60;
     DRAWABLES.push(new Fish(fishX, fishY));

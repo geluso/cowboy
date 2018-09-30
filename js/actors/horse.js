@@ -5,7 +5,7 @@ function birth_horse(ctx, a) {
   a.push(HORSE);
 }
 
-class Horse extends Drawable {
+class Horse extends Clickable {
   constructor(x, y) {
     super(x, y, "horse");
     this.x = 20 + 50
@@ -23,6 +23,20 @@ class Horse extends Drawable {
     this.frames = 7
     this.frame = 0
     this.delay = 2000
+    this.route = []
+  }
+
+  onDown(xx, yy) {
+    this.route = []
+    this.isLed = true;
+  }
+
+  onMove() {
+    this.route.push([MOUSE_X, MOUSE_Y]);
+  }
+
+  onUp(xx, yy) {
+    set_waypoint(this, MOUSE_X, MOUSE_Y, this.route)
   }
 
   get image() {
@@ -34,6 +48,10 @@ class Horse extends Drawable {
   }
 
   step() {
+    if (!this.unbridled) {
+      this.x = COWBOY.x;
+      this.y = COWBOY.y;
+    }
     return 3;
   }
 
@@ -44,7 +62,9 @@ class Horse extends Drawable {
     this.way_y = undefined;
 
     // if the cowboy is still far away then set a new waypoint toward him.
-    if (Math.abs(COWBOY.x - HORSE.x) > 1 ||
+    if (this.isLed) {
+      this.isLed = false;
+    } else if (Math.abs(COWBOY.x - HORSE.x) > 1 ||
         Math.abs(COWBOY.y - HORSE.y) > 1) {
       set_waypoint(HORSE, COWBOY.x, COWBOY.y);
     } else {

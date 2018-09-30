@@ -56,7 +56,7 @@ class Fish extends Clickable {
       dx, dy, dWidth, dHeight);
   }
 
-  onClick(xx, yy) {
+  onUp(xx, yy) {
     const index = DRAWABLES.indexOf(this);
     DRAWABLES.splice(index, 1);
   }

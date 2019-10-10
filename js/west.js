@@ -345,19 +345,20 @@ function tick(actor) {
   var dx = 0;
   var dy = 0;
 
-  if (KEYBOARD[UP] || KEYBOARD[38]) {
+  console.log(KEYBOARD[KEYBOARD.J])
+  if (KEYBOARD[UP] || KEYBOARD[38] || KEYBOARD[K]) {
     dy = -1;
     actor.direction = NORTH;
   }
-  if (KEYBOARD[DOWN] || KEYBOARD[40]) {
+  if (KEYBOARD[DOWN] || KEYBOARD[40] || KEYBOARD[J]) {
     dy = 1;
     actor.direction = SOUTH;
   }
-  if (KEYBOARD[LEFT] || KEYBOARD[37]) {
+  if (KEYBOARD[LEFT] || KEYBOARD[37] || KEYBOARD[H]) {
     dx = -1;
     actor.direction = WEST;
   }
-  if (KEYBOARD[RIGHT] || KEYBOARD[39]) {
+  if (KEYBOARD[RIGHT] || KEYBOARD[39] || KEYBOARD[L]) {
     dx = 1;
     actor.direction = EAST;
   }

@@ -345,7 +345,6 @@ function tick(actor) {
   var dx = 0;
   var dy = 0;
 
-  console.log(KEYBOARD[KEYBOARD.J])
   if (KEYBOARD[UP] || KEYBOARD[38] || KEYBOARD[K]) {
     dy = -1;
     actor.direction = NORTH;

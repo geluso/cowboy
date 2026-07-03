@@ -48,6 +48,10 @@
     const RIGHT_STROKE = [2, 3];
     const IDLE_FRAME = 1;
 
+    // where the cowboy sits within a frame; used as the pivot for rotation
+    const PIVOT_X = 20;
+    const PIVOT_Y = 17;
+
     const SCALE = 2;
 
     // --- physics tuning ---
@@ -75,8 +79,7 @@
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
       heading: -Math.PI / 2,   // pointing up; sprite faces east at heading 0
-      vx: 0,
-      vy: 0,
+      speed: 0,                // velocity is always along the heading
       // animation state
       strokeFrames: null,
       strokeStart: 0,
@@ -92,8 +95,7 @@
         boat.heading -= TURN_PER_STROKE;
         boat.strokeFrames = RIGHT_STROKE;
       }
-      boat.vx += Math.cos(boat.heading) * THRUST_PER_STROKE;
-      boat.vy += Math.sin(boat.heading) * THRUST_PER_STROKE;
+      boat.speed += THRUST_PER_STROKE;
       boat.strokeStart = performance.now();
     }
 
@@ -111,28 +113,25 @@
       return IDLE_FRAME;
     }
 
-    function drawVector(cx, cy) {
-      const speed = Math.hypot(boat.vx, boat.vy);
-      if (speed < 1) return;
-      const angle = Math.atan2(boat.vy, boat.vx);
-      const len = Math.min(30 + speed, 160);
-      const tipX = cx + Math.cos(angle) * len;
-      const tipY = cy + Math.sin(angle) * len;
+    // drawn inside the boat's rotated transform, so it can never
+    // point a different way than the sprite: straight along local +x
+    function drawVector() {
+      if (boat.speed < 1) return;
+      const len = Math.min(30 + boat.speed, 160);
 
       ctx.strokeStyle = '#ffdd55';
       ctx.fillStyle = '#ffdd55';
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(tipX, tipY);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(len, 0);
       ctx.stroke();
 
       // arrowhead
-      const headLen = 10;
       ctx.beginPath();
-      ctx.moveTo(tipX, tipY);
-      ctx.lineTo(tipX - headLen * Math.cos(angle - 0.4), tipY - headLen * Math.sin(angle - 0.4));
-      ctx.lineTo(tipX - headLen * Math.cos(angle + 0.4), tipY - headLen * Math.sin(angle + 0.4));
+      ctx.moveTo(len, 0);
+      ctx.lineTo(len - 9, -4);
+      ctx.lineTo(len - 9, 4);
       ctx.closePath();
       ctx.fill();
     }
@@ -142,12 +141,10 @@
       const dt = Math.min((now - last) / 1000, 0.1);
       last = now;
 
-      // integrate velocity with water drag
-      boat.x += boat.vx * dt;
-      boat.y += boat.vy * dt;
-      const keep = Math.pow(DRAG, dt);
-      boat.vx *= keep;
-      boat.vy *= keep;
+      // move along the heading, with water drag on speed
+      boat.x += Math.cos(boat.heading) * boat.speed * dt;
+      boat.y += Math.sin(boat.heading) * boat.speed * dt;
+      boat.speed *= Math.pow(DRAG, dt);
 
       // wrap around the screen
       const m = FRAME_W * SCALE;
@@ -160,26 +157,24 @@
       ctx.fillStyle = '#2b6a8a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      ctx.save();
+      ctx.translate(boat.x, boat.y);
+      // sprite faces east in the sheet, so rotate by the heading directly
+      ctx.rotate(boat.heading);
       if (sheet.complete && sheet.naturalWidth) {
         const frame = currentFrame(now);
-        ctx.save();
-        ctx.translate(boat.x, boat.y);
-        // sprite faces east in the sheet, so rotate by the heading directly
-        ctx.rotate(boat.heading);
         ctx.drawImage(
           sheet,
           FRAME_X[frame], FRAME_Y, FRAME_W, FRAME_H,
-          -FRAME_W * SCALE / 2, -FRAME_H * SCALE / 2,
+          -PIVOT_X * SCALE, -PIVOT_Y * SCALE,
           FRAME_W * SCALE, FRAME_H * SCALE
         );
-        ctx.restore();
       }
+      drawVector();
+      ctx.restore();
 
-      drawVector(boat.x, boat.y);
-
-      const speed = Math.hypot(boat.vx, boat.vy);
       const deg = ((boat.heading * 180 / Math.PI) % 360 + 360) % 360;
-      stats.textContent = 'speed: ' + speed.toFixed(0) + ' px/s  heading: ' + deg.toFixed(0) + '\u00B0';
+      stats.textContent = 'speed: ' + boat.speed.toFixed(0) + ' px/s  heading: ' + deg.toFixed(0) + '\u00B0';
 
       requestAnimationFrame(tick);
     }

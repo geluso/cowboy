@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Paddle Prototype</title>
   <style>
     html, body {
@@ -12,10 +12,23 @@
       overflow: hidden;
       font-family: monospace;
       color: #fff;
+      touch-action: none;
     }
     canvas {
       display: block;
       image-rendering: pixelated;
+    }
+    .joystick {
+      position: fixed;
+      bottom: 30px;
+      width: 120px;
+      height: 120px;
+    }
+    #joystick-left {
+      left: 30px;
+    }
+    #joystick-right {
+      right: 30px;
     }
     #hud {
       position: fixed;
@@ -31,11 +44,15 @@
 </head>
 <body>
   <div id="hud">
-    LEFT / RIGHT arrows to paddle<br>
+    LEFT / RIGHT arrows to paddle, or tap the joysticks<br>
     <span id="stats"></span>
   </div>
   <canvas id="world"></canvas>
 
+  <div id="joystick-left" class="joystick"></div>
+  <div id="joystick-right" class="joystick"></div>
+
+  <script src="../thirdjs/nipplejs.min.js"></script>
   <script>
     // --- sprite sheet: second row of canoe_concept.gif ---
     // 4 frames, 40x45 each, at x = 0, 41, 82, 123, y = 45.
@@ -54,11 +71,18 @@
 
     const SCALE = 2;
 
+    // the demo only has one mode for now, but the joysticks are gated on
+    // it so other modes (riding, shooting, ...) can reuse the same sticks
+    const PADDLE = 'PADDLE';
+    let MODE = PADDLE;
+
     // --- physics tuning ---
     const TURN_PER_STROKE = Math.PI / 14;  // radians the boat rotates per press
     const THRUST_PER_STROKE = 25;          // px/sec added along heading per press
     const DRAG = 0.35;                     // fraction of velocity kept per second
     const STROKE_FRAME_MS = 110;           // ms per animation frame of a stroke
+
+    const DRAW_VECTOR = false;             // debug: draw the velocity arrow
 
     const canvas = document.getElementById('world');
     const ctx = canvas.getContext('2d');
@@ -74,6 +98,41 @@
 
     const sheet = new Image();
     sheet.src = '../img/canoe_concept.gif';
+
+    // --- lily pads ---
+    const lilyPadImage = new Image();
+    lilyPadImage.src = '../img/lily-pad.png';
+
+    const LILY_PADS_PER_PIXEL = 1 / 60000;  // roughly one pad per 245x245 area
+    let lilyPads = [];
+
+    function scatterLilyPads() {
+      const count = Math.round(canvas.width * canvas.height * LILY_PADS_PER_PIXEL);
+      lilyPads = [];
+      for (let i = 0; i < count; i++) {
+        lilyPads.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          rotation: Math.random() * Math.PI * 2,
+          scale: (0.6 + Math.random() * 0.8) / 2,
+        });
+      }
+    }
+    scatterLilyPads();
+    window.addEventListener('resize', scatterLilyPads);
+
+    function drawLilyPads() {
+      if (!lilyPadImage.complete || !lilyPadImage.naturalWidth) return;
+      for (const pad of lilyPads) {
+        const w = lilyPadImage.naturalWidth * pad.scale;
+        const h = lilyPadImage.naturalHeight * pad.scale;
+        ctx.save();
+        ctx.translate(pad.x, pad.y);
+        ctx.rotate(pad.rotation);
+        ctx.drawImage(lilyPadImage, -w / 2, -h / 2, w, h);
+        ctx.restore();
+      }
+    }
 
     const boat = {
       x: window.innerWidth / 2,
@@ -99,10 +158,54 @@
       boat.strokeStart = performance.now();
     }
 
+    // canonicalize raw key presses into game inputs, in the same spirit
+    // as js/util/keyboard.js: arrows, WASD, and vim-style HJKL all map
+    // onto the two paddle actions
+    const PADDLE_LEFT = 'PADDLE_LEFT';
+    const PADDLE_RIGHT = 'PADDLE_RIGHT';
+
+    const KEY_BINDINGS = {
+      'ArrowLeft': PADDLE_LEFT,
+      'ArrowRight': PADDLE_RIGHT,
+      'a': PADDLE_LEFT,
+      'd': PADDLE_RIGHT,
+      'h': PADDLE_LEFT,
+      'l': PADDLE_RIGHT,
+    };
+
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { paddle('left'); e.preventDefault(); }
-      if (e.key === 'ArrowRight') { paddle('right'); e.preventDefault(); }
+      const input = KEY_BINDINGS[e.key.length === 1 ? e.key.toLowerCase() : e.key];
+      if (!input) return;
+      e.preventDefault();
+
+      if (input === PADDLE_LEFT) paddle('left');
+      if (input === PADDLE_RIGHT) paddle('right');
     });
+
+    // --- touch joysticks (nipplejs) ---
+    // each press of a stick is one paddle stroke on that side
+    const JOYSTICK_SIZE = 100;
+
+    function makeJoystick(zoneId, side) {
+      const stick = nipplejs.create({
+        zone: document.getElementById(zoneId),
+        mode: 'static',
+        position: { top: '50%', left: '50%' },
+        color: 'black',
+        size: JOYSTICK_SIZE,
+      });
+
+      stick.on('start', function () {
+        if (MODE === PADDLE) {
+          paddle(side);
+        }
+      });
+
+      return stick;
+    }
+
+    makeJoystick('joystick-left', 'left');
+    makeJoystick('joystick-right', 'right');
 
     function currentFrame(now) {
       if (boat.strokeFrames) {
@@ -157,6 +260,8 @@
       ctx.fillStyle = '#2b6a8a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      drawLilyPads();
+
       ctx.save();
       ctx.translate(boat.x, boat.y);
       // sprite faces east in the sheet, so rotate by the heading directly
@@ -170,7 +275,7 @@
           FRAME_W * SCALE, FRAME_H * SCALE
         );
       }
-      drawVector();
+      if (DRAW_VECTOR) drawVector();
       ctx.restore();
 
       const deg = ((boat.heading * 180 / Math.PI) % 360 + 360) % 360;

@@ -118,7 +118,7 @@ function buildWorld() {
 
   for (var i = 0; i < SRC.length; i++) {
     var img = new Image();
-    img.src = "img/" + SRC[i] + ".gif";
+    img.src = "img/" + SRC[i] + ".gif?v=2";
     IMAGES[SRC[i]] = img;
   }
 
